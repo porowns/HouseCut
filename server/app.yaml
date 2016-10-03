@@ -1,0 +1,5 @@
+runtime: nodejs
+vm: true
+env_variables:
+  SECRET: 'housesarenotformice'
+  DATABASE: 'mongodb://housecut:teleworm1@ds055545.mlab.com:55545/housecut'
