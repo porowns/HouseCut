@@ -10,6 +10,7 @@ This server exposes a REST API for the Housecut backend.
 
 # Backend Structure
 /register
+
 /login
 
 /createhousehold
@@ -29,9 +30,14 @@ This server exposes a REST API for the Housecut backend.
 ******************************
 
 /household
+
 ... /tasklist
+
 	... task "id"
+	
 	... task "id"
+	
 ... /whiteboard
+
 ... /roommates
 
