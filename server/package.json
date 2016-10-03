@@ -7,22 +7,27 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "SET NODE_ENV=development&& node index.js",
+    "test": "SET NODE_ENV=test&& mocha --recursive --timeout 100000"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "chai": "^3.5.0",
     "connect": "^3.5.0",
     "crypto": "0.0.3",
     "csprng": "^0.1.1",
     "dotenv": "^2.0.0",
     "ejs": "2.4.1",
     "express": "^4.13.3",
+    "jquery": "^3.1.1",
     "jsonwebtoken": "^7.1.9",
-    "mocha": "^3.1.0",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.2",
     "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "mocha": "^2.4.5"
   },
   "repository": {
     "type": "git",

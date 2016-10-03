@@ -7,6 +7,7 @@ This server exposes a REST API for the Housecut backend.
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `PUT` | None | { username: [string], email: [string], password: [string] } | { success: true } | { success: false, message: "Explanation" } | |
 | Login | `/login` | `PUT` | None | { email: [string], password: [string] } | { success: true, token: [string] } | { success: false, message: "Explanation" } | |
+| Delete account | `/deleteaccount` | `PUT` | None | { email: [string], password: [string] } | { success: true } | { success: false, message: "Explanation" } | |
 
 # Backend Structure
 /register
