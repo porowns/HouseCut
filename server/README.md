@@ -14,16 +14,16 @@ This server exposes a REST API for the Housecut backend.
 /login
 
 /createhousehold
-	name
-	userid
-	
-	res = household id
+	houseHoldName
+	houseHoldPassword
+
+	res = success!
 /joinhousehold
-	household id
-	user id
-	
+	HouseHoldName
+	houseHoldPassword
+
 	res = true/false
-	
+
 /leavehousehold
 	user id
 
@@ -34,10 +34,9 @@ This server exposes a REST API for the Housecut backend.
 ... /tasklist
 
 	... task "id"
-	
+
 	... task "id"
-	
+
 ... /whiteboard
 
 ... /roommates
-
