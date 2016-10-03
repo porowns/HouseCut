@@ -8,6 +8,7 @@ var dotenv = require('dotenv').config();
 var User = require('./models/user');
 var register = require('./accounts/register.js');
 var login = require('./accounts/login.js');
+var createhousehold = require('./households/createhousehold.js');
 
 /* config */
 var port = process.env.PORT || 8080;
@@ -27,6 +28,10 @@ app.post('/register', function(req, res) {
 /* login */
 app.post('/login', function(req, res) {
   login(req, res);
+});
+
+app.post('/createhousehold', function(req, res) {
+  createhousehold(req, res);
 });
 
 /* start the server */
