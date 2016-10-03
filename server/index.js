@@ -9,6 +9,7 @@ var User = require('./models/user');
 var register = require('./accounts/register.js');
 var login = require('./accounts/login.js');
 var createhousehold = require('./households/createhousehold.js');
+var getUserTaskList = require('./tasks/getusertasklist.js');
 
 /* config */
 var port = process.env.PORT || 8080;
@@ -28,6 +29,12 @@ app.post('/register', function(req, res) {
 /* login */
 app.post('/login', function(req, res) {
   login(req, res);
+});
+
+/* get user tasklist */
+/* TODO: need to use token verify middleware */
+app.get('/usertasklist', function(req, res) {
+  getUserTaskList(req, res);
 });
 
 app.post('/createhousehold', function(req, res) {
