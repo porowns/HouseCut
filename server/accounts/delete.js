@@ -38,6 +38,8 @@ module.exports = function(req, res) {
               });
             }
             else {
+              /* TODO: remove userId from Household member list and update all
+              chores that were that user's turn to the next person / unassigned */
               res.json({
                 success: true,
                 message: 'Delete account success'
