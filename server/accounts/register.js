@@ -1,3 +1,5 @@
+/* Implemented by: Chris */
+
 var User = require('../models/user');
 var crypto = require('crypto');
 var rand = require('csprng');

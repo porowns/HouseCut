@@ -2,11 +2,10 @@
 
 var SchemaObject = require('schema-object');
 
-
 module.exports = new SchemaObject({
-  name: String,
+  name: { type: String, minLength: 1 },
   recurring: Boolean,
   recurringIntervalDays: Number,
-  type: String /* "Rotating", "Assigned", "Voluntary" */
-  currentlyAssigned: Number /* user ID */
+  type: { type: String, minLength: 1, enum: [ 'Rotating', 'Assigned', 'Voluntary' ] },
+  currentlyAssigned: { type: String, minLength: 1 } /* user ID */
 });

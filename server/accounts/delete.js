@@ -29,17 +29,22 @@ module.exports = function(req, res) {
       if (user) {
         var hash_pw = crypto.createHash('sha512').update(user.salt + password).digest("hex");
         if (hash_pw == user.hashed_password) {
-          var token = jwt.sign({
-            email: user.email,
-            id: user._id
-          }, app.get('secret'), {
-            /*expiresIn: "24h"*/
-          });
-          res.json({
-            success: true,
-            message: 'Login success',
-            id: user._id,
-            token: token
+
+          user.remove({ 'email': email }, function(err) {
+            if (err) {
+              res.json({
+                success: false,
+                message: err
+              });
+            }
+            else {
+              /* TODO: remove userId from Household member list and update all
+              chores that were that user's turn to the next person / unassigned */
+              res.json({
+                success: true,
+                message: 'Delete account success'
+              });
+            }
           });
         }
         else {
