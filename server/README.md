@@ -1,4 +1,4 @@
-This server exposes a REST API for the Housecut backend.
+This server exposes a REST API for the HouseCut backend.
 
 
 # API Documentation
@@ -9,10 +9,25 @@ This server exposes a REST API for the Housecut backend.
 | Login | `/login` | `PUT` | None | { email: [string], password: [string] } | { success: true, token: [string] } | { success: false, message: "Explanation" } | |
 | Delete account | `/deleteaccount` | `PUT` | None | { email: [string], password: [string] } | { success: true } | { success: false, message: "Explanation" } | |
 
-# Backend Structure
+# Starting the server
+
+To start the server locally, run the command `npm start`.
+
+# Testing
+
+Tests are held in the test/ directory. To run the tests, start the server
+locally with the command `npm start`. Then, in a separate terminal, run the
+command `npm test`. Note that there is no test database set up (yet), so all
+tests run on the real database. This doesn't matter, though, as they clean up
+their junk data when they finish.
+
+# Backend Structure (notes)
+
 /register
 
 /login
+
+/deleteaccount
 
 /createhousehold
 	houseHoldName

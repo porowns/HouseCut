@@ -1,3 +1,5 @@
+/* Implemented by: Chris */
+
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
@@ -36,7 +38,7 @@ module.exports = function(req, res) {
           res.json({
             success: true,
             message: 'Login success',
-            id: user.id,
+            id: user._id,
             token: token
           });
         }
