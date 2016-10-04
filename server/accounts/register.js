@@ -1,5 +1,9 @@
 /* Implemented by: Chris */
 
+/*
+  POST /register with data { email: String, password: String, username: String }
+*/
+
 var User = require('../models/user');
 var crypto = require('crypto');
 var rand = require('csprng');

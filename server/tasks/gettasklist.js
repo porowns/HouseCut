@@ -1,5 +1,7 @@
 /* Implemented by: Chris */
-/* GET /tasklist */
+/*
+  GET /tasklist?currentUserId=X(userId=Y|householdId=Z)
+*/
 
 module.exports = function(req, res) {
   var currentUserId, userId, householdId;

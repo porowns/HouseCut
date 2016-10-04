@@ -36,7 +36,7 @@ app.post('/login', function(req, res) {
   login(req, res);
 });
 
-/* get user tasklist */
+/* GET tasklist for or household */
 /* TODO: need to use token verify middleware */
 app.get('/tasklist', function(req, res) {
   getTaskList(req, res);

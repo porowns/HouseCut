@@ -1,5 +1,9 @@
 /* Implemented by: Chris */
 
+/*
+  POST /login with data { email: String, password: String }
+*/
+
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
