@@ -6,7 +6,7 @@ This server exposes a REST API for the HouseCut backend.
 | Title | URL | Method | URL Params | Data Params | Success Response | Error Response | Notes |
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `PUT` | None | { username: [string], email: [string], password: [string] } | { success: true } | { success: false, message: "Explanation" } | |
-| Login | `/login` | `PUT` | None | { email: [string], password: [string] } | { success: true, token: [string] } | { success: false, message: "Explanation" } | |
+| Login | `/login` | `PUT` | None | { email: [string], password: [string] } | { success: true, id: [String], token: [string] } | { success: false, message: "Explanation" } | |
 | Delete account | `/deleteaccount` | `PUT` | None | { email: [string], password: [string] } | { success: true } | { success: false, message: "Explanation" } | |
 
 # Starting the server
