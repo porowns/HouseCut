@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 var register = require('./../../../accounts/register.js');
 var login = require('./../../../accounts/login.js');
 var deleteAccount = require('./../../../accounts/delete.js');
-var User = require('./../../../models/user');
+var User = require('./../../../models/user.js');
 
 var utilities = require('./utilities.js');
 
