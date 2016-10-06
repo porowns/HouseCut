@@ -119,7 +119,7 @@ describe('loginFailureTests', function() {
     it('returns success false', function(done) {
       chai.request(config.hostname)
         .post('/login')
-        .send({ email: 'test@test', password: 'test123' })
+        .send({ email: 'test2@test', password: 'test123' })
         .end(function(err, res) {
           res.should.have.status(200);
           res.res.body.should.have.property('success');

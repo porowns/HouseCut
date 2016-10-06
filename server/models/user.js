@@ -10,5 +10,6 @@ module.exports = mongoose.model('User', new Schema({
     salt: String,
     householdId: String,
     id: String, /* used for password changing, the real id is '_id' */
-    temp_str: String /* used for password changing */
+    temp_str: String /* used for password changing */,
+    admin: Boolean /* is this user an admin of their household? */
 }));

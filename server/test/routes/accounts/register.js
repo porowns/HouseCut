@@ -12,19 +12,43 @@ var User = require('./../../../models/user');
 
 describe('registerSuccessTests', function() {
   beforeEach(function(done) {
+    /* if there's a test@test account, delete it */
     chai.request(config.hostname)
-      .post('/deleteaccount')
+      .post('/login')
       .send({ email: 'test@test', password: 'test123' })
       .end(function(err, res) {
-        done();
+        if (res.res.body.success) {
+          var token = res.res.body.token;
+          chai.request(config.hostname)
+            .post('/deleteaccount')
+            .send({ email: 'test@test', password: 'test123', token: token })
+            .end(function(err, res) {
+              done();
+            });
+        }
+        else {
+          done();
+        }
       });
   });
   after(function(done) {
+    /* delete the account we made */
     chai.request(config.hostname)
-      .post('/deleteaccount')
+      .post('/login')
       .send({ email: 'test@test', password: 'test123' })
       .end(function(err, res) {
-        done();
+        if (res.res.body.success) {
+          var token = res.res.body.token;
+          chai.request(config.hostname)
+            .post('/deleteaccount')
+            .send({ email: 'test@test', password: 'test123', token: token })
+            .end(function(err, res) {
+              done();
+            });
+        }
+        else {
+          done();
+        }
       });
   });
   describe('Create account', function() {

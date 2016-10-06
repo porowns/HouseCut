@@ -7,6 +7,8 @@ var dotenv = require('dotenv').config();
 var config = require('./config');
 
 var User = require('./models/user');
+
+var verifyToken = require('./accounts/verifytoken.js');
 var register = require('./accounts/register.js');
 var login = require('./accounts/login.js');
 var deleteAccount = require('./accounts/delete.js');
@@ -27,29 +29,18 @@ if (process.env.NODE_ENV !== 'test') {
 /* routes */
 
 /* register */
-app.post('/register', function(req, res) {
-  register(req, res);
-});
+app.post('/register', register);
 
 /* login */
-app.post('/login', function(req, res) {
-  login(req, res);
-});
+app.post('/login', login);
 
-/* GET tasklist for or household */
-/* TODO: need to use token verify middleware */
-app.get('/tasklist', function(req, res) {
-  getTaskList(req, res);
-});
+/* GET tasklist for user or household */
+app.get('/tasklist', verifyToken, getTaskList);
 
 /* delete account */
-app.post('/deleteaccount', function(req, res) {
-  deleteAccount(req, res);
-});
+app.post('/deleteaccount', verifyToken, deleteAccount);
 
-app.post('/createhousehold', function(req, res) {
-  createhousehold(req, res);
-});
+app.post('/createhousehold', verifyToken, createhousehold);
 
 /* start the server */
 app.listen(port);

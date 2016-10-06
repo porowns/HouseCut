@@ -1,6 +1,6 @@
 /* Implemented by: Chris */
 /*
-  GET /tasklist?currentUserId=X(userId=Y|householdId=Z)
+  GET /tasklist?currentUserId=X&(userId=Y|householdId=Z)
 */
 
 module.exports = function(req, res) {
