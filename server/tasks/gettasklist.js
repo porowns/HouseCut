@@ -3,34 +3,14 @@
   GET /tasklist?currentUserId=X&(userId=Y|householdId=Z)
 */
 
-module.exports = function(req, res) {
-  var currentUserId, userId, householdId;
+var User = require('../models/user.js');
+var Household = require('../models/household.js');
+var utilities = require('../utilities.js');
 
-  /* make sure there's a currentUserId */
-  if (req.query && req.query.currentUserId) {
-    currentUserId = req.query.currentUserId;
-  }
-  else {
-    res.json({
-      success: false,
-      message: 'Please supply a currentUserId parameter in the query.'
-    });
-  }
-  /* make sure there's either a userId or householdId */
-  if (req.query && req.query.userId) {
-    userId = req.query.userId;
-  }
-  else {
-    if (req.query && req.query.householdId) {
-      householdId = req.query.householdId;
-    }
-    else {
-      res.json({
-        success: false,
-        message: 'Please supply either a userId or householdId parameter in the query.'
-      });
-    }
-  }
+module.exports = function(req, res) {
+  var currentUserId = req.query.currentUserId;
+  var userId = req.query.userId;
+  var householdId = req.query.householdId;
 
   /*
     currentUserId has to be in the same household as householdId or
@@ -41,52 +21,45 @@ module.exports = function(req, res) {
       throw err;
     }
     if (user) {
-      Household.findOne({ '_id': user.householdId }, function(err, hh) {
-        if (err) {
-          throw err;
-        }
-        if (hh) {
-          if (userId) {
-            /* if they supplied a userId */
-
-            var index = hh.householdMembers.indexOf(userId);
-            if (index == -1) {
-              /* user wasn't in the same household as caller */
-              res.json({
-                success: false,
-                message: 'userId wasn\'t in the same household as currentUserId.'
-              });
-            }
-            else {
-              /* all good */
-              /* only keep the tasks that are assigned to given userId */
-              var userTasklist = hh.taskList.filter(function(e, i, a) {
-                return (e.currentlyAssigned == userId);
-              });
-              res.json({
-                success: true,
-                tasklist: userTasklist
-              });
-            }
-          }
-          else if (householdId) {
-            /* if they supplied a householdId */
-
+      if (userId) {
+        /* get user tasklist */
+        utilities.checkUserIsInHousehold(userId, user.householdId, function(household) {
+          if (household) {
+            var userTasklist = household.taskList.filter(function(e, i, a) {
+              return (e.currentlyAssigned == userId);
+            });
             res.json({
               success: true,
-              tasklist: taskList /* TODO: make sure this field is right */
+              tasklist: userTasklist
             });
           }
-        }
-        else {
+          else {
+            res.json({
+              success: false,
+              message: 'userId wasn\'t in the same household as currentUserId.'
+            });
+          }
+        });
+      }
+      else if (householdId) {
+        /* get household tasklist */
+        Household.findOne({ '_id': user.householdId }, function(err, hh) {
           res.json({
-            success: false,
-            message: 'currentUserId\'s household was not found.'
+            success: true,
+            tasklist: taskList /* TODO: make sure this field is right */
           });
-        }
-      });
+        });
+      }
+      else {
+        /* no userId or householdId */
+        res.json({
+          success: false,
+          message: 'Please supply either a userId or householdId.'
+        });
+      }
     }
     else {
+      /* no user with currentUserId found */
       res.json({
         success: false,
         message: 'No user with currentUserId found.'
