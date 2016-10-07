@@ -1,10 +1,12 @@
 /* Implemented by: Chris */
 
 /*
-  POST /login with data { email: String, password: String }
+  POST /login
+
+  with body: { email: String, password: String }
 */
 
-var User = require('../models/user');
+var User = require('../models/user.js');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var rand = require('csprng');
@@ -35,7 +37,8 @@ module.exports = function(req, res) {
         if (hash_pw == user.hashed_password) {
           var token = jwt.sign({
             email: user.email,
-            id: user._id
+            id: user._id,
+            admin: user.admin
           }, app.get('secret'), {
             /*expiresIn: "24h"*/
           });
@@ -43,6 +46,7 @@ module.exports = function(req, res) {
             success: true,
             message: 'Login success',
             id: user._id,
+            admin: user.admin,
             token: token
           });
         }

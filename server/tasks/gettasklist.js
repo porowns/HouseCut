@@ -1,14 +1,17 @@
 /* Implemented by: Chris */
 /*
-  GET /tasklist?currentUserId=X&(userId=Y|householdId=Z)
+  GET /tasklist?token=X&(userId=Y|householdId=Z)
 */
 
 var User = require('../models/user.js');
+var jwtDecode = require('jwt-decode');
 var Household = require('../models/household.js');
 var utilities = require('../utilities.js');
 
 module.exports = function(req, res) {
-  var currentUserId = req.query.currentUserId;
+  var token = req.query.token;
+  var decoded = jwt_decode(token);
+  var currentUserId = decoded._id;
   var userId = req.query.userId;
   var householdId = req.query.householdId;
 
@@ -62,7 +65,7 @@ module.exports = function(req, res) {
       /* no user with currentUserId found */
       res.json({
         success: false,
-        message: 'No user with currentUserId found.'
+        message: 'No user with that id found.'
       });
     }
   });

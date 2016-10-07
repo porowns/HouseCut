@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var dotenv = require('dotenv').config();
 var config = require('./config');
 
-var User = require('./models/user');
+var User = require('./models/user.js');
 
 var verifyToken = require('./accounts/verifytoken.js');
 var register = require('./accounts/register.js');

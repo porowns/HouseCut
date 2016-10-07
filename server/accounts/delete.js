@@ -1,6 +1,12 @@
 /* Implemented by: Chris */
 
-var User = require('../models/user');
+/*
+  POST /deleteaccount
+
+  with body: { email: String, password: String, token: String }
+*/
+
+var User = require('../models/user.js');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var rand = require('csprng');
