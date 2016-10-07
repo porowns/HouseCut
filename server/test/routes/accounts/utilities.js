@@ -51,3 +51,23 @@ module.exports.loginToAccount = function(data, callback) {
       callback(err, res);
     });
 }
+
+module.exports.setAdmin = function(data, callback) {
+  module.exports.loginToAccount(data, function(err, res) {
+    if (res.res.body.success) {
+      var token = res.res.body.token;
+      var id = res.res.body.id;
+      data['token'] = token;
+      data['id'] = id;
+      chai.request(config.hostname)
+        .post('/setadmin')
+        .send(data)
+        .end(function(err, res) {
+          callback(err, res);
+        });
+    }
+    else {
+      callback(err, res);
+    }
+  });
+}

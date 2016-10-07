@@ -14,8 +14,8 @@ var rand = require('csprng');
 
 module.exports = function(req, res) {
   var token = req.body.token;
-  var decoded = jwt_decode(token);
-  var currentUserId = decoded._id;
+  var decoded = jwtDecode(token);
+  var currentUserId = decoded.id;
   var currentUserIsAdmin = decoded.admin;
   var userId = req.body.userId;
   var setAdmin = (req.body.setAdmin == 'true' || req.body.setAdmin == '1') ? true : false;
@@ -34,7 +34,7 @@ module.exports = function(req, res) {
   }
   else {
     if (currentUserIsAdmin) {
-      User.update({ '_id': userId }, { $set { 'admin': setAdmin } }, undefined, function(err, res) {
+      User.update({ '_id': userId }, { $set: { 'admin': setAdmin } }, undefined, function(err, res) {
         if (err) {
           throw err;
         }

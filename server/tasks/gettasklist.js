@@ -10,8 +10,8 @@ var utilities = require('../utilities.js');
 
 module.exports = function(req, res) {
   var token = req.query.token;
-  var decoded = jwt_decode(token);
-  var currentUserId = decoded._id;
+  var decoded = jwtDecode(token);
+  var currentUserId = decoded.id;
   var userId = req.query.userId;
   var householdId = req.query.householdId;
 

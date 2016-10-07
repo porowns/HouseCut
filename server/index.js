@@ -12,6 +12,7 @@ var verifyToken = require('./accounts/verifytoken.js');
 var register = require('./accounts/register.js');
 var login = require('./accounts/login.js');
 var deleteAccount = require('./accounts/delete.js');
+var setAdmin = require('./accounts/setadmin.js');
 
 var createhousehold = require('./households/createhousehold.js');
 var getTaskList = require('./tasks/gettasklist.js');
@@ -28,16 +29,14 @@ if (process.env.NODE_ENV !== 'test') {
 
 /* routes */
 
-/* register */
 app.post('/register', register);
 
-/* login */
 app.post('/login', login);
 
-/* GET tasklist for user or household */
 app.get('/tasklist', verifyToken, getTaskList);
 
-/* delete account */
+app.post('/setadmin', verifyToken, setAdmin);
+
 app.post('/deleteaccount', verifyToken, deleteAccount);
 
 app.post('/createhousehold', verifyToken, createhousehold);
