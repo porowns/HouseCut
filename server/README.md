@@ -3,11 +3,24 @@ This server exposes a REST API for the HouseCut backend.
 
 # API Documentation
 
+Tasks have the following schema:
+~~~
+{
+	name: { type: String, minLength: 1 },
+  recurring: Boolean,
+  recurringIntervalDays: Number,
+  type: { type: String, minLength: 1, enum: [ 'Rotating', 'Assigned', 'Voluntary' ] },
+  currentlyAssigned: { type: String, minLength: 1 } // user ID
+}
+~~~
+
 | Title | URL | Method | URL Params | Data Params | Success Response | Error Response | Notes |
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `POST` | None | { username: [String], email: [String], password: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: "Explanation" } | |
 | Delete account | `/deleteaccount` | `POST` | None | { email: [String], password: [String], token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1|0)|('true'|'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Get tasklist (for a user or a household) | `/tasklist` | `GET` | token=[String] and either userId=[String] or householdId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
 
 # Starting the server
 

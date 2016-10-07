@@ -49,7 +49,7 @@ module.exports = function(req, res) {
         Household.findOne({ '_id': user.householdId }, function(err, hh) {
           res.json({
             success: true,
-            tasklist: taskList /* TODO: make sure this field is right */
+            tasklist: hh.taskList /* TODO: make sure this field is right */
           });
         });
       }
