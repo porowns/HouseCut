@@ -19,7 +19,7 @@ Tasks have the following schema:
 | Register | `/register` | `POST` | None | { username: [String], email: [String], password: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: "Explanation" } | |
 | Delete account | `/deleteaccount` | `POST` | None | { email: [String], password: [String], token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
-| Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1|0)|('true'|'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1&#124;0)|('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Get tasklist (for a user or a household) | `/tasklist` | `GET` | token=[String] and either userId=[String] or householdId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
 
 # Starting the server
