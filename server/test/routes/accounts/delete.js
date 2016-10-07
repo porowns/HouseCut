@@ -43,3 +43,55 @@ describe('deleteAccountSuccessTests', function() {
     });
   });
 });
+
+describe('deleteAccountFailureTests', function() {
+  describe('Delete non-existing account', function() {
+    it('has success false', function(done) {
+      utilities.deleteAccount({
+        email: 'test2@test',
+        password: 'test123'
+      }, function(err, res) {
+        res.should.have.status(200);
+        res.res.body.should.have.property('success');
+        res.res.body.success.should.be.eql(false);
+        done();
+      });
+    });
+  });
+  describe('Delete account no data', function() {
+    it('has success false', function(done) {
+      utilities.deleteAccount({}, function(err, res) {
+        res.should.have.status(200);
+        res.res.body.should.have.property('success');
+        res.res.body.success.should.be.eql(false);
+        done();
+      });
+    });
+  });
+  describe('Delete account wrong password', function() {
+    before(function(done) {
+      utilities.makeCleanAccount({
+        email: 'test@test',
+        password: 'test123',
+        username: 'test_username'
+      }, done);
+    });
+    after(function(done) {
+      utilities.deleteAccount({
+        email: 'test@test',
+        password: 'test123'
+      }, done);
+    });
+    it('has success false', function(done) {
+      utilities.deleteAccount({
+        email: 'test@test',
+        password: 'test456'
+      }, function(err, res) {
+        res.should.have.status(200);
+        res.res.body.should.have.property('success');
+        res.res.body.success.should.be.eql(false);
+        done();
+      });
+    });
+  });
+});
