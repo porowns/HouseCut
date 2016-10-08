@@ -10,6 +10,16 @@
     tools:context="com.example.android.loginpage.LoginActivity"
     android:baselineAligned="false">
 
+    <!-- Main Logo -->
+    <ImageView
+        android:id="@+id/logo"
+        android:src="@mipmap/housecutlogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+
+
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_progress"
@@ -17,12 +27,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-    <ImageView
-        android:id="@+id/logo"
-        android:src="@mipmap/housecutlogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true" />
+
+
 
 
 
@@ -73,7 +83,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/action_sign_in"
+            android:text="Sign In"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/email_register_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Register"
+            android:onClick="registerUser"
             android:textStyle="bold" />
 
     </LinearLayout>
