@@ -3,7 +3,11 @@
 /*
   POST /login
 
-  with body: { email: String, password: String }
+  with body:
+  {
+   email: String,
+  password: String 
+  }
 */
 
 var User = require('../models/user.js');
@@ -38,6 +42,7 @@ module.exports = function(req, res) {
           var token = jwt.sign({
             email: user.email,
             id: user._id,
+            householdId: user.householdId,
             admin: user.admin
           }, app.get('secret'), {
             /*expiresIn: "24h"*/
@@ -46,6 +51,7 @@ module.exports = function(req, res) {
             success: true,
             message: 'Login success',
             id: user._id,
+            householdId: user.householdId,
             admin: user.admin,
             token: token
           });
