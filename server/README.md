@@ -1,5 +1,6 @@
 This server exposes a REST API for the HouseCut backend.
 
+URL: http://housecut-145314.appspot.com/
 
 # API Documentation
 
@@ -27,6 +28,8 @@ Tasks have the following schema:
 # Starting the server
 
 To start the server locally, run the command `npm start`.
+
+The server is running live at the URL at the top of this README.
 
 # Testing
 
