@@ -22,7 +22,7 @@ Tasks have the following schema:
 | Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1&#124;0)&#124;('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
 | Get roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of user IDs] } | { success: false, message: "Explanation" } | Will update in the future to return user objects instead of only ids. |
-| Add/remove roommate | `/household/roommates`| `POST` | None | { operation: ('add'&#124;'remove'), userId: [String] (will default to current user's id), householdName: [String], householdPassword: [String] (HH name and pass only needed if self joining a new household) } | { success: true, householdId: [String] (only if joined a new household) } | { success: false, message: "Explanation" } | |
+| Add/remove roommate | `/household/roommates`| `POST` | None | { operation: ('add'&#124;'remove'), userId: [String] (will default to current user's id), householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] (only if joined a new household) } | { success: false, message: "Explanation" } | HH name and pass only needed if it's the current user joining a new household |
 
 # Starting the server
 
