@@ -94,4 +94,30 @@ describe('deleteAccountFailureTests', function() {
       });
     });
   });
+  describe('Delete account no token', function() {
+    before(function(done) {
+      utilities.makeCleanAccount({
+        email: 'test@test',
+        password: 'test123',
+        username: 'test_username'
+      }, done);
+    });
+    after(function(done) {
+      utilities.deleteAccount({
+        email: 'test@test',
+        password: 'test123'
+      }, done);
+    });
+    it('has success false', function(done) {
+      chai.request(config.hostname)
+        .post('/deleteaccount')
+        .send({ email: 'test@test', password: 'test123' })
+        .end(function(err, res) {
+          res.should.have.status(403);
+          res.res.body.should.have.property('success');
+          res.res.body.success.should.be.eql(false);
+          done();
+        });
+    });
+  });
 });
