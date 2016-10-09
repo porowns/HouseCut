@@ -36,7 +36,6 @@ app.post('/register', register);
 
 app.post('/login', login);
 
-app.get('/tasklist', verifyToken, getTaskList);
 
 app.post('/setadmin', verifyToken, setAdmin);
 
@@ -45,6 +44,8 @@ app.post('/deleteaccount', verifyToken, deleteAccount);
 app.post('/createhousehold', verifyToken, createhousehold);
 
 app.post('/setadmin', verifyToken, setAdmin);
+
+app.get('/household/tasklist', verifyToken, getTaskList);
 
 app.get('/household/roommates', verifyToken, getRoommates);
 

@@ -1,6 +1,6 @@
 /* Implemented by: Chris */
 /*
-  GET /tasklist?token=X&(userId=Y)
+  GET /household/tasklist?token=X&(userId=Y)
 
   Returns the user's household tasklist.
   If you supply a userId, it will return only the tasks
