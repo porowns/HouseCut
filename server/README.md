@@ -4,6 +4,8 @@ URL: http://housecut-145314.appspot.com/
 
 # API Documentation
 
+## Schemas
+
 Users have the following schema:
 ~~~
 	{
@@ -24,6 +26,8 @@ Tasks have the following schema:
 }
 ~~~
 
+## Endpoints
+
 | Title | URL | Method | URL Params | Data Params | Success Response | Error Response | Notes |
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `POST` | None | { username: [String], email: [String], password: [String] } | { success: true } | { success: false, message: "Explanation" } | |
@@ -33,7 +37,7 @@ Tasks have the following schema:
 | Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
 | Get all roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of Users] } | { success: false, message: "Explanation" } |  |
 | Get single roommate/user | `/household/roommates` | `GET` | token=[String]&userId=[String] | None | { success: true, roommate: [User] }| { success: false, message: "Explanation" } | |
-| Add roommate | `/household/roommates`| `POST` | None | { operation: 'add', userId: [String] [will default to current user's id], householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] [only if joined a new household]} | { success: false, message: "Explanation" } | HH name and pass NOT needed if an admin is calling this. |
+| Add roommate | `/household/roommates`| `POST` | None | { operation: 'add', userId: [String] [will default to current user's id], householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] } | { success: false, message: "Explanation" } | HH name and pass NOT needed if an admin is calling this. |
 | Remove roommate | `/household/roommates`| `POST` | None | { operation: 'remove', userId: [String] [will default to current user's id] } | { success: true } | { success: false, message: "Explanation" } | Sole admins of households cannot remove themselves until they appoint a new admin first. |
 
 # Starting the server
