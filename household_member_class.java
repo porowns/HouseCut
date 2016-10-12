@@ -41,22 +41,47 @@ public class HouseMember {
 		this.ID = id;
 		this.name = name;
 		this.current_household = household;
+		//-------------------------------------------
+
+			//Encode POST values to send to HTTP Server
+		String enc_pass = URLEncoder.encode(password, "UTF-8");
+		String enc_name = URLEncoder.encode(name, "UTF-8");
+		String enc_email= URLEncoder.encode(email, "UTF-8");
 		
+			//Call httpGet to Open a connection (to the server)
 		httpGet("http://housecut-145314.appspot.com/register");	//register the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("username", name);
-		conn.setRequestProperty("email", email);
-		conn.setRequestProperty("password", password);
+		conn.setRequestProperty("username", enc_name);
+		conn.setRequestProperty("email", enc_email);
+		conn.setRequestProperty("password", enc_password);
+		
+			/*If HTTP connection fails, throw exception*/
 		
 		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 			throw new RuntimeException("Failed : HTTP Error code : "
 				+ conn.getResponseCode());
 		}
 		
-		/*BufferedReader br = new BufferedReader(new InputStreamReader(
-			(conn.getInputStream())));*/
-			
+		//Opens up an outputstreamwriter for writing to server
+		
+		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
+		out.write("username:" + enc_name);		//what will be written..
+		out.write("email:" + enc_email);
+		out.write("password:" + enc_pass);
+		out.close();
+		
+		//To test what the server outputs
+		BufferedReader in = new BufferedReader(
+								new InputStreamReader(
+								(conn.getInputStream())));
+		String dataString;
+		while ((dataString = in.readLine()) != null) {
+			System.out.println(dataString);
+		}
+		
+		in.close();
+				
 		conn.disconnect();
 		
 	} catch (MalformedURLException e) {
@@ -68,12 +93,9 @@ public class HouseMember {
 		e.printStackTrace();
 	}
 	
-	
-
-	
 	public void changePassword() {
 		
-		httpGet("http://housecut-145314.appspot.com/");
+		httpGet("http://housecut-145314.appspot.com/");	//is there a change password path to the server? 
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty()
