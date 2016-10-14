@@ -12,22 +12,10 @@ import java.net.MalformedURLException
 
 /*Housemember class*/
 
+//"http://housecut-145314.appspot.com/"
 
 public class HouseMember {
-	
-	//"http://housecut-145314.appspot.com/"
-	
-	//function to open connection for POST
-	public static String httpGet(String urlStr) throw IOException {
-		URL url = new URL (urlStr);
-		HttpURLConnection conn = 
-			(HttpURLConnection) url.openConnection();
-		
-		if (conn.getResponseCode() != 200) {
-			throw new IOException(conn.getResponseMessage());
-		}	
-	}
-		
+
 	//HouseMember constructor
 	Housemember() {
 		
@@ -37,7 +25,7 @@ public class HouseMember {
 	
 	
 	//maybe we need this? No? is Register a constructor?
-	HouseMember(string password, String name, String email) {
+	HouseMember(string password, String name, String email) { throw IOException {
 		this.ID = id;
 		this.name = name;
 		this.current_household = household;
@@ -48,8 +36,19 @@ public class HouseMember {
 		String enc_name = URLEncoder.encode(name, "UTF-8");
 		String enc_email= URLEncoder.encode(email, "UTF-8");
 		
-			//Call httpGet to Open a connection (to the server)
-		httpGet("http://housecut-145314.appspot.com/register");	//register the user
+		
+			//Open a connection (to the server) for POST
+	
+		URL url = new URL ("http://housecut-145314.appspot.com/register");
+		
+			//Declare connection object
+		HttpURLConnection conn = 
+				(HttpURLConnection) url.openConnection();
+		
+		if (conn.getResponseCode() != 200) {
+			throw new IOException(conn.getResponseMessage());
+			
+			//Register the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("username", enc_name);
@@ -95,7 +94,16 @@ public class HouseMember {
 	
 	public void changePassword() {
 		
-		httpGet("http://housecut-145314.appspot.com/");	//is there a change password path to the server? 
+			//Open a connection (to the server)
+		URL url = new URL ("http://housecut-145314.appspot.com/register");
+		
+			//Declare connection object
+		HttpURLConnection conn = 
+				(HttpURLConnection) url.openConnection();
+		
+		if (conn.getResponseCode() != 200) {
+			throw new IOException(conn.getResponseMessage());		//!!! deal with exceptions..
+			
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty()
