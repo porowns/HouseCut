@@ -5,8 +5,8 @@
 
   with body:
   {
-    userId: String,
-    setAdmin: (1|true)|(0|false),
+    userId: String (defaults to current userId),
+    setAdmin: 'true'|'false',
     token: String
   }
 
@@ -32,8 +32,22 @@ module.exports = function(req, res) {
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
   var currentUserIsAdmin = decoded.admin;
-  var userId = req.body.userId;
-  var setAdmin = (req.body.setAdmin == 'true' || req.body.setAdmin == '1') ? true : false;
+  var userId = req.body.userId || currentUserId;
+  var setAdmin;
+
+  if (req.body.setAdmin == 'true') {
+    setAdmin = true;
+  }
+  else if (req.body.setAdmin == 'false') {
+    setAdmin = false;
+  }
+  else {
+    res.json({
+      success: false,
+      message: "'setAdmin' must be either 'true' or 'false'."
+    });
+    return;
+  }
 
   if (!currentUserId) {
     res.json({

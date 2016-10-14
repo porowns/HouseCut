@@ -58,7 +58,9 @@ module.exports.setAdmin = function(data, callback) {
       var token = res.res.body.token;
       var id = res.res.body.id;
       data['token'] = token;
-      data['userId'] = id;
+      if (!data['userId']) {
+        data['userId'] = id;
+      }
       chai.request(config.hostname)
         .post('/setadmin')
         .send(data)
