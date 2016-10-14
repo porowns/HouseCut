@@ -20,7 +20,9 @@ public class HouseMember {
 	Housemember() {
 		
 		//TODO : Default constructor for Housemember
-		
+		this.name = "null";
+		this.email = "null";
+		this.ID = 0;
 	}
 	
 	
