@@ -10,6 +10,15 @@
     tools:context="com.example.android.loginpage.LoginActivity"
     android:baselineAligned="false">
 
+
+    <ImageView
+        android:id="@+id/bg"
+        android:src="@drawable/living_room"
+        android:scaleType="centerCrop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
     <!-- Main Logo -->
     <ImageView
         android:id="@+id/logo"
