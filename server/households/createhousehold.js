@@ -23,6 +23,7 @@ module.exports = function(req, res) {
 	var currentUserId = decoded.id;
 	console.log(currentUserId)
 	var cancelprogram = 0;
+	var houseHoldDatabaseId;
 
 	// Check if User has Household
 	User.findOne({ '_id' : currentUserId}, function (err, user) {
@@ -103,23 +104,28 @@ module.exports = function(req, res) {
 							salt: salt,
 							id: id,
 							HouseholdMembers: currentUserId
+
+
 						});
 
-						// Update User ID
-						User.update({ '_id': currentUserId }, {
-							householdId: houseHoldName
-						}, function (err) {
-							if (err)
-							{
-								throw (err);
-							}
-						});
+
+						// Update User with ID
+
+
 
 						// Add to Database
 						household.save(function(err) {
 							if (err)
 								throw err;
 							console.log('Household created');
+							User.update({ '_id': currentUserId }, {
+								householdId: household._id
+							}, function (err) {
+								if (err)
+								{
+									throw (err);
+								}
+							});
 							res.json({
 								success: true,
 								message: 'Congratulations! You made a household!'
@@ -128,10 +134,6 @@ module.exports = function(req, res) {
 					}
 				});
 			}
-
-
-
-
 		}
 	});
 
