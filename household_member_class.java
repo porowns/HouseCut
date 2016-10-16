@@ -2,12 +2,14 @@
 //10/09/2016
 //class testing, V.1.0
 
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.URL
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URLEncoder;
 
 
 /*Housemember class*/
@@ -15,6 +17,16 @@ import java.net.MalformedURLException
 //"http://housecut-145314.appspot.com/"
 
 public class HouseMember {
+
+
+		private String current_household;
+		//private String user_name;
+		private String name;
+		private String request = "http://housecut-145314.appspot.com/";	//this might not be needed
+		private int ID;
+		private String password;
+		
+		
 
 	//HouseMember constructor
 	Housemember() {
@@ -27,10 +39,10 @@ public class HouseMember {
 	
 	
 	//maybe we need this? No? is Register a constructor?
-	HouseMember(string password, String name, String email) throw IOException {
-		this.ID = id;
-		this.name = name;
-		this.current_household = household;
+	public void HouseMember(String password, String name, String email) {
+		//this.ID = ID;
+		//this.name = name;
+		//this.current_household = household;
 		//-------------------------------------------
 
 	try {
@@ -57,7 +69,7 @@ public class HouseMember {
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("username", enc_name);
 		conn.setRequestProperty("email", enc_email);
-		conn.setRequestProperty("password", enc_password);
+		conn.setRequestProperty("password", enc_pass);
 		
 			/*If HTTP connection fails, throw exception*/
 		
@@ -94,6 +106,7 @@ public class HouseMember {
 	} catch (IOException e) {
 		
 		e.printStackTrace();
+	}
 	}
 	
 	public void changePassword() {
@@ -139,17 +152,8 @@ public class HouseMember {
 		
 	}
 	
+
 	
-	
-	
-	
-	
-	private:
-		String current_household;
-		//String user_name;
-		String name;
-		String request = "http://housecut-145314.appspot.com/";	//this might not be needed
-		int ID;
-		string password;
+		
 		
 }
