@@ -27,12 +27,13 @@ public class HouseMember {
 	
 	
 	//maybe we need this? No? is Register a constructor?
-	HouseMember(string password, String name, String email) { throw IOException {
+	HouseMember(string password, String name, String email) throw IOException {
 		this.ID = id;
 		this.name = name;
 		this.current_household = household;
 		//-------------------------------------------
 
+	try {
 			//Encode POST values to send to HTTP Server
 		String enc_pass = URLEncoder.encode(password, "UTF-8");
 		String enc_name = URLEncoder.encode(name, "UTF-8");
@@ -49,6 +50,7 @@ public class HouseMember {
 		
 		if (conn.getResponseCode() != 200) {
 			throw new IOException(conn.getResponseMessage());
+		}
 			
 			//Register the user
 		conn.setDoOutput(true);
@@ -74,8 +76,8 @@ public class HouseMember {
 		
 		//To test what the server outputs
 		BufferedReader in = new BufferedReader(
-								new InputStreamReader(
-								(conn.getInputStream())));
+				new InputStreamReader((conn.getInputStream())));
+				
 		String dataString;
 		while ((dataString = in.readLine()) != null) {
 			System.out.println(dataString);
@@ -105,7 +107,8 @@ public class HouseMember {
 		
 		if (conn.getResponseCode() != 200) {
 			throw new IOException(conn.getResponseMessage());		//!!! deal with exceptions..
-			
+		}
+		
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty()
