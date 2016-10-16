@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 
 //"http://housecut-145314.appspot.com/"
 
-public class HouseMember {
+public class household_member_class {
 
 
 		private String current_household;
@@ -25,11 +25,12 @@ public class HouseMember {
 		private String request = "http://housecut-145314.appspot.com/";	//this might not be needed
 		private int ID;
 		private String password;
+		private String email;
 		
 		
 
 	//HouseMember constructor
-	Housemember() {
+	public household_member_class() {
 		
 		//TODO : Default constructor for Housemember
 		this.name = "null";
@@ -39,7 +40,7 @@ public class HouseMember {
 	
 	
 	//maybe we need this? No? is Register a constructor?
-	public void HouseMember(String password, String name, String email) {
+	public void household_member_class(String password, String name, String email) {
 		//this.ID = ID;
 		//this.name = name;
 		//this.current_household = household;
@@ -109,7 +110,9 @@ public class HouseMember {
 	}
 	}
 	
+	/*
 	public void changePassword() {
+		
 		
 			//Open a connection (to the server)
 		URL url = new URL ("http://housecut-145314.appspot.com/register");
@@ -124,8 +127,8 @@ public class HouseMember {
 		
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty()
-
+		//conn.setRequestProperty();
+		
 		
 	}
 	
@@ -134,6 +137,7 @@ public class HouseMember {
 		//TODO : Delete account from server
 		
 	}
+	
 	
 	public logout() {
 		
@@ -150,10 +154,6 @@ public class HouseMember {
 		
 		//TODO : Leave a certain household
 		
-	}
-	
-
-	
-		
-		
+	}	
+	*/
 }
