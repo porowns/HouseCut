@@ -119,7 +119,8 @@ module.exports = function(req, res) {
 								throw err;
 							console.log('Household created');
 							User.update({ '_id': currentUserId }, {
-								householdId: household._id
+								householdId: household._id,
+								admin: true
 							}, function (err) {
 								if (err)
 								{
