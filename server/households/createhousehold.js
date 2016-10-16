@@ -9,8 +9,8 @@ var jwt = require('jsonwebtoken');
 var jwtDecode = require('jwt-decode');
 var crypto = require('crypto');
 var rand = require('csprng');
-
-
+var User = require('../models/user.js');
+var utilities = require('./../utilities.js');
 
 
 
@@ -22,7 +22,10 @@ module.exports = function(req, res) {
 	var decoded = jwtDecode(token);
 	var currentUserId = decoded.id;
 	console.log(currentUserId)
+	var householdStatus = false;
 
+	// Check if User has Household
+	
 	// Checks to see if user input a household name
 	if (houseHoldName == "" || !houseHoldName)
 	{
@@ -52,6 +55,7 @@ module.exports = function(req, res) {
 	// If all the above cases are true,
 	// Create the Household
 	else {
+		// Check if user has household
 
 		// Check if household exists
 		Household.findOne({ 'houseHoldName' : houseHoldName}, function(err, household) {
@@ -83,6 +87,19 @@ module.exports = function(req, res) {
 					HouseholdMembers: currentUserId
 				});
 
+				// Update User ID
+				User.update({ '_id': currentUserId }, {
+					householdId: houseHoldName
+				}, function (err, res) {
+					if (err)
+					{
+						throw (err);
+					}
+
+					res.json ({
+						success: true
+					});
+				});
 				// Add to Database
 				household.save(function(err) {
 					if (err)
