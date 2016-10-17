@@ -46,13 +46,24 @@ public class household_member_class {
 		//this.current_household = household;
 		//-------------------------------------------
 
+			 //Encode POST values to send to HTTP Server
+        String enc_pass = null;
+        String enc_name = null;
+        String enc_email = null;
+
+		//Catch invalid Encoder setting exception
+		
+        try {
+            enc_pass = URLEncoder.encode(password, "UTF-8");
+            enc_name = URLEncoder.encode(name, "UTF-8");
+            enc_email= URLEncoder.encode(email, "UTF-8");
+			
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+		
 	try {
-			//Encode POST values to send to HTTP Server
-		String enc_pass = URLEncoder.encode(password, "UTF-8");
-		String enc_name = URLEncoder.encode(name, "UTF-8");
-		String enc_email= URLEncoder.encode(email, "UTF-8");
-		
-		
+
 			//Open a connection (to the server) for POST
 	
 		URL url = new URL ("http://housecut-145314.appspot.com/register");
@@ -61,9 +72,6 @@ public class household_member_class {
 		HttpURLConnection conn = 
 				(HttpURLConnection) url.openConnection();
 		
-		if (conn.getResponseCode() != 200) {
-			throw new IOException(conn.getResponseMessage());
-		}
 			
 			//Register the user
 		conn.setDoOutput(true);
@@ -72,12 +80,13 @@ public class household_member_class {
 		conn.setRequestProperty("email", enc_email);
 		conn.setRequestProperty("password", enc_pass);
 		
-			/*If HTTP connection fails, throw exception*/
+			/*If Response code isn't 200, throw exception.*/
 		
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-			throw new RuntimeException("Failed : HTTP Error code : "
-				+ conn.getResponseCode());
+		if (conn.getResponseCode() != 200) {
+			throw new IOException(conn.getResponseMessage());
 		}
+		
+	
 		
 		//Opens up an outputstreamwriter for writing to server
 		
@@ -85,13 +94,21 @@ public class household_member_class {
 		out.write("username:" + enc_name);		//what will be written..
 		out.write("email:" + enc_email);
 		out.write("password:" + enc_pass);
-		out.close();
+		out.close();	//flush?
+		
+			/*If HTTP connection fails, throw exception*/
+
+		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+			throw new RuntimeException("Failed : HTTP Error code : "
+				+ conn.getResponseCode());
+		}
 		
 		//To test what the server outputs
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader((conn.getInputStream())));
 				
 		String dataString;
+		System.out.println("Output from Server .... \n");
 		while ((dataString = in.readLine()) != null) {
 			System.out.println(dataString);
 		}
@@ -113,7 +130,7 @@ public class household_member_class {
 	/*
 	public void changePassword() {
 		
-		
+		 
 			//Open a connection (to the server)
 		URL url = new URL ("http://housecut-145314.appspot.com/register");
 		
