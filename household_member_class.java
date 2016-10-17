@@ -6,13 +6,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 
 
-/*Housemember class*/
+/*House member class*/
 
 //"http://housecut-145314.appspot.com/"
 
@@ -20,7 +21,7 @@ public class household_member_class {
 
 
 		private String current_household;
-		//private String user_name;
+		private String user_name;
 		private String name;
 		private String request = "http://housecut-145314.appspot.com/";	//this might not be needed
 		private int ID;
@@ -29,7 +30,7 @@ public class household_member_class {
 		
 		
 
-	//HouseMember constructor
+	//Default constructor
 	public household_member_class() {
 		
 		//TODO : Default constructor for Housemember
@@ -45,7 +46,7 @@ public class household_member_class {
 		//this.name = name;
 		//this.current_household = household;
 		//-------------------------------------------
-
+	
 			 //Encode POST values to send to HTTP Server
         String enc_pass = null;
         String enc_name = null;
@@ -53,7 +54,7 @@ public class household_member_class {
 
 		//Catch invalid Encoder setting exception
 		
-        try {
+	try {
             enc_pass = URLEncoder.encode(password, "UTF-8");
             enc_name = URLEncoder.encode(name, "UTF-8");
             enc_email= URLEncoder.encode(email, "UTF-8");
@@ -87,7 +88,6 @@ public class household_member_class {
 		}
 		
 	
-		
 		//Opens up an outputstreamwriter for writing to server
 		
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
@@ -127,50 +127,147 @@ public class household_member_class {
 	}
 	}
 	
-	/*
-	public void changePassword() {
+		//calls household_member_class & just passes in the new password, as well as original data
+	public void changePassword(String new_pass) {
 		
-		 
-			//Open a connection (to the server)
-		URL url = new URL ("http://housecut-145314.appspot.com/register");
+		household_member_class(new_pass, getName(), getEmail());
+			
+	}
+	
+	/* Mirror code of /register, but uses endpoint /deleteaccount & token instead of username: Second iteration will refactor into single httpGet function. */
+	
+	public void deleteAccount(String email, String password, String token) {
+		
+			//Encode POST values to send to HTTP Server
+		String enc_email = null;
+		String enc_pass = null;
+        String enc_token = null;
+
+		//Catch invalid Encoder setting exception
+		
+	try {
+            enc_email = URLEncoder.encode(email, "UTF-8");
+			enc_pass  = URLEncoder.encode(password, "UTF-8");
+			enc_token = URLEncoder.encode(token, "UTF-8");	
+
+			
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+		
+	try {
+
+			//Open a connection (to the server) for POST
+	
+		URL url = new URL ("http://housecut-145314.appspot.com/deleteaccount");
 		
 			//Declare connection object
 		HttpURLConnection conn = 
 				(HttpURLConnection) url.openConnection();
 		
-		if (conn.getResponseCode() != 200) {
-			throw new IOException(conn.getResponseMessage());		//!!! deal with exceptions..
-		}
-		
+			
+			//Delete the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		//conn.setRequestProperty();
+		conn.setRequestProperty("email", enc_email);
+		conn.setRequestProperty("password", enc_pass);
+		conn.setRequestProperty("token", enc_token);
+
 		
+			/* If Response code isn't 200, throw exception. */
 		
+		if (conn.getResponseCode() != 200) {
+			throw new IOException(conn.getResponseMessage());
+		}
+		
+	
+		//Opens up an outputstreamwriter for writing to server
+		
+		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
+		out.write("email:" + enc_email);
+		out.write("password:" + enc_pass);
+		out.write("token:" + enc_token);
+		out.close();	//flush?
+		
+			/* If HTTP connection fails, throw exception. */
+
+		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+			throw new RuntimeException("Failed : HTTP Error code : "
+				+ conn.getResponseCode());
+		}
+		
+		//To test what the server outputs
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader((conn.getInputStream())));
+				
+		String dataString;
+		System.out.println("Output from Server .... \n");
+		while ((dataString = in.readLine()) != null) {
+			System.out.println(dataString);
+		}
+		
+		in.close();
+				
+		conn.disconnect();
+		
+	} catch (MalformedURLException e) {
+		
+		e.printStackTrace();
+		
+	} catch (IOException e) {
+		
+		e.printStackTrace();
 	}
 	
-	public void deleteAccount() {
-		
-		//TODO : Delete account from server
-		
 	}
+
 	
-	
+	/*	//log user out of account
 	public logout() {
 		
-		//TODO : logout from user account
-	}
+		
+	}*/
 	
-	public joinHousehold() {
+	
+	public void joinHousehold() {
 		
 		//TODO : Join a certain household
 		
+		//if (current_household == null)
+			//....
+		//else
+			//cout << "You must leave your current household first.\n";
+		
 	}
 	
-	public leaveHousehold() {
+		//user leaves current_household
+	public void leaveHousehold() {
 		
-		//TODO : Leave a certain household
+		current_household = null;
 		
 	}	
-	*/
+	
+	
+	/* Simple getter functions */
+	
+		//Return name field
+	public String getName() {
+		return name;
+	}
+	
+		//Return password field
+	public String getPassword() {
+		return password;
+	}
+	
+		//Return email field
+	public String getEmail() {
+		return email;
+	}
+	
+		//Return current_household field
+	public String getHousehold() {
+		return current_household;
+	}
+	
 }
