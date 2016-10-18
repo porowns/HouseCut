@@ -20,13 +20,13 @@ import java.net.URLEncoder;
 public class household_member_class {
 
 
-		private String current_household;
-		private String user_name;
-		private String name;
-		private String request = "http://housecut-145314.appspot.com/";	//this might not be needed
-		private int ID;
-		private String password;
-		private String email;
+		protected String current_household;
+		protected String user_name;
+		protected String name;
+		protected String request = "http://housecut-145314.appspot.com/";	//this might not be needed
+		protected int ID;
+		protected String password;
+		protected String email;
 		
 		
 
