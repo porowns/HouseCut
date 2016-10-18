@@ -3,59 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
     android:gravity="center_horizontal"
     tools:context="com.example.android.housecut.register_activity"
-    android:baselineAligned="false"
     >
 
     <!-- Background -->
     <ImageView
         android:id="@+id/bg"
-        android:src="@drawable/living_room"
-        android:scaleType="centerCrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/living_room" />
 
 
     <!-- Email Login -->
     <LinearLayout
         android:id="@+id/email_register_form"
-        android:layout_marginTop="14dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
         android:layout_alginParentLeft="true"
-        android:layout_centerHorizontal="true" >
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical" >
 
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:inputType=""
-            android:textColor="@android:color/black"
             android:background="#c3c3c3"
+            android:hint="Username"
+            android:inputType=""
+            android:maxLines="1"
             android:padding="8dp"
-            android:maxLines="1" />
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"/>
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:inputType="textEmailAddress"
-            android:textColor="@android:color/black"
             android:background="#c3c3c3"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
             android:padding="8dp"
-            android:maxLines="1" />
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"/>
 
 
 
@@ -66,12 +68,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:background="#c3c3c3"
             android:hint="Email (Confirm)"
             android:inputType="textEmailAddress"
-            android:textColor="@android:color/black"
-            android:background="#c3c3c3"
+            android:maxLines="1"
             android:padding="8dp"
-            android:maxLines="1"/>
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"/>
 
 
         <EditText
@@ -81,12 +84,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:background="#c3c3c3"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="@android:color/black"
-            android:background="#c3c3c3"
+            android:maxLines="1"
             android:padding="8dp"
-            android:maxLines="1"/>
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"/>
 
 
         <EditText
@@ -96,12 +100,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:background="#c3c3c3"
             android:hint="Password (Confirm)"
             android:inputType="textPassword"
-            android:textColor="@android:color/black"
-            android:background="#c3c3c3"
+            android:maxLines="1"
             android:padding="8dp"
-            android:maxLines="1"/>
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"/>
 
     </LinearLayout>
 
@@ -111,17 +116,16 @@
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_below="@id/email_register_form"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Register user"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
         android:onClick=""
-        android:textStyle="bold"
-        android:background="@color/colorPrimary"/>
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Register user"
+        android:textStyle="bold"/>
 
 
 </RelativeLayout>
-
