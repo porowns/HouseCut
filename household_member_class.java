@@ -27,6 +27,7 @@ public class household_member_class {
 		protected int ID;
 		protected String password;
 		protected String email;
+		protected String role = "member"; // roles can be member, moderator, admin, owner etc (implementation)
 		
 		
 
