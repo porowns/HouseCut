@@ -1,3 +1,4 @@
+//Implemented by Jose and Nick
 package com.example.android.loginpage;
 
 import android.animation.Animator;
