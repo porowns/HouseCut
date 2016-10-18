@@ -34,10 +34,11 @@ public class household {
 		return;
 	}
 	
+	// rename the household
 	public void renameHousehold(string newName)
 	{
-		// make sure the new name uses valid characters: letters and numbers
-		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]*")
+		// make sure the new name uses valid characters: letters and numbers and it not too long
+		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]*" && (newName.length() <= 20))
 			householdName = newName;
 		   
 		return;
