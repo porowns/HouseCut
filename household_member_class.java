@@ -41,6 +41,16 @@ public class household_member_class {
 	}
 	
 	
+		//Constructor that will take in user data and register a user
+	public household_member_class(String pass, String n, String e) {
+		this.password = pass;
+		this.name = n;
+		this.email = e;
+		
+		this.register(pass, n, e);
+	}
+	
+	
 	// Is Register a constructor?
 	public void register(String password, String name, String email) {
 		//this.ID = ID;
