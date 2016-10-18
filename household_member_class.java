@@ -40,8 +40,8 @@ public class household_member_class {
 	}
 	
 	
-	//maybe we need this? No? is Register a constructor?
-	public void household_member_class(String password, String name, String email) {
+	// Is Register a constructor?
+	public void register(String password, String name, String email) {
 		//this.ID = ID;
 		//this.name = name;
 		//this.current_household = household;
@@ -130,8 +130,9 @@ public class household_member_class {
 		//calls household_member_class & just passes in the new password, as well as original data
 	public void changePassword(String new_pass) {
 		
-		household_member_class(new_pass, getName(), getEmail());
-			
+		register(new_pass, getName(), getEmail());
+		
+		Password = new_pass;		
 	}
 	
 	/* Mirror code of /register, but uses endpoint /deleteaccount & token instead of username: Second iteration will refactor into single httpGet function. */
@@ -141,7 +142,7 @@ public class household_member_class {
 			//Encode POST values to send to HTTP Server
 		String enc_email = null;
 		String enc_pass = null;
-        String enc_token = null;
+      		String enc_token = null;
 
 		//Catch invalid Encoder setting exception
 		
