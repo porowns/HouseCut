@@ -49,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world", "naj14c@my.fsu.edu:bar"
+            "foo@example.com:hello", "bar@example.com:world", "naj14c@my.fsu.edu:backward"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -83,13 +83,21 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        //Button mEmailRegisterButton = (Button) findViewById(T.id.email_register_button);
+        Button mEmailRegisterButton = (Button) findViewById(T.id.email_register_button);
 
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
+        });
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
+            
+            public void sendMessage(View view) {
+                Intent intent = new Intent(this, register_activity);
+                startActivity(intent);
+             }
+
         });
 
         mLoginFormView = findViewById(R.id.email_login_form);
