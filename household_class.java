@@ -65,8 +65,15 @@ public class household {
 		return;
 	}
 		   
+	//returns the size of the household
 	public int size()
 	{
 		return household_vector.length();
+	}
+		 
+	// returns the admin of the household
+	public household_member_class admin()
+	{
+		return currentAdmin;
 	}
 }
