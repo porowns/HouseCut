@@ -8,18 +8,20 @@ import java.util.Vector;
 public class household {
 	Vector<household_member_class> household_vector; 
 	string householdName;
+	household_member_class currentAdmin;
 
 	// household class constructor
 	public household(household_member admin, string name) {
 		// add the first member (the admin) to the household
 		// when the household is created
 		household_vector.add(admin);
+		currentAdmin = admin;
 		householdName = name;
 		
 	}
 	
 	// adds a new roommate to the household
-	public void addMember (household_member member)
+	public void addMember (household_member_class member)
 	{
 		household_vector.add(member);
 		
@@ -27,7 +29,7 @@ public class household {
 	}
 	
 	// removes a chosen roommate from the household
-	public void removeMember( household_member member)
+	public void removeMember( household_member_class member)
 	{
 		for(int i = 0; i < household_vector.length(); i++)
 		{
@@ -56,4 +58,8 @@ public class household {
 		householdName = "null";
 	}
 
+	public changeAdmin(household_member_class newAdmin)
+	{
+		currentAdmin = newAdmin;
+	}
 }
