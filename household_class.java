@@ -11,7 +11,7 @@ public class household {
 	household_member_class currentAdmin;
 
 	// household class constructor
-	public household(household_member admin, string name) {
+	public household(household_member_class admin, string name) {
 		// add the first member (the admin) to the household
 		// when the household is created
 		household_vector.add(admin);
@@ -38,7 +38,6 @@ public class household {
 				
 		}
 		
-		
 		return;
 	}
 	
@@ -56,10 +55,13 @@ public class household {
         {
 		household_vector.clear();
 		householdName = "null";
+			
+		return;
 	}
 
-	public changeAdmin(household_member_class newAdmin)
+	public void changeAdmin(household_member_class newAdmin)
 	{
 		currentAdmin = newAdmin;
+		return;
 	}
 }
