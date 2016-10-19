@@ -15,6 +15,7 @@ var deleteAccount = require('./accounts/delete.js');
 var setAdmin = require('./accounts/setadmin.js');
 
 var createhousehold = require('./households/createhousehold.js');
+var joinhousehold = require('./households/joinhousehold.js');
 var getTaskList = require('./tasks/gettasklist.js');
 var getRoommates = require('./roommates/getroommates.js');
 var postRoommates = require('./roommates/postroommates.js');
@@ -42,6 +43,8 @@ app.post('/setadmin', verifyToken, setAdmin);
 app.post('/deleteaccount', verifyToken, deleteAccount);
 
 app.post('/createhousehold', verifyToken, createhousehold);
+
+app.post('/joinhousehold', verifyToken, joinhousehold);
 
 app.post('/setadmin', verifyToken, setAdmin);
 
