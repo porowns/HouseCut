@@ -29,7 +29,13 @@ public class household {
 	// removes a chosen roommate from the household
 	public void removeMember( household_member member)
 	{
-		household_vector.remove(member);
+		for(int i = 0; i < household_vector.length(); i++)
+		{
+			if(household_vector[i].name == member.name)
+				household_vector.remove(member);
+				
+		}
+		
 		
 		return;
 	}
