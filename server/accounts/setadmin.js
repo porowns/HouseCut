@@ -35,7 +35,7 @@ module.exports = function(req, res) {
 
   var setAdmin;
   if (req.body.hasOwnProperty('setAdmin') &&
-      (req.body.setAdmin === 'true' || req.body.setAdmin === 'false') {
+      (req.body.setAdmin === 'true' || req.body.setAdmin === 'false')) {
     setAdmin = (req.body.setAdmin === 'true') ? true : false;
   }
   else {

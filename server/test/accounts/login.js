@@ -2,18 +2,18 @@
 
 process.env.NODE_ENV = 'test';
 
-var config = require('./../../../config');
+var config = require('./../../config');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var should = chai.should();
 chai.use(chaiHttp);
 
-var register = require('./../../../accounts/register.js');
-var login = require('./../../../accounts/login.js');
-var deleteAccount = require('./../../../accounts/delete.js');
-var User = require('./../../../models/user.js');
+var register = require('./../../accounts/register.js');
+var login = require('./../../accounts/login.js');
+var deleteAccount = require('./../../accounts/delete.js');
+var User = require('./../../models/user.js');
 
-var utilities = require('./utilities.js');
+var utilities = require('./../utilities.js');
 
 describe('loginSuccessTests', function() {
   before(function(done) {

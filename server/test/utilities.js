@@ -1,4 +1,4 @@
-var config = require('./../../../config');
+var config = require('./../config');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
