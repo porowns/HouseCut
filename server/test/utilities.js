@@ -1,10 +1,9 @@
-/* Implemented by Chris */
-
 var config = require('./../../../config');
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
+/* Implemented by Chris */
 module.exports.deleteAccount = function(data, callback) {
   module.exports.loginToAccount(data, function(err, res) {
     if (res.res.body.success) {
@@ -23,6 +22,7 @@ module.exports.deleteAccount = function(data, callback) {
   });
 }
 
+/* Implemented by Chris */
 module.exports.makeCleanAccount = function(data, callback) {
   module.exports.deleteAccount(data, function() {
     chai.request(config.hostname)
@@ -34,6 +34,7 @@ module.exports.makeCleanAccount = function(data, callback) {
   });
 }
 
+/* Implemented by Chris */
 module.exports.makeAccount = function(data, callback) {
   chai.request(config.hostname)
     .post('/register')
@@ -43,6 +44,7 @@ module.exports.makeAccount = function(data, callback) {
     });
 }
 
+/* Implemented by Chris */
 module.exports.loginToAccount = function(data, callback) {
   chai.request(config.hostname)
     .post('/login')
@@ -52,6 +54,7 @@ module.exports.loginToAccount = function(data, callback) {
     });
 }
 
+/* Implemented by Chris */
 module.exports.setAdmin = function(data, callback) {
   module.exports.loginToAccount(data, function(err, res) {
     if (res.res.body.success) {
