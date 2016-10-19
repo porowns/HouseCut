@@ -64,4 +64,9 @@ public class household {
 		currentAdmin = newAdmin;
 		return;
 	}
+		   
+	public int size()
+	{
+		return household_vector.length();
+	}
 }
