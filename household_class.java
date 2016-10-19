@@ -44,10 +44,16 @@ public class household {
 	public void renameHousehold(string newName)
 	{
 		// make sure the new name uses valid characters: letters and numbers and it not too long
-		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]*" && (newName.length() <= 20))
+		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]*" && (newName.length() <= 30))
 			householdName = newName;
 		   
 		return;
+	}
+		   
+	public void deleteHousehold()
+        {
+		household_vector.clear();
+		householdName = "null";
 	}
 
 }
