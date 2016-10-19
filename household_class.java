@@ -40,6 +40,24 @@ public class household {
 		
 		return;
 	}
+		   
+	public void deleteHousehold()
+        {
+		household_vector.clear();
+		householdName = "null";
+			
+		return;
+	}
+
+	
+	// Setters
+	
+	// change the admin role to another person
+	public void changeAdmin(household_member_class newAdmin)
+	{
+		currentAdmin = newAdmin;
+		return;
+	}	   
 	
 	// rename the household
 	public void renameHousehold(string newName)
@@ -51,19 +69,7 @@ public class household {
 		return;
 	}
 		   
-	public void deleteHousehold()
-        {
-		household_vector.clear();
-		householdName = "null";
-			
-		return;
-	}
-
-	public void changeAdmin(household_member_class newAdmin)
-	{
-		currentAdmin = newAdmin;
-		return;
-	}
+	// Getters
 		   
 	//returns the size of the household
 	public int size()
