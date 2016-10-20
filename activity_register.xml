@@ -1,10 +1,10 @@
-<!-- Implemented by Nick and Jose -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:gravity="center_horizontal"
+    android:background="@drawable/living_room"
     tools:context="com.example.android.housecut.register_activity"
     >
 
@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/living_room" />
+        android:src="@drawable/living_room"
+        android:contentDescription="Login and Register Background" />
 
 
     <!-- Email Login -->
@@ -23,8 +24,6 @@
         android:id="@+id/email_register_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alginParentLeft="true"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:orientation="vertical" >
@@ -36,13 +35,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#c3c3c3"
             android:hint="Username"
             android:inputType=""
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#000000"/>
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
         <EditText
             android:id="@+id/email"
@@ -51,13 +50,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#c3c3c3"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#000000"/>
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
 
 
@@ -68,13 +67,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#c3c3c3"
             android:hint="Email (Confirm)"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#000000"/>
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
 
         <EditText
@@ -84,13 +83,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#c3c3c3"
             android:hint="Password"
             android:inputType="textPassword"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#000000"/>
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
 
         <EditText
@@ -100,19 +99,19 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="#c3c3c3"
             android:hint="Password (Confirm)"
             android:inputType="textPassword"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#000000"/>
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
     </LinearLayout>
 
 
     <Button
-        android:id="@+id/join_household_button"
+        android:id="@+id/email_register_user_button"
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,7 +120,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
-        android:onClick=""
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:text="Register user"
