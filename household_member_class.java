@@ -52,7 +52,7 @@ public class household_member_class {
 	
 	
 	// Is Register a constructor?
-	public void register(String password, String name, String email) {
+	public void register(String name, String email, String password) {
 		//this.ID = ID;
 		//this.name = name;
 		//this.current_household = household;
@@ -92,6 +92,9 @@ public class household_member_class {
 		conn.setRequestProperty("email", enc_email);
 		conn.setRequestProperty("password", enc_pass);
 		
+		
+		
+		
 			/*If Response code isn't 200, throw exception.*/
 		
 		if (conn.getResponseCode() != 200) {
@@ -105,7 +108,7 @@ public class household_member_class {
 		out.write("username:" + enc_name);		//what will be written..
 		out.write("email:" + enc_email);
 		out.write("password:" + enc_pass);
-		out.close();	//flush?
+		out.close();	//flush?  .writeBytes?
 		
 			/*If HTTP connection fails, throw exception*/
 
@@ -143,7 +146,7 @@ public class household_member_class {
 		
 		register(new_pass, getName(), getEmail());
 		
-		Password = new_pass;		
+		password = new_pass;		
 	}
 	
 	/* Mirror code of /register, but uses endpoint /deleteaccount & token instead of username: Second iteration will refactor into single httpGet function. */
