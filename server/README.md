@@ -32,7 +32,7 @@ Tasks have the following schema:
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `POST` | None | { username: [String], email: [String], password: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: "Explanation" } | |
-| Delete account | `/deleteaccount` | `POST` | None | { email: [String], password: [String], token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Delete account | `/deleteaccount` | `POST` | None | { token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Set admin privilege | `/setadmin` | `POST` | None | { userId: [String] OPTIONAL (defaults to current user's id), setAdmin: ('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | userId will default to the calling user |
 | Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
 | Get all roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of Users] } | { success: false, message: "Explanation" } |  |
