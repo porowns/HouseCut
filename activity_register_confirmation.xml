@@ -9,7 +9,7 @@
         android:id="@+id/register_confirmation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register_result"
+        android:text="Register Result Here"
         android:textSize="48dp"
         android:textAllCaps="true"
         android:layout_centerHorizontal="true"
