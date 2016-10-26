@@ -69,7 +69,8 @@ public class login_activity extends AppCompatActivity {
         startActivity(intent);
     }
     public void attemptLogin() {
-
+        Intent intent = new Intent(login_activity.this, login_confirmation_activity.class);
+        startActivity(intent);
     }
 
 
