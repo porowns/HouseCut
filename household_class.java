@@ -8,14 +8,14 @@ import java.util.Vector;
 public class household {
 	Vector<household_member_class> household_vector; 
 	string householdName;
-	household_member_class currentAdmin;
+	string currentAdmin;
 
 	// household class constructor
 	public household(household_member_class admin, string name) {
 		// add the first member (the admin) to the household
 		// when the household is created
 		household_vector.add(admin);
-		currentAdmin = admin;
+		currentAdmin = household_member_class.name;
 		householdName = name;
 		
 	}
