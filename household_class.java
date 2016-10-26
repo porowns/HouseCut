@@ -53,7 +53,7 @@ public class household {
 	// Setters
 	
 	// change the admin role to another person
-	public void changeAdmin(household_member_class newAdmin)
+	public void changeAdmin(string newAdmin)
 	{
 		currentAdmin = newAdmin;
 		return;
@@ -78,7 +78,7 @@ public class household {
 	}
 		 
 	// returns the admin of the household
-	public household_member_class admin()
+	public string admin()
 	{
 		return currentAdmin;
 	}
