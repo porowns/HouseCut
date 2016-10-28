@@ -1,5 +1,7 @@
 # HouseCut
 Software Engineering I project for Fall 2016.
 
+User Interface for Login and Register Pages
 
-Household management app to set up a list of chores on a rotation and/or time schedule that will notify users when it is their turn to do a given chore. It will provide an easy way for roommates to do their share of chores accurately, fairly, and punctually. Knowledge of (or willingness to learn) Java, XML, and Android Development is all that is needed.
+This just includes the .xml code for the user and register pages, the functionality is implemented in the household_member java code that is to be connected to fully implement user stories
+How to run: copy paste .xml code into new android studio project, include livingroom.png in drawables folder and housecutlogo.png in mdpi mipmap folder
