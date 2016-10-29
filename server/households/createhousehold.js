@@ -100,7 +100,7 @@ module.exports = function(req, res) {
 						// Create Household
 						var household = new Household({
 							houseHoldName: houseHoldName,
-							houseHoldPassword: hashed_password,
+							hashed_password: hashed_password,
 							salt: salt,
 							id: id,
 							HouseholdMembers: currentUserId
