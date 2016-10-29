@@ -145,22 +145,18 @@ public class household_member_class {
 		password = new_pass;		
 	}
 	
-	/* Mirror code of /register, but uses endpoint /deleteaccount & token instead of username: Second iteration will refactor into single httpGet function. */
+		/* Uses endpoint /deleteaccount & token */
 	
-	public void deleteAccount(String email, String password, String token) {
+	public void deleteAccount(String token) {
 		
-			//Encode POST values to send to HTTP Server
-		String enc_email = null;
-		String enc_pass = null;
-      	String enc_token = null;
+			//Encode token to send to HTTP Server
+		String enc_token = null;
 
 		//Catch invalid Encoder setting exception
 		
 	try {
-            enc_email = URLEncoder.encode(email, "UTF-8");
-			enc_pass  = URLEncoder.encode(password, "UTF-8");
+		
 			enc_token = URLEncoder.encode(token, "UTF-8");	
-
 			
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -180,8 +176,6 @@ public class household_member_class {
 			//Delete the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("email", enc_email);
-		conn.setRequestProperty("password", enc_pass);
 		conn.setRequestProperty("token", enc_token);
 
 		
@@ -192,11 +186,9 @@ public class household_member_class {
 		}
 		
 	
-		//Opens up an outputstreamwriter for writing to server
+			//Opens up an outputstreamwriter for writing to server
 		
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-		out.write("email:" + enc_email);
-		out.write("password:" + enc_pass);
 		out.write("token:" + enc_token);
 		out.close();	//flush?
 		
@@ -207,7 +199,7 @@ public class household_member_class {
 				+ conn.getResponseCode());
 		}
 		
-		//To test what the server outputs
+			//To test what the server outputs
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader((conn.getInputStream())));
 				
