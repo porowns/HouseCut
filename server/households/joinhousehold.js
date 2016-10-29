@@ -39,9 +39,19 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
           var hash_pw = crypto.createHash('sha512').update(household.salt + houseHoldPassword).digest("hex");
           if (hash_pw == household.hashed_password) {
             // Add the User to Household
-            res.json({
-              success: true,
-              message: "Lets add you!"
+            User.update({ '_id': currentUserId}, {householdId: household._id, admin: false}, function (err) {
+              if (err) {
+                throw (err);
+              }
+              Household.update({ 'houseHoldName' : houseHoldName}, { $push: {'HouseholdMembers': currentUserId} }, function(err) {
+                if (err) {
+                  throw err;
+                }
+                res.json({
+                  success: true,
+                  message: "User was successfully added to the household."
+                });
+              });
             });
           }
           else {
