@@ -42,21 +42,17 @@ public class household_member_class {
 	
 	
 		//Constructor that will take in user data and register a user
-	public household_member_class(String pass, String n, String e) {
-		this.password = pass;
+	public household_member_class(String n, String e, String p) {
 		this.name = n;
 		this.email = e;
-		
-		this.register(pass, n, e);
+		this.password = pass;
+
+			//Call register 
+		this.register(n, e, p);
 	}
 	
 	
-	// Is Register a constructor?
 	public void register(String name, String email, String password) {
-		//this.ID = ID;
-		//this.name = name;
-		//this.current_household = household;
-		//-------------------------------------------
 	
 			 //Encode POST values to send to HTTP Server
         String enc_pass = null;
@@ -66,8 +62,8 @@ public class household_member_class {
 		//Catch invalid Encoder setting exception
 		
 	try {
+		    enc_name = URLEncoder.encode(name, "UTF-8");
             enc_pass = URLEncoder.encode(password, "UTF-8");
-            enc_name = URLEncoder.encode(name, "UTF-8");
             enc_email= URLEncoder.encode(email, "UTF-8");
 			
         } catch (UnsupportedEncodingException e) {
@@ -117,7 +113,7 @@ public class household_member_class {
 				+ conn.getResponseCode());
 		}
 		
-		//To test what the server outputs
+			//To test what the server outputs
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader((conn.getInputStream())));
 				
@@ -144,7 +140,7 @@ public class household_member_class {
 		//calls household_member_class & just passes in the new password, as well as original data
 	public void changePassword(String new_pass) {
 		
-		register(new_pass, getName(), getEmail());
+		register(getName(), getEmail(), new_pass);
 		
 		password = new_pass;		
 	}
@@ -156,7 +152,7 @@ public class household_member_class {
 			//Encode POST values to send to HTTP Server
 		String enc_email = null;
 		String enc_pass = null;
-      		String enc_token = null;
+      	String enc_token = null;
 
 		//Catch invalid Encoder setting exception
 		
