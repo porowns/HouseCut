@@ -1,5 +1,6 @@
 This server exposes a REST API for the HouseCut backend.
 
+URL: http://housecut-145314.appspot.com/
 
 # API Documentation
 
@@ -20,11 +21,15 @@ Tasks have the following schema:
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: "Explanation" } | |
 | Delete account | `/deleteaccount` | `POST` | None | { email: [String], password: [String], token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1&#124;0)&#124;('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
-| Get tasklist (for a user or a household) | `/tasklist` | `GET` | token=[String] and either userId=[String] or householdId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
+| Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
+| Get roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of user IDs] } | { success: false, message: "Explanation" } | Will update in the future to return user objects instead of only ids. |
+| Add/remove roommate | `/household/roommates`| `POST` | None | { operation: ('add'&#124;'remove'), userId: [String] (will default to current user's id), householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] (only if joined a new household) } | { success: false, message: "Explanation" } | HH name and pass only needed if it's the current user joining a new household |
 
 # Starting the server
 
 To start the server locally, run the command `npm start`.
+
+The server is running live at the URL at the top of this README.
 
 # Testing
 

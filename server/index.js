@@ -16,6 +16,9 @@ var setAdmin = require('./accounts/setadmin.js');
 
 var createhousehold = require('./households/createhousehold.js');
 var getTaskList = require('./tasks/gettasklist.js');
+var getRoommates = require('./roommates/getroommates.js');
+var postRoommates = require('./roommates/postroommates.js');
+
 
 /* config */
 var port = process.env.PORT || 8080;
@@ -33,13 +36,20 @@ app.post('/register', register);
 
 app.post('/login', login);
 
-app.get('/tasklist', verifyToken, getTaskList);
 
 app.post('/setadmin', verifyToken, setAdmin);
 
 app.post('/deleteaccount', verifyToken, deleteAccount);
 
 app.post('/createhousehold', verifyToken, createhousehold);
+
+app.post('/setadmin', verifyToken, setAdmin);
+
+app.get('/household/tasklist', verifyToken, getTaskList);
+
+app.get('/household/roommates', verifyToken, getRoommates);
+
+app.post('/household/roommates', verifyToken, postRoommates);
 
 /* start the server */
 app.listen(port);

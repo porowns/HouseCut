@@ -1,10 +1,17 @@
 /* Implemented by: Chris */
 
 /*
-  POST /register with data { email: String, password: String, username: String }
+  POST /register
+
+  with body:
+  {
+    email: String,
+    password: String,
+    username: String
+  }
 */
 
-var User = require('../models/user');
+var User = require('../models/user.js');
 var crypto = require('crypto');
 var rand = require('csprng');
 
@@ -65,7 +72,8 @@ module.exports = function(req, res) {
           email: email,
           hashed_password: hashed_password,
           salt: salt,
-          id: id
+          id: id,
+          householdId: 0
         });
 
         /* add user to database */
