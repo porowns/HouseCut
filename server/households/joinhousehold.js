@@ -36,7 +36,7 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
       Household.findOne({ 'houseHoldName' : houseHoldName}, function (err, household) {
         if (household) {
           // Check Password
-          var hash_pw = crypto.createHash('sha512').update(user.salt + houseHoldPassword).digest("hex");
+          var hash_pw = crypto.createHash('sha512').update(household.salt + houseHoldPassword).digest("hex");
           if (hash_pw == household.hashed_password) {
             // Add the User to Household
             res.json({
