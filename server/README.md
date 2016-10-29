@@ -4,6 +4,17 @@ URL: http://housecut-145314.appspot.com/
 
 # API Documentation
 
+## Schemas
+
+Users have the following schema:
+~~~
+	{
+		displayName: [String],
+		id: [String],
+		admin: [Boolean]
+	}
+~~~
+
 Tasks have the following schema:
 ~~~
 {
@@ -15,15 +26,19 @@ Tasks have the following schema:
 }
 ~~~
 
+## Endpoints
+
 | Title | URL | Method | URL Params | Data Params | Success Response | Error Response | Notes |
 | ----- | --- | ------ | ---------- | ----------- | ---------------- | -------------- | ----- |
 | Register | `/register` | `POST` | None | { username: [String], email: [String], password: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: "Explanation" } | |
-| Delete account | `/deleteaccount` | `POST` | None | { email: [String], password: [String], token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
-| Set admin privilege | `/setadmin` | `POST` | None | { userId: [String], setAdmin: (1&#124;0)&#124;('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Delete account | `/deleteaccount` | `POST` | None | { token: [String] } | { success: true } | { success: false, message: "Explanation" } | |
+| Set admin privilege | `/setadmin` | `POST` | None | { userId: [String] OPTIONAL (defaults to current user's id), setAdmin: ('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: "Explanation" } | userId will default to the calling user |
 | Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: "Explanation" } | |
-| Get roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of user IDs] } | { success: false, message: "Explanation" } | Will update in the future to return user objects instead of only ids. |
-| Add/remove roommate | `/household/roommates`| `POST` | None | { operation: ('add'&#124;'remove'), userId: [String] (will default to current user's id), householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] (only if joined a new household) } | { success: false, message: "Explanation" } | HH name and pass only needed if it's the current user joining a new household |
+| Get all roommates | `/household/roommates` | `GET` | token=[String] | None | { success: true, roommates: [Array of Users] } | { success: false, message: "Explanation" } |  |
+| Get single roommate/user | `/household/roommates` | `GET` | token=[String]&userId=[String] | None | { success: true, roommate: [User] }| { success: false, message: "Explanation" } | |
+| Add roommate | `/household/roommates`| `POST` | None | { operation: 'add', userId: [String] [will default to current user's id], householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] } | { success: false, message: "Explanation" } | HH name and pass NOT needed if an admin is calling this. |
+| Remove roommate | `/household/roommates`| `POST` | None | { operation: 'remove', userId: [String] [will default to current user's id] } | { success: true } | { success: false, message: "Explanation" } | Sole admins of households cannot remove themselves until they appoint a new admin first. |
 
 # Starting the server
 
@@ -41,36 +56,19 @@ their junk data when they finish.
 
 # Backend Structure (notes)
 
-/register
+/register (POST)
+/login (POST)
+/deleteaccount (POST)
+/setadmin (POST)
 
-/login
-
-/deleteaccount
-
-/createhousehold
-	houseHoldName
-	houseHoldPassword
-
-	res = success!
-/joinhousehold
-	HouseHoldName
-	houseHoldPassword
-
-	res = true/false
-
-/leavehousehold
-	user id
+/createhousehold (POST)
 
 ******************************
 
 /household
 
-... /tasklist
-
-	... task "id"
-
-	... task "id"
+... /tasklist (GET, POST)
 
 ... /whiteboard
 
-... /roommates
+... /roommates (GET, POST)

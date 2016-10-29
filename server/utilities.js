@@ -1,6 +1,26 @@
 var User = require('./models/user.js');
 var Household = require('./models/household.js');
 
+/* Implemented by Chris */
+module.exports.deleteAccount = function(userId, callback) {
+  User.findOne({ '_id': userId }, function(err, user) {
+    if (err || !user) {
+      if (callback)
+        callback(false);
+    }
+
+    module.exports.removeUserFromHousehold(userId, user.houseHoldID, function() {
+      user.remove(function(err) {
+        if (err) {
+          if (callback)
+            callback(false);
+        }
+        if (callback)
+          callback(true);
+      });
+    });
+  });
+};
 
 /* Implemented by Chris */
 module.exports.checkUserIsInHousehold = function(userId, householdId, callback) {

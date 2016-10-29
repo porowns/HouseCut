@@ -5,8 +5,8 @@
 
   with body:
   {
-    userId: String,
-    setAdmin: (1|true)|(0|false),
+    userId: String (defaults to current userId),
+    setAdmin: ('true'|'false'),
     token: String
   }
 
@@ -31,73 +31,78 @@ module.exports = function(req, res) {
   var token = req.body.token;
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
-  var currentUserIsAdmin = decoded.admin;
-  var userId = req.body.userId;
-  var setAdmin = (req.body.setAdmin == 'true' || req.body.setAdmin == '1') ? true : false;
+  var userId = req.body.userId || currentUserId;
+
+  var setAdmin;
+  if (req.body.hasOwnProperty('setAdmin') &&
+      (req.body.setAdmin === 'true' || req.body.setAdmin === 'false')) {
+    setAdmin = (req.body.setAdmin === 'true') ? true : false;
+  }
+  else {
+    res.json({
+      success: false,
+      message: "'setAdmin' must be 'true' or 'false''."
+    });
+    return;
+  }
 
   if (!currentUserId) {
     res.json({
       success: false,
       message: 'Please supply a valid token.'
     });
+    return;
   }
-  else if (!userId) {
+  if (!userId) {
     res.json({
       success: false,
       message: 'Please supply a userId.'
     });
+    return;
   }
-  else {
-    if (!currentUserIsAdmin) {
+  utilities.checkUserIsAdmin(currentUserId, function(isAdmin) {
+    if (!isAdmin) {
       res.json({
         success: false,
-        message: 'currentUser must be an admin of their household.'
+        message: 'Current user must be an admin of their household.'
       });
       return;
     }
     utilities.checkUsersAreInSameHousehold(currentUserId, userId, function(hh) {
-      if (hh) {
-        /* if we're setting, no need to check for number of admins */
-        if (setAdmin == "true" || setAdmin == "1") {
-          setUserAdminAndResponse(userId, true, res);
-          return;
-        }
-        /*
-          if we're unsetting, we need to check to make sure user
-          isn't the sole admin of their household
-        */
-        if (setAdmin == "false" || setAdmin == "0") {
-          utilities.getNumAdmins(hh, function(num) {
-            if (num == 1) {
-              res.json({
-                success: false,
-                message: "Sole admin of a household can't unset themselves as an admin."
-              });
-            }
-            else {
-              setUserAdminAndResponse(userId, false, res);
-              return;
-            }
-          });
-        }
-        /* input error */
-        res.json({
-          success: false,
-          message: "setAdmin must be 'true', '1', 'false', or '0'."
-        });
-      }
-      else {
+      if (!hh) {
         res.json({
           success: false,
           message: 'Current user must be in the same household as userId.'
         });
+        return;
+      }
+      if (setAdmin) {
+        /* if we're setting, no need to check for number of admins */
+        setUserAdminAndResponse(userId, true, res);
+      }
+      else {
+        /*
+          if we're unsetting, we need to check to make sure user
+          isn't the sole admin of their household
+        */
+        utilities.getNumAdmins(hh, function(num) {
+          if (num == 1) {
+            res.json({
+              success: false,
+              message: "Sole admin of a household can't unset themselves as an admin."
+            });
+            return;
+          }
+          setUserAdminAndResponse(userId, false, res);
+        });
       }
     });
-  }
+  });
 }
 
 var setUserAdmin = function(userId, setAdmin, callback) {
-  User.update({ '_id': userId }, { $set: { 'admin': setAdmin } }, undefined, function(err, res) {
+  User.update({ '_id': userId }, { $set: { 'admin': setAdmin } }, undefined,
+  function(err, res) {
     if (err) {
       throw err;
     }
