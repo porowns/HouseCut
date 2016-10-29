@@ -25,19 +25,35 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
   }
   if (user) {
     if (user.householdId != 0) {
+      // If user has a household...
       res.json({
         success: false,
         message: "User already has a household"
       });
     }
     else {
-      res.json({
-        success: true,
-        message: "User does not have a household"
+      // If user does not have household...
+      Household.findone({ "_houseHoldName" : houseHoldName}, function (err, household) {
+        if (household) {
+          res.json({
+            success: true,
+            message: "Household exists! Let's get you in there!"
+          });
+        }
+        else {
+          res.json({
+            success:false,
+            message: "Household does not exist.."
+          });
+        }
       });
     }
   }
   else {
+    res.json({
+      success: false,
+      message: "Whoops! User doesn't exist..."
+    });
   }
-}); // End of User.findOne
-} // End of Function
+});
+}
