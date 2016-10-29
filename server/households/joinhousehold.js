@@ -33,12 +33,23 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
     }
     else {
       // If user does not have household...
-      Household.findone({ "_houseHoldName" : houseHoldName}, function (err, household) {
+      Household.findOne({ 'houseHoldName' : houseHoldName}, function (err, household) {
         if (household) {
-          res.json({
-            success: true,
-            message: "Household exists! Let's get you in there!"
-          });
+          // Check Password
+          var hash_pw = crypto.createHash('sha512').update(user.salt + houseHoldPassword).digest("hex");
+          if (hash_pw == household.hashed_password) {
+            // Add the User to Household
+            res.json({
+              success: true,
+              message: "Lets add you!"
+            });
+          }
+          else {
+            res.json({
+              success: false,
+              message: "Incorrect Household Password"
+            });
+          }
         }
         else {
           res.json({
