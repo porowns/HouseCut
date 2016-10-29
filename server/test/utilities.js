@@ -78,3 +78,13 @@ module.exports.setAdmin = function(data, callback) {
 }
 
 /* TODO: write createHousehold and deleteHousehold */
+
+// Implemented by Kaleb
+module.exports.createHousehold = function(data,callback) {
+  chai.request(config.hostname)
+    .post('/creathousehold')
+    .send(data)
+    .end(function(err,res) {
+      callback(err,res);
+    });
+}
