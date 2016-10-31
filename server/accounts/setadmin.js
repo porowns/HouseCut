@@ -106,7 +106,8 @@ var setUserAdmin = function(userId, setAdmin, callback) {
     if (err) {
       throw err;
     }
-    callback(err, res);
+    if (callback)
+      callback(err, res);
   });
 }
 
@@ -120,14 +121,16 @@ var setUserAdminAndResponse = function(userId, setAdmin, res, callback) {
         success: true,
         message: 'userId' + userId + ' admin set to ' + setAdmin
       });
-      callback(true);
+      if (callback)
+        callback(true);
     }
     else {
       res.json({
         success: false,
         message: res.writeErrors.errmsg
       });
-      callback(false);
+      if (callback)
+        callback(false);
     }
   });
 }

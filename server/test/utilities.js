@@ -13,11 +13,13 @@ module.exports.deleteAccount = function(data, callback) {
         .post('/deleteaccount')
         .send(data)
         .end(function(err, res) {
-          callback(err, res);
+          if (callback)
+            callback(err, res);
         });
     }
     else {
-      callback(err, res);
+      if (callback)
+        callback(err, res);
     }
   });
 };
@@ -29,7 +31,8 @@ module.exports.makeCleanAccount = function(data, callback) {
       .post('/register')
       .send(data)
       .end(function(err, res) {
-        callback(err, res);
+        if (callback)
+          callback(err, res);
       });
   });
 };
@@ -40,7 +43,8 @@ module.exports.makeAccount = function(data, callback) {
     .post('/register')
     .send(data)
     .end(function(err, res) {
-      callback(err, res);
+      if (callback)
+        callback(err, res);
     });
 };
 
@@ -50,7 +54,8 @@ module.exports.loginToAccount = function(data, callback) {
     .post('/login')
     .send(data)
     .end(function(err, res) {
-      callback(err, res);
+      if (callback)
+        callback(err, res);
     });
 };
 
@@ -68,7 +73,8 @@ module.exports.setAdmin = function(data, callback) {
         .post('/setadmin')
         .send(data)
         .end(function(err, res) {
-          callback(err, res);
+          if (callback)
+            callback(err, res);
         });
     }
     else {
@@ -91,7 +97,8 @@ module.exports.getRoommates = function(data, callback) {
     .get('/household/roommates' + queryParams)
     .send(data)
     .end(function(err, res) {
-      callback(err, res);
+      if (callback)
+        callback(err, res);
     });
 };
 
@@ -103,11 +110,13 @@ module.exports.loginAndGetRoommates = function(data, callback) {
       var id = res.res.body.id;
       data['token'] = token;
       module.exports.getRoommates(data, function(err, res) {
-        callback(err, res);
+        if (callback)
+          callback(err, res);
       });
     }
     else {
-      callback(err, res);
+      if (callback)
+        callback(err, res);
     }
   });
 };
@@ -120,6 +129,7 @@ module.exports.createHousehold = function(data,callback) {
     .post('/creathousehold')
     .send(data)
     .end(function(err,res) {
-      callback(err,res);
+      if (callback)
+        callback(err,res);
     });
 }
