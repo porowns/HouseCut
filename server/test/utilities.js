@@ -20,7 +20,7 @@ module.exports.deleteAccount = function(data, callback) {
       callback(err, res);
     }
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.makeCleanAccount = function(data, callback) {
@@ -32,7 +32,7 @@ module.exports.makeCleanAccount = function(data, callback) {
         callback(err, res);
       });
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.makeAccount = function(data, callback) {
@@ -42,7 +42,7 @@ module.exports.makeAccount = function(data, callback) {
     .end(function(err, res) {
       callback(err, res);
     });
-}
+};
 
 /* Implemented by Chris */
 module.exports.loginToAccount = function(data, callback) {
@@ -52,7 +52,7 @@ module.exports.loginToAccount = function(data, callback) {
     .end(function(err, res) {
       callback(err, res);
     });
-}
+};
 
 /* Implemented by Chris */
 module.exports.setAdmin = function(data, callback) {
@@ -75,7 +75,42 @@ module.exports.setAdmin = function(data, callback) {
       callback(err, res);
     }
   });
-}
+};
+
+/* Implemented by Chris */
+module.exports.getRoommates = function(data, callback) {
+  var queryParams = '?';
+  if (data.token)
+    queryParams += 'token=' + data.token;
+  if (data.userId) {
+    if (data.token)
+      queryParams += '&';
+    queryParams += 'userId=' + data.userId;
+  }
+  chai.request(config.hostname)
+    .get('/household/roommates' + queryParams)
+    .send(data)
+    .end(function(err, res) {
+      callback(err, res);
+    });
+};
+
+/* Implemented by Chris */
+module.exports.loginAndGetRoommates = function(data, callback) {
+  module.exports.loginToAccount(data, function(err, res) {
+    if (res.res.body.success) {
+      var token = res.res.body.token;
+      var id = res.res.body.id;
+      data['token'] = token;
+      module.exports.getRoommates(data, function(err, res) {
+        callback(err, res);
+      });
+    }
+    else {
+      callback(err, res);
+    }
+  });
+};
 
 /* TODO: write createHousehold and deleteHousehold */
 

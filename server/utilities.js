@@ -147,6 +147,7 @@ module.exports.removeUserFromHousehold = function(userId, householdId, callback)
         TODO: advance or unassign tasks that were assigned to
         this user to keep the household's tasks in a good state.
       */
+      /* TODO: handle case of no members in household now */
       callback({
         success: true,
         message: "Successfully removed user from household"

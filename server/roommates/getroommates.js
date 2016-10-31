@@ -19,6 +19,14 @@ module.exports = function(req, res) {
   var householdId = decoded.householdId;
   var userId = req.query.userId;
 
+  if (householdId === '0' || householdId === undefined) {
+    res.json({
+      success: false,
+      message: "Current user is not in a household."
+    });
+    return;
+  }
+
   Household.findOne({ '_id': householdId }, function(err, hh) {
     if (err) {
       throw err;
