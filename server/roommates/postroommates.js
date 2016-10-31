@@ -22,10 +22,9 @@
   A user can always remove themselves.
 */
 
-var User = require('../models/user.js');
 var jwtDecode = require('jwt-decode');
-var Household = require('../models/household.js');
-var utilities = require('../utilities.js');
+var Household = require('./../models/household.js');
+var utilities = require('./../utilities.js');
 
 module.exports = function(req, res) {
   var token = req.body.token;
@@ -58,7 +57,8 @@ module.exports = function(req, res) {
             });
           }
           else {
-            addOrRemoveUserFromHousehold(operation, currentUserId, hh, function(r) {
+            addOrRemoveUserFromHousehold(operation, currentUserId, hh,
+              undefined, function(r) {
               res.json(r);
             });
           }
@@ -71,7 +71,8 @@ module.exports = function(req, res) {
         or attempt to add themselves
       */
       utilities.getHouseholdFromUserId(currentUserId, function(hh) {
-        addOrRemoveUserFromHousehold(operation, userId, hh, function(r) {
+        addOrRemoveUserFromHousehold(operation, userId, hh,
+          undefined, function(r) {
           res.json(r);
         });
       });
@@ -81,7 +82,8 @@ module.exports = function(req, res) {
     if (currentUserId == userId) {
       /* users always allowed to attempt to add/remove themselves */
       utilities.getHouseholdFromUserId(currentUserId, function(hh) {
-        addOrRemoveUserFromHousehold(operation, currentUserId, hh, function(r) {
+        addOrRemoveUserFromHousehold(operation, currentUserId, hh,
+          { hhName: hhName, hhPass: hhPass }, function(r) {
           res.json(r);
         });
       });
@@ -94,28 +96,31 @@ module.exports = function(req, res) {
       });
     }
   }
-}
+};
 
-var addOrRemoveUserFromHousehold = function(operation, userId, hh, callback) {
+var addOrRemoveUserFromHousehold = function(operation, userId, hh, data, callback) {
   if (operation == "remove") {
     utilities.removeUserFromHousehold(userId, hh._id, function(r) {
-      callback(r);
+      if (callback)
+        callback(r);
     });
   }
   else if (operation == "add"){
     if (hh) {
       /* no duplicate households allowed */
-      callback({
-        success: false,
-        message: "User is already in a household named " +
-                  hh.houseHoldName + " with id " + hh._id
-      });
+      if (callback)
+        callback({
+          success: false,
+          message: "User is already in a household named " +
+                    hh.houseHoldName + " with id " + hh._id
+        });
     }
     else {
       /* adding to new household */
-      utilities.addUserToHousehold(userId, hhName, hhPass, function(r) {
-        callback(r);
+      utilities.addUserToHousehold(userId, data.hhName, data.hhPass, function(r) {
+        if (callback)
+          callback(r);
       });
     }
   }
-}
+};

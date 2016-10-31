@@ -7,15 +7,12 @@
   If you supply a userId, will return only that user.
 */
 
-var User = require('../models/user.js');
 var jwtDecode = require('jwt-decode');
-var Household = require('../models/household.js');
-var utilities = require('../utilities.js');
+var Household = require('./../models/household.js');
 
 module.exports = function(req, res) {
   var token = req.query.token;
   var decoded = jwtDecode(token);
-  var currentUserId = decoded.id;
   var householdId = decoded.householdId;
   var userId = req.query.userId;
 
@@ -38,7 +35,7 @@ module.exports = function(req, res) {
             displayName: v.displayName,
             id: v._id,
             admin: v.admin
-          }
+          };
         });
         res.json({
           success: true,
@@ -73,4 +70,4 @@ module.exports = function(req, res) {
       });
     }
   });
-}
+};

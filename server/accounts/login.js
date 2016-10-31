@@ -6,7 +6,7 @@
   with body:
   {
    email: String,
-  password: String 
+  password: String
   }
 */
 
@@ -19,13 +19,13 @@ module.exports = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-  if (!email || email == "") {
+  if (!email || email === "") {
     res.json({
       success: false,
       message: 'Please enter an email.'
     });
   }
-  else if (!password || password == "") {
+  else if (!password || password === "") {
     res.json({
       success: false,
       message: 'Please enter a password.'

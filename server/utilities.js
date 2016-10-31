@@ -43,7 +43,7 @@ module.exports.checkUserIsInHousehold = function(userId, householdId, callback) 
       callback(false);
     }
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.checkUserIsAdmin = function(userId, callback) {
@@ -54,7 +54,7 @@ module.exports.checkUserIsAdmin = function(userId, callback) {
     var isAdmin = res ? res.admin : false;
     callback(isAdmin);
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.checkUsersAreInSameHousehold = function(userId1, userId2, callback) {
@@ -68,7 +68,7 @@ module.exports.checkUsersAreInSameHousehold = function(userId1, userId2, callbac
       callback(false);
     }
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.getHouseholdFromUserId = function(userId, callback) {
@@ -87,10 +87,10 @@ module.exports.getHouseholdFromUserId = function(userId, callback) {
       callback(false);
     }
   });
-}
+};
 
 /* Implemented by Chris */
-module.exports.addUserToHousehold = function(userId, hhName, hhPassword, callback) {
+module.exports.addUserToHousehold = function(userId, hhName, hhPass, callback) {
   Household.findOne({ 'houseHoldName': hhName }, function(err, hh) {
     if (err) {
       throw err;
@@ -99,17 +99,22 @@ module.exports.addUserToHousehold = function(userId, hhName, hhPassword, callbac
       var hash_pw = crypto.createHash('sha512').update(hh.salt + hhPass).digest("hex");
       if (hash_pw == hh.hashed_password) {
         /* success! add user to household */
-        User.update({ '_id': userId }, { $set: { 'householdId': hh._id } }, undefined, function(err, r) {
+        User.update({ '_id': userId }, {
+          $set: { 'householdId': hh._id }
+        }, undefined, function(err, r) {
           if (err) {
             throw err;
           }
-          Household.update({ '_id': hh._id }, { $push: { 'HouseholdMembers': userId } }, undefined, function(err, r) {
+          Household.update({ '_id': hh._id }, {
+            $push: { 'HouseholdMembers': userId }
+          }, undefined, function(err, r) {
             if (err) {
               throw err;
             }
             callback({
               success: true,
-              message: "Successfully added user to household " + hh.houseHoldName,
+              message: "Successfully added user to " +
+                       "household " + hh.houseHoldName,
               householdId: hh._id
             });
           });
@@ -129,7 +134,7 @@ module.exports.addUserToHousehold = function(userId, hhName, hhPassword, callbac
       });
     }
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.removeUserFromHousehold = function(userId, householdId, callback) {
@@ -139,7 +144,9 @@ module.exports.removeUserFromHousehold = function(userId, householdId, callback)
     if (err) {
       throw err;
     }
-    Household.update({ '_id': householdId }, { $pull: { 'HouseholdMembers': userId } }, undefined, function(err, r) {
+    Household.update({ '_id': householdId }, {
+      $pull: { 'HouseholdMembers': userId }
+    }, undefined, function(err, r) {
       if (err) {
         throw err;
       }
@@ -154,7 +161,7 @@ module.exports.removeUserFromHousehold = function(userId, householdId, callback)
       });
     });
   });
-}
+};
 
 /* Implemented by Chris */
 module.exports.getNumAdmins = function(hh, callback) {
@@ -166,4 +173,4 @@ module.exports.getNumAdmins = function(hh, callback) {
     }
   }
   callback(numAdmins);
-}
+};

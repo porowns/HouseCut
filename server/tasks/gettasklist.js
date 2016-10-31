@@ -7,9 +7,7 @@
   that are currently assigned to that user.
 */
 
-var User = require('../models/user.js');
 var jwtDecode = require('jwt-decode');
-var Household = require('../models/household.js');
 var utilities = require('../utilities.js');
 
 module.exports = function(req, res) {
@@ -54,4 +52,4 @@ module.exports = function(req, res) {
       }
     });
   }
-}
+};

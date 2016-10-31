@@ -6,8 +6,6 @@
   with body: { token: String }
 */
 
-var User = require('../models/user.js');
-var jwt = require('jsonwebtoken');
 var jwtDecode = require('jwt-decode');
 var utilities = require('./../utilities.js');
 
@@ -30,4 +28,4 @@ module.exports = function(req, res) {
       });
     }
   });
-}
+};

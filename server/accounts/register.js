@@ -20,21 +20,21 @@ module.exports = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-  if (username == "" || !username) {
+  if (username === "" || !username) {
     res.json({
       success: false,
       message: 'Please enter a username.'
     });
   }
-  else if (email == "" || !email ||
-            email.indexOf('@') == -1 ||
-            email.indexOf('@') == email.length-1) {
+  else if (email === "" || !email ||
+            email.indexOf('@') === -1 ||
+            email.indexOf('@') === email.length-1) {
     res.json({
       success: false,
       message: 'Please enter a valid e-mail.'
     });
   }
-  else if (password == "" || !password) {
+  else if (password === "" || !password) {
     res.json({
       success: false,
       message: 'Please enter a password.'
@@ -67,7 +67,7 @@ module.exports = function(req, res) {
         var id = crypto.createHash('sha512').update(email+rand).digest("hex");
 
         /* create user */
-        var user = new User({
+        var newUser = new User({
           displayName: username,
           email: email,
           hashed_password: hashed_password,
@@ -77,7 +77,7 @@ module.exports = function(req, res) {
         });
 
         /* add user to database */
-        user.save(function(err) {
+        newUser.save(function(err) {
           if (err) throw err;
 
           console.log('User saved successfully');
@@ -89,4 +89,4 @@ module.exports = function(req, res) {
       }
     });
   }
-}
+};

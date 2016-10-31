@@ -6,8 +6,6 @@ var mongoose = require('mongoose');
 var dotenv = require('dotenv').config();
 var config = require('./config');
 
-var User = require('./models/user.js');
-
 var verifyToken = require('./accounts/verifytoken.js');
 var register = require('./accounts/register.js');
 var login = require('./accounts/login.js');
@@ -36,7 +34,6 @@ if (process.env.NODE_ENV !== 'test') {
 app.post('/register', register);
 
 app.post('/login', login);
-
 
 app.post('/setadmin', verifyToken, setAdmin);
 

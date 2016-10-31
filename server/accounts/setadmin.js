@@ -21,10 +21,7 @@
 */
 
 var User = require('../models/user.js');
-var jwt = require('jsonwebtoken');
 var jwtDecode = require('jwt-decode');
-var crypto = require('crypto');
-var rand = require('csprng');
 var utilities = require('./../utilities.js');
 
 module.exports = function(req, res) {
@@ -98,7 +95,7 @@ module.exports = function(req, res) {
       }
     });
   });
-}
+};
 
 var setUserAdmin = function(userId, setAdmin, callback) {
   User.update({ '_id': userId }, { $set: { 'admin': setAdmin } }, undefined,
@@ -109,7 +106,7 @@ var setUserAdmin = function(userId, setAdmin, callback) {
     if (callback)
       callback(err, res);
   });
-}
+};
 
 var setUserAdminAndResponse = function(userId, setAdmin, res, callback) {
   setUserAdmin(userId, setAdmin, function(err, r) {
@@ -133,4 +130,4 @@ var setUserAdminAndResponse = function(userId, setAdmin, res, callback) {
         callback(false);
     }
   });
-}
+};
