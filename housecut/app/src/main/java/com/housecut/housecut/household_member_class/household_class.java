@@ -35,7 +35,6 @@ public class household {
 		{
 			if(household_vector[i].name == member.name)
 				household_vector.remove(member);
-				
 		}
 		
 		return;
@@ -50,12 +49,17 @@ public class household {
 	}
 
 	
-	// Setters
+	// Mutators
 	
 	// change the admin role to another person
 	public void changeAdmin(string newAdmin)
 	{
-		currentAdmin = newAdmin;
+		bool valid = false;
+		for(int i = 0; i < household_vector.size(); i++)
+			if(newAdmin == household_vector[i])
+				valid = true;
+		if (valid)
+			currentAdmin = newAdmin;
 		return;
 	}	   
 	
@@ -69,7 +73,7 @@ public class household {
 		return;
 	}
 		   
-	// Getters
+	// Accessors
 		   
 	//returns the size of the household
 	public int size()
