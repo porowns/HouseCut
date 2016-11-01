@@ -17,6 +17,7 @@ var joinhousehold = require('./households/joinhousehold.js');
 var getTaskList = require('./tasks/gettasklist.js');
 var getRoommates = require('./roommates/getroommates.js');
 var postRoommates = require('./roommates/postroommates.js');
+var postTaskList = require('./tasks/posttasklist.js');
 
 
 /* config */
@@ -50,6 +51,8 @@ app.get('/household/tasklist', verifyToken, getTaskList);
 app.get('/household/roommates', verifyToken, getRoommates);
 
 app.post('/household/roommates', verifyToken, postRoommates);
+
+app.post('/household/tasklist', verifyToken, postTaskList);
 
 /* start the server */
 app.listen(port);
