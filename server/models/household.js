@@ -7,5 +7,6 @@ module.exports = mongoose.model('Household', new Schema({
   salt: String,
   id: String,
   temp_str: String,
-  HouseholdMembers: Array
+  HouseholdMembers: Array,
+  taskList: Array
 }));
