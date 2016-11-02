@@ -47,6 +47,13 @@ public class household {
 			
 		return;
 	}
+	
+	public void clearHousehold() // except the admin
+	{
+		for(int i = 0; i < household_vector.size(); i++)
+			if(currentAdmin != household_vector[i].name)
+				household_vector.remove(household_vector[i]);	
+	}
 
 	
 	// Mutators
