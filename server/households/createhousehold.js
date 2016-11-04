@@ -21,7 +21,6 @@ module.exports = function(req, res) {
 
 	var decoded = jwtDecode(token);
 	var currentUserId = decoded.id;
-	console.log(currentUserId)
 	var cancelprogram = 0;
 	var houseHoldDatabaseId;
 
@@ -103,9 +102,8 @@ module.exports = function(req, res) {
 							hashed_password: hashed_password,
 							salt: salt,
 							id: id,
-							HouseholdMembers: currentUserId
-
-
+							HouseholdMembers: currentUserId,
+							taskList: []
 						});
 
 

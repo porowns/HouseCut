@@ -15,11 +15,16 @@ module.exports = function(req, res) {
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
   var userId = req.query.userId;
-  var householdId = decoded.householdId;
 
   if (userId) {
     utilities.checkUsersAreInSameHousehold(currentUserId, userId, function(hh) {
-      if (hh) {
+      if (!hh) {
+        res.json({
+          success: false,
+          message: "Current user wasn't in the same household as userId."
+        });
+      }
+      else {
         var userTasklist = hh.taskList.filter(function(e, i, a) {
           return (e.currentlyAssigned == userId);
         });
@@ -28,26 +33,20 @@ module.exports = function(req, res) {
           tasklist: userTasklist
         });
       }
-      else {
-        res.json({
-          success: false,
-          message: "Current user wasn't in the same household as userId."
-        });
-      }
     });
   }
   else {
-    utilities.checkUserIsInHousehold(currentUserId, householdId, function(hh) {
-      if (hh) {
+    utilities.getHouseholdFromUserId(currentUserId, function(hh) {
+      if (!hh) {
         res.json({
-          success: true,
-          tasklist: hh.taskList
+          success: false,
+          message: "Current user is not in a household."
         });
       }
       else {
         res.json({
-          success: false,
-          message: "Current user wasn't in that household."
+          success: true,
+          tasklist: hh.taskList
         });
       }
     });

@@ -16,7 +16,6 @@ module.exports = function(req, res) {
   var token = req.query.token;
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
-  var householdId = decoded.householdId;
 
   var name = req.body.name;
   var type = req.body.type;
@@ -52,42 +51,41 @@ module.exports = function(req, res) {
       message: "Recurring: True -> error: recurringIntervalDays < 0"
     });
   } else {
-    utilities.checkUserIsInHousehold(currentUserId, householdId, function(hh) {
-      if (hh) {
-        var sameNameIndex = hh.taskList.find(function(e) {
-          return (e.name === name);
-        });
-        if (sameNameIndex !== undefined) {
-          res.json({
-            success: false,
-            message: 'Task names must be unique.'
-          });
-          return;
-        }
-
-        var taskObject = new task({
-          name: name,
-          recurring: recurring,
-          recurringIntervalDays: recurringIntervalDays || 0,
-          type: type,
-          currentlyAssigned: assigned || "0"
-        });
-
-        Household.update( { '_id' : householdId }, { $push: {'taskList': taskObject} }, function(err) {
-          if( err ) {
-            throw err;
-          } res.json({
-            success: true,
-            message: "Good job!"
-          });
-        });
-      }
-      else {
+    utilities.getHouseholdFromUserId(currentUserId, function(hh) {
+      if (!hh) {
         res.json({
           success: false,
-          message: 'User is not a member of the given Household.'
+          message: 'User is not a member of a Household.'
         });
+        return;
       }
+      var sameNameIndex = hh.taskList.find(function(e) {
+        return (e.name === name);
+      });
+      if (sameNameIndex !== undefined) {
+        res.json({
+          success: false,
+          message: 'Task names must be unique.'
+        });
+        return;
+      }
+
+      var taskObject = new task({
+        name: name,
+        recurring: recurring,
+        recurringIntervalDays: recurringIntervalDays || 0,
+        type: type,
+        currentlyAssigned: assigned || "0"
+      });
+
+      Household.update( { '_id' : hh._id }, { $push: {'taskList': taskObject} }, function(err) {
+        if( err ) {
+          throw err;
+        } res.json({
+          success: true,
+          message: "Good job!"
+        });
+      });
     });
   }
 };

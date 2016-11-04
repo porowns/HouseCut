@@ -1,5 +1,6 @@
 var User = require('./models/user.js');
 var Household = require('./models/household.js');
+var jwt = require('jsonwebtoken');
 
 /* Implemented by Chris */
 module.exports.deleteAccount = function(userId, callback) {
@@ -72,20 +73,20 @@ module.exports.checkUsersAreInSameHousehold = function(userId1, userId2, callbac
 
 /* Implemented by Chris */
 module.exports.getHouseholdFromUserId = function(userId, callback) {
+  if (userId === undefined)
+    return callback(false);
+
   User.findOne({ '_id': userId }, function(err, user) {
-    if (user) {
-      Household.findOne({ '_id': user.householdId }, function(err, hh) {
-        if (hh) {
-          callback(hh);
-        }
-        else {
-          callback(false);
-        }
-      });
-    }
-    else {
-      callback(false);
-    }
+    if (!user)
+      return callback(false);
+
+    if (userId.householdId === undefined ||
+        userId.householdId === '0')
+      return callback(false);
+
+    Household.findOne({ '_id': user.householdId }, function(err, hh) {
+      return callback(hh);
+    });
   });
 };
 
@@ -174,3 +175,14 @@ module.exports.getNumAdmins = function(hh, callback) {
   }
   callback(numAdmins);
 };
+
+/* Implemented by Chris */
+module.exports.getToken = function(user) {
+  var token = jwt.sign({
+                email: user.email,
+                id: user._id
+              }, app.get('secret'), {
+                /*expiresIn: "24h"*/
+              });
+  return token;
+}

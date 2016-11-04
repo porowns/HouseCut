@@ -11,9 +11,9 @@
 */
 
 var User = require('../models/user.js');
-var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var rand = require('csprng');
+var utilities = require('./../utilities.js');
 
 module.exports = function(req, res) {
   var email = req.body.email;
@@ -39,14 +39,7 @@ module.exports = function(req, res) {
       if (user) {
         var hash_pw = crypto.createHash('sha512').update(user.salt + password).digest("hex");
         if (hash_pw == user.hashed_password) {
-          var token = jwt.sign({
-            email: user.email,
-            id: user._id,
-            householdId: user.householdId,
-            admin: user.admin
-          }, app.get('secret'), {
-            /*expiresIn: "24h"*/
-          });
+          var token = utilities.getToken(user);
           res.json({
             success: true,
             message: 'Login success',

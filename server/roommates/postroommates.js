@@ -30,9 +30,7 @@ module.exports = function(req, res) {
   var token = req.body.token;
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
-  var currentUserIsAdmin = decoded.admin;
   var userId = req.body.userId || currentUserId;
-  var householdId = decoded.householdId;
   var operation = req.body.operation;
   var hhName = req.body.houseHoldName;
   var hhPass = req.body.houseHoldPassword;
@@ -45,57 +43,62 @@ module.exports = function(req, res) {
     return;
   }
 
-  if (currentUserIsAdmin) {
-    if (currentUserId == userId && operation == "remove") {
-      /* need to check if admin is the sole admin */
-      Household.findOne({ '_id': householdId }, function(err, hh) {
-        utilities.getNumAdmins(hh, function(num) {
-          if (num == 1) {
-            res.json({
-              success: false,
-              message: "Sole admin of a household can't remove themselves from household."
-            });
-          }
-          else {
-            addOrRemoveUserFromHousehold(operation, currentUserId, hh,
-              undefined, function(r) {
-              res.json(r);
-            });
-          }
-        });
-      });
-    }
-    else {
-      /*
-        admins always allowed to attempt to add/remove other users
-        or attempt to add themselves
-      */
-      utilities.getHouseholdFromUserId(currentUserId, function(hh) {
-        addOrRemoveUserFromHousehold(operation, userId, hh,
-          undefined, function(r) {
-          res.json(r);
-        });
-      });
-    }
-  }
-  else {
-    if (currentUserId == userId) {
-      /* users always allowed to attempt to add/remove themselves */
-      utilities.getHouseholdFromUserId(currentUserId, function(hh) {
-        addOrRemoveUserFromHousehold(operation, currentUserId, hh,
-          { hhName: hhName, hhPass: hhPass }, function(r) {
-          res.json(r);
-        });
-      });
-    }
-    else {
-      /* users never allowed to attempt to add/remove other users */
-      res.json({
-        success: false,
-        message: "Non-admin household member cannot add/remove users other than themselves."
-      });
-    }
-  }
+  utilities.getHouseholdFromUserId(currentUserId, function(hh) {
+    utilities.checkUserIsAdmin(currentUserId, function(isAdmin) {
+      if (isAdmin) {
+        /* currentUser is an admin */
+        if (currentUserId == userId && operation == "remove") {
+          /* need to check if admin is the sole admin */
+          utilities.getNumAdmins(hh, function(num) {
+            if (num == 1) {
+              res.json({
+                success: false,
+                message: "Sole admin of a household can't remove themselves from household."
+              });
+              return;
+            }
+            else {
+              addOrRemoveUserFromHousehold(operation, currentUserId, hh,
+                undefined, function(r) {
+                res.json(r);
+                return;
+              });
+            }
+          });
+        }
+        else {
+          /*
+            admins always allowed to attempt to add/remove other users
+            or attempt to add themselves
+          */
+          addOrRemoveUserFromHousehold(operation, userId, hh,
+            undefined, function(r) {
+            res.json(r);
+            return;
+          });
+        }
+      }
+      else {
+        /* currentUser is not an admin */
+        if (currentUserId == userId) {
+          /* users always allowed to attempt to add/remove themselves */
+          addOrRemoveUserFromHousehold(operation, currentUserId, hh,
+            { hhName: hhName, hhPass: hhPass }, function(r) {
+            res.json(r);
+            return;
+          });
+        }
+        else {
+          /* users never allowed to attempt to add/remove other users */
+          res.json({
+            success: false,
+            message: "Non-admin household member cannot add/remove users other than themselves."
+          });
+          return;
+        }
+      }
+    });
+  });
 };
 
 var addOrRemoveUserFromHousehold = function(operation, userId, hh, data, callback) {
