@@ -14,7 +14,8 @@ public class household_admin extends household_member_class
 
 	public bool removeHouseholdMember(household_member_class member)
 	{
-    	//fail if no members would be left in household (done server-side?)
+		//only allowed if role of caller = admin
+    		//fail if no members would be left in household (done server-side?)
 		if (household_vector.size() <= 1)
 			return false;
 		else {
@@ -26,16 +27,17 @@ public class household_admin extends household_member_class
 
 	public bool giveAdminPrivileges(household_member_class member)
 	{
-			member.role = admin;
-			household_admin admin = new household_admin(member);
-			return true;
-     	 //TODO create conversion constructor to convert household_member_class to household_admin
+		//only allowed if role of caller = admin
+		member.role = "admin";
+			
+		return true;
 	}
 
 	public bool revokeAdminPrivileges(household_admin admin)
 	{
-		//TODO create conversion constructor to convert household_admin to household_member_class
-		household_member_class member = new household_member_class(admin);
+		//only allowed if role of caller = admin
+		admin.role = "member";
+		
 		return true;
 	}	
 }
