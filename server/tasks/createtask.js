@@ -1,8 +1,5 @@
 /* Implemented by: Simon */
 
-//database user
-var User = require('../models/user.js');
-
 var task = require('../models/task.js');
 var jwtDecode = require('jwt-decode');
 var Household = require('../models/household.js');
@@ -13,11 +10,6 @@ var utilities = require('../utilities.js');
 
   TODO:
   Implement Description
-  Check name unique-ness
-
-  When adding a task, check if taskName exists in list. <- Name unique-ness
-  going to be in the call back function. database and come back
-
 */
 
 module.exports = function(req, res) {
@@ -30,7 +22,7 @@ module.exports = function(req, res) {
   var type = req.body.type;
   var assigned = req.body.currentlyAssigned;
   var recurring = req.body.recurring;
-  var recurringIntervalDays = req.body.recurringIntervalDays
+  var recurringIntervalDays = req.body.recurringIntervalDays;
 
   if( !name || name === "" ) {
     res.json({
@@ -54,29 +46,48 @@ module.exports = function(req, res) {
       success: false,
       message: "Set recurring to true or false."
     });
-  } else if ( recurring === true && ( !recurringIntervalDays || recurringIntervalDays < 0) {
+  } else if ( recurring === true && ( !recurringIntervalDays || recurringIntervalDays < 0)) {
     res.json({
       success: false,
       message: "Recurring: True -> error: recurringIntervalDays < 0"
-    })
+    });
   } else {
+    utilities.checkUserIsInHousehold(currentUserId, householdId, function(hh) {
+      if (hh) {
+        var sameNameIndex = hh.taskList.find(function(e) {
+          return (e.name === name);
+        });
+        if (sameNameIndex !== undefined) {
+          res.json({
+            success: false,
+            message: 'Task names must be unique.'
+          });
+          return;
+        }
 
-    var taskObject = new task({
-      name: name,
-      recurring: recurring,
-      recurringIntervalDays: recurringIntervalDays || 0,
-      type: type,
-      currentlyAssigned: assigned || "0"
+        var taskObject = new task({
+          name: name,
+          recurring: recurring,
+          recurringIntervalDays: recurringIntervalDays || 0,
+          type: type,
+          currentlyAssigned: assigned || "0"
+        });
+
+        Household.update( { '_id' : householdId }, { $push: {'taskList': taskObject} }, function(err) {
+          if( err ) {
+            throw err;
+          } res.json({
+            success: true,
+            message: "Good job!"
+          });
+        });
+      }
+      else {
+        res.json({
+          success: false,
+          message: 'User is not a member of the given Household.'
+        });
+      }
     });
-
-    Household.update( { '_id' : householdId }, { $push: {'taskList': taskObject} }, function(err) {
-      if( err ) {
-        throw err;
-      } res.json({
-        success: true,
-        message: "Good job!"
-      });
-    });
-
   }
-}
+};
