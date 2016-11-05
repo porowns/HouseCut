@@ -34,7 +34,8 @@ public class household_member_class {
 	//Default constructor
 	public household_member_class() {
 		
-		//TODO : Default constructor for Housemember
+			//Default constructor for Housemember
+		this.current_household = "null";
 		this.name = "null";
 		this.email = "null";
 		this.ID = 0;
@@ -226,21 +227,22 @@ public class household_member_class {
 
 	
 	/*	//log user out of account
-	public logout() {
+	public void logout() {
 		
 		
 	}*/
 	
 	
-	public void joinHousehold() {
+	public void joinHousehold(String h) {
 		
-		//TODO : Join a certain household
+			//Join a certain household
 		
-		//if (current_household == null)
-			//....
-		//else
-			//cout << "You must leave your current household first.\n";
-		
+		if (current_household == null)
+			current_household = h;
+		else
+			cout << "You must leave your current household first.\n";
+		//Might have to call a popup error, or simply not let the user have the option to
+		//join Household until they have left their current one
 	}
 	
 		//user leaves current_household
