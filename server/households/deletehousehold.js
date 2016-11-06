@@ -1,3 +1,4 @@
+// Implemented by Kaleb
 var Household = require('../models/household');
 var User = require('../models/user.js');
 
