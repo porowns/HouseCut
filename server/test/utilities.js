@@ -126,7 +126,29 @@ module.exports.loginAndGetRoommates = function(data, callback) {
 // Implemented by Kaleb
 module.exports.createHousehold = function(data,callback) {
   chai.request(config.hostname)
-    .post('/creathousehold')
+    .post('/createhousehold')
+    .send(data)
+    .end(function(err,res) {
+      if (callback)
+        callback(err,res);
+    });
+}
+
+// Implemented by Kaleb
+module.exports.joinHousehold = function(data,callback) {
+  chai.request(config.hostname)
+    .post('/joinhousehold')
+    .send(data)
+    .end(function(err,res) {
+      if (callback)
+        callback(err,res);
+    });
+}
+
+// Implemented by Kaleb
+module.exports.deletehousehold = function(data,callback) {
+  chai.request(config.hostname)
+    .post('/deletehousehold')
     .send(data)
     .end(function(err,res) {
       if (callback)

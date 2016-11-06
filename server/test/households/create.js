@@ -10,7 +10,7 @@ var User = require('./../../models/user.js');
 var Household = require('./../../models/household.js');
 var createhousehold = require('./../../households/createhousehold.js');
 
-/*
+
 describe('createHouseholdTests', function() {
   before(function(done) {
     utilities.makeCleanAccount({
@@ -18,6 +18,12 @@ describe('createHouseholdTests', function() {
       password: 'test123',
       username: 'test_username'
     }, done);
+  after(function(done) {
+    utilities.deleteAccount({
+      email: 'test@test',
+      password: 'test123'
+    }, done);
+  });
 
     utilities.loginToAccount({
       email: 'test@test',
@@ -32,4 +38,3 @@ describe('createHouseholdTests', function() {
     });
   });
 });
-*/
