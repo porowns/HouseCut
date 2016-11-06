@@ -46,7 +46,7 @@ public class household_member_class {
 	public household_member_class(String n, String e, String p) {
 		this.name = n;
 		this.email = e;
-		this.password = pass;
+		this.password = p;
 
 			//Call register 
 		this.register(n, e, p);
@@ -78,8 +78,7 @@ public class household_member_class {
 		URL url = new URL ("http://housecut-145314.appspot.com/register");
 		
 			//Declare connection object
-		HttpURLConnection conn = 
-				(HttpURLConnection) url.openConnection();
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		
 			
 			//Register the user
@@ -110,8 +109,7 @@ public class household_member_class {
 			/*If HTTP connection fails, throw exception*/
 
 		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-			throw new RuntimeException("Failed : HTTP Error code : "
-				+ conn.getResponseCode());
+			throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
 		}
 		
 			//To test what the server outputs
@@ -240,7 +238,7 @@ public class household_member_class {
 		if (current_household == null)
 			current_household = h;
 		else
-			cout << "You must leave your current household first.\n";
+			System.out.println("You must leave your current household first.\n");
 		//Might have to call a popup error, or simply not let the user have the option to
 		//join Household until they have left their current one
 	}
