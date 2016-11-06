@@ -16,7 +16,40 @@ module.exports = function(req, res) {
     if (err)
       throw err;
     if (user) {
+      if (user.admin == true) {
+        Household.findOne({ '_id' : user.householdId}, function(err, household) {
+          if (household) {
+            household.HouseholdMembers.forEach(function(user) {
+              User.update({ '_id' : user}, {$set: {'householdId' : 0}}, function(err, user) {
+                console.log("User ID updated");
+              });
+            });
 
+            household.remove(function(err) {
+              if (err)
+                throw err;
+              else {
+                res.json ({
+                  success : true,
+                  message : "Household deleted."
+                });
+              }
+            });
+          }
+          else {
+            res.json({
+              success: false,
+              message: "Users household ID is incorrect. Uh oh!"
+            });
+          }
+        });
+      }
+      else {
+        res.json ({
+          success: false,
+          message: "User is not admin."
+        });
+      }
     }
     else {
       res.json ({
