@@ -12,5 +12,17 @@ module.exports = function(req, res) {
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
 
+  User.findOne({ '_id' : currentUserId}, function(err, user) {
+    if (err)
+      throw err;
+    if (user) {
 
+    }
+    else {
+      res.json ({
+        success: false,
+        message: "User not found."
+      });
+    }
+  });
 }
