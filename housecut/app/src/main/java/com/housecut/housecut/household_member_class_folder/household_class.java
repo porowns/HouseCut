@@ -1,17 +1,20 @@
+package com.housecut.housecut.household_member_class_folder;
 // Code by Kenneth McManus
+// Debugging by Jose Fernandes
 // 10/16/16
 
 import java.util.Vector;
+import java.lang.String;
 
 // Household class
 
-public class household {
-	Vector<household_member_class> household_vector; 
-	string householdName;
-	string currentAdmin;
+public class household_class {
+	Vector< household_member_class > household_vector;
+	String householdName;
+	String currentAdmin;
 
 	// household class constructor
-	public household(household_member_class admin, string name) {
+	public household_class(household_member_class admin, String name) {
 		// add the first member (the admin) to the household
 		// when the household is created
 		household_vector.add(admin);
@@ -31,7 +34,7 @@ public class household {
 	// removes a chosen roommate from the household
 	public void removeMember( household_member_class member)
 	{
-		for(int i = 0; i < household_vector.length(); i++)
+		for(int i = 0; i < household_vector.size(); i++)
 		{
 			if(household_vector[i].name == member.name)
 				household_vector.remove(member);

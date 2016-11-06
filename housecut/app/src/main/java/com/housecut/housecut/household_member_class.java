@@ -1,5 +1,6 @@
 package com.housecut.housecut;
 //Code by: Adam Faulkner
+//Debugging by: Jose Fernandes
 //10/09/2016
 //class testing, V.1.0
 
@@ -28,14 +29,15 @@ public class household_member_class {
     protected int ID;
     protected String password;
     protected String email;
-    protected String role = "member"; // roles can be member, moderator, admin, owner etc (implementation)
+    protected String role = "member"; // roles can be member or admin
 
 
 
     //Default constructor
     public household_member_class() {
 
-        //TODO : Default constructor for Housemember
+        //Default constructor for Housemember
+        this.current_household = "null";
         this.name = "null";
         this.email = "null";
         this.ID = 0;
@@ -43,21 +45,17 @@ public class household_member_class {
 
 
     //Constructor that will take in user data and register a user
-    public household_member_class(String pass, String n, String e) {
-        this.password = pass;
+    public household_member_class(String n, String e, String p) {
         this.name = n;
         this.email = e;
+        this.password = p;
 
-        this.register(pass, n, e);
+        //Call register
+        this.register(n, e, p);
     }
 
 
-    // Is Register a constructor?
-    public void register(String password, String name, String email) {
-        //this.ID = ID;
-        //this.name = name;
-        //this.current_household = household;
-        //-------------------------------------------
+    public void register(String name, String email, String password) {
 
         //Encode POST values to send to HTTP Server
         String enc_pass = null;
@@ -67,8 +65,8 @@ public class household_member_class {
         //Catch invalid Encoder setting exception
 
         try {
-            enc_pass = URLEncoder.encode(password, "UTF-8");
             enc_name = URLEncoder.encode(name, "UTF-8");
+            enc_pass = URLEncoder.encode(password, "UTF-8");
             enc_email= URLEncoder.encode(email, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
@@ -82,8 +80,7 @@ public class household_member_class {
             URL url = new URL ("http://housecut-145314.appspot.com/register");
 
             //Declare connection object
-            HttpURLConnection conn =
-                    (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
             //Register the user
@@ -92,6 +89,9 @@ public class household_member_class {
             conn.setRequestProperty("username", enc_name);
             conn.setRequestProperty("email", enc_email);
             conn.setRequestProperty("password", enc_pass);
+
+
+
 
 			/*If Response code isn't 200, throw exception.*/
 
@@ -106,13 +106,12 @@ public class household_member_class {
             out.write("username:" + enc_name);		//what will be written..
             out.write("email:" + enc_email);
             out.write("password:" + enc_pass);
-            out.close();	//flush?
+            out.close();	//flush?  .writeBytes?
 
 			/*If HTTP connection fails, throw exception*/
 
             if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                throw new RuntimeException("Failed : HTTP Error code : "
-                        + conn.getResponseCode());
+                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
             }
 
             //To test what the server outputs
@@ -142,27 +141,23 @@ public class household_member_class {
     //calls household_member_class & just passes in the new password, as well as original data
     public void changePassword(String new_pass) {
 
-        register(new_pass, getName(), getEmail());
+        register(getName(), getEmail(), new_pass);
 
         password = new_pass;
     }
 
-	/* Mirror code of /register, but uses endpoint /deleteaccount & token instead of username: Second iteration will refactor into single httpGet function. */
+		/* Uses endpoint /deleteaccount & token */
 
-    public void deleteAccount(String email, String password, String token) {
+    public void deleteAccount(String token) {
 
-        //Encode POST values to send to HTTP Server
-        String enc_email = null;
-        String enc_pass = null;
+        //Encode token to send to HTTP Server
         String enc_token = null;
 
         //Catch invalid Encoder setting exception
 
         try {
-            enc_email = URLEncoder.encode(email, "UTF-8");
-            enc_pass  = URLEncoder.encode(password, "UTF-8");
-            enc_token = URLEncoder.encode(token, "UTF-8");
 
+            enc_token = URLEncoder.encode(token, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -182,8 +177,6 @@ public class household_member_class {
             //Delete the user
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("email", enc_email);
-            conn.setRequestProperty("password", enc_pass);
             conn.setRequestProperty("token", enc_token);
 
 
@@ -197,8 +190,6 @@ public class household_member_class {
             //Opens up an outputstreamwriter for writing to server
 
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-            out.write("email:" + enc_email);
-            out.write("password:" + enc_pass);
             out.write("token:" + enc_token);
             out.close();	//flush?
 
@@ -236,21 +227,22 @@ public class household_member_class {
 
 
 	/*	//log user out of account
-	public logout() {
+	public void logout() {
 
 
 	}*/
 
 
-    public void joinHousehold() {
+    public void joinHousehold(String h) {
 
-        //TODO : Join a certain household
+        //Join a certain household
 
-        //if (current_household == null)
-        //....
-        //else
-        //cout << "You must leave your current household first.\n";
-
+        if (current_household == null)
+            current_household = h;
+        else
+            System.out.println("You must leave your current household first.\n");
+        //Might have to call a popup error, or simply not let the user have the option to
+        //join Household until they have left their current one
     }
 
     //user leaves current_household

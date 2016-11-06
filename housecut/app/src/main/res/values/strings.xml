@@ -2,4 +2,5 @@
 <resources>
     <string name="login_result" />
     <string name="app_name">Housecut</string>
+    <string name="register_result" />
 </resources>

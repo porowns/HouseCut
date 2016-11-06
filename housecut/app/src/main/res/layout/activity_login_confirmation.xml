@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Small Page with only a text view confirming login -->
+<!-- Note: We know this looks terrible, it's just a holder -->
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- The text view, displays the confirmation text -->
     <TextView
         android:id="@+id/login_confirmation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_result"
+        android:text="You have successfully logged in!"
         android:textSize="48dp"
         android:textAllCaps="true"
         android:layout_centerHorizontal="true"

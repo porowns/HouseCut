@@ -1,4 +1,6 @@
+package com.housecut.housecut.household_member_class_folder;
 //Code by: Adam Faulkner
+//Debugging by: Jose Fernandes
 //10/09/2016
 //class testing, V.1.0
 

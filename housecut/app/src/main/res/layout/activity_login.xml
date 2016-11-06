@@ -1,4 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 
+<!--    The first page that greets you when you open the app,
+        it is where the user can choose to either log into the
+        app, or to register for a new household.                -->
+
+<!-- Main Holder Layout -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
