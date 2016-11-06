@@ -23,7 +23,8 @@
     "jwt-decode": "^2.1.0",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.2",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "schema-object": "^4.0.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",
