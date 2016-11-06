@@ -1,4 +1,4 @@
-package com.housecut.housecut;
+package com.example.android.housecut;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

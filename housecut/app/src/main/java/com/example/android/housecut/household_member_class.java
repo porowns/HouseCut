@@ -1,4 +1,4 @@
-package com.housecut.housecut;
+package com.example.android.housecut;
 //Code by: Adam Faulkner
 //Debugging by: Jose Fernandes
 //10/09/2016
