@@ -121,8 +121,6 @@ module.exports.loginAndGetRoommates = function(data, callback) {
   });
 };
 
-/* TODO: write createHousehold and deleteHousehold */
-
 // Implemented by Kaleb
 module.exports.createHousehold = function(data,callback) {
   chai.request(config.hostname)
@@ -146,7 +144,7 @@ module.exports.joinHousehold = function(data,callback) {
 }
 
 // Implemented by Kaleb
-module.exports.deletehousehold = function(data,callback) {
+module.exports.deleteHousehold = function(data,callback) {
   chai.request(config.hostname)
     .post('/deletehousehold')
     .send(data)

@@ -7,24 +7,33 @@ var chaiHttp = require('chai-http');
 var should = chai.should();
 chai.use(chaiHttp);
 
+var config = require('./../../config');
 var utilities = require('./../utilities.js');
 
-/*
 describe('setAdminSuccessTests', function() {
+  var token;
   beforeEach(function(done) {
     utilities.makeCleanAccount({
       email: 'test@test',
       password: 'test123',
       username: 'test_username'
-    }, function() {
-      utilities.createHousehold({
-        houseHoldName: 'test_household',
-        houseHoldPassword: 'household123',
-      }, done);
+    }, function(err, res) {
+      utilities.loginToAccount({
+        email: 'test@test',
+        password: 'test123'
+      }, function(err, res) {
+        token = res.res.body.token;
+        utilities.createHousehold({
+          token: token,
+          houseHoldName: 'test_household',
+          houseHoldPassword: 'household123',
+        }, done);
+      });
     });
   });
   afterEach(function(done) {
     utilities.deleteHousehold({
+      token: token,
       houseHoldName: 'test_household',
       houseHoldPassword: 'household123',
     }, function() {
@@ -51,20 +60,29 @@ describe('setAdminSuccessTests', function() {
 });
 
 describe('setAdminFailureTests', function() {
+  var token;
   beforeEach(function(done) {
     utilities.makeCleanAccount({
       email: 'test@test',
       password: 'test123',
       username: 'test_username'
-    }, function() {
-      utilities.createHousehold({
-        houseHoldName: 'test_household',
-        houseHoldPassword: 'household123',
-      }, done);
+    }, function(err, res) {
+      utilities.loginToAccount({
+        email: 'test@test',
+        password: 'test123'
+      }, function(err, res) {
+        token = res.res.body.token;
+        utilities.createHousehold({
+          token: token,
+          houseHoldName: 'test_household',
+          houseHoldPassword: 'household123',
+        }, done);
+      });
     });
   });
   afterEach(function(done) {
     utilities.deleteHousehold({
+      token: token,
       houseHoldName: 'test_household',
       houseHoldPassword: 'household123',
     }, function() {
@@ -75,14 +93,12 @@ describe('setAdminFailureTests', function() {
     });
   });
   describe('No token/data', function() {
-    it('returns success false', function(done) {
+    it('returns forbidden', function(done) {
       chai.request(config.hostname)
         .post('/setadmin')
-        .send(data)
+        .send({})
         .end(function(err, res) {
-          res.should.have.status(200);
-          res.res.body.should.have.property('success');
-          res.res.body.success.should.be.eql(false);
+          res.should.have.status(403);
           done();
         });
     });
@@ -94,10 +110,9 @@ describe('setAdminFailureTests', function() {
         password: 'test123'
       }, function(err, res) {
         if (res.res.body.success) {
-          data['token'] = token;
           chai.request(config.hostname)
             .post('/setadmin')
-            .send({})
+            .send({ token: res.res.body.token })
             .end(function(err, res) {
               res.should.have.status(200);
               res.res.body.should.have.property('success');
@@ -159,7 +174,7 @@ describe('setAdminFailureTests', function() {
         email: 'test2@test2',
         password: 'test123',
         username: 'test_username2'
-      }, function(
+      }, function() {
         utilities.loginToAccount({
           email: 'test2@test2',
           password: 'test123'
@@ -202,4 +217,3 @@ describe('setAdminFailureTests', function() {
     });
   });
 });
-*/

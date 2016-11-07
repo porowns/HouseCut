@@ -103,14 +103,12 @@ describe('deleteAccountFailureTests', function() {
         password: 'test123'
       }, done);
     });
-    it('has success false', function(done) {
+    it('returns forbidden', function(done) {
       chai.request(config.hostname)
         .post('/deleteaccount')
         .send({ email: 'test@test', password: 'test123' })
         .end(function(err, res) {
           res.should.have.status(403);
-          res.res.body.should.have.property('success');
-          res.res.body.success.should.be.eql(false);
           done();
         });
     });

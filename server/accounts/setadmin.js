@@ -116,7 +116,7 @@ var setUserAdminAndResponse = function(userId, setAdmin, res, callback) {
     if (r && r.ok) {
       res.json({
         success: true,
-        message: 'userId' + userId + ' admin set to ' + setAdmin
+        message: 'userId ' + userId + ' admin set to ' + setAdmin
       });
       if (callback)
         callback(true);
