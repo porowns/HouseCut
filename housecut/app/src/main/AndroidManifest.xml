@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.housecut">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -11,22 +12,30 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
             android:name=".login_activity"
+            android:label="Login Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action
+                    android:name="android.intent.action.MAIN" />
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".register_activity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.REGISTER" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:label="Register Activity" />
 
+        <activity
+            android:name=".register_confirmation_activity"
+            android:label="Register Confirmation Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity
+            android:name=".login_confirmation_activity"
+            android:label="Login Confirmation Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
     </application>
 
