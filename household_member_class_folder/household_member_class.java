@@ -13,6 +13,10 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder; 
+import java.lang.Object.org.json.JSONObject;
+import org.json.JSONObject;
+//import javax.json.Json;
+//import javax.json.JsonObject;
 
 
 /*House member class*/
@@ -86,11 +90,19 @@ public class household_member_class {
 			//Register the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
+		//conn.setRequestProperty(Content-Type, application/json);
 		conn.setRequestProperty("username", enc_name);
 		conn.setRequestProperty("email", enc_email);
 		conn.setRequestProperty("password", enc_pass);
 		
-	
+		//If i need to do JSON...
+	//	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email \passwor
+		
+		JSONObject send_data = new JSONObject();
+		send_data.put("username", enc_name);
+		send_data.put("email", enc_email);
+		send_data.put("password", enc_pass);
+		
 		//Opens up an outputstreamwriter for writing to server
 		
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
@@ -110,14 +122,18 @@ public class household_member_class {
 							new InputStreamReader(
 								conn.getInputStream()));
 				
-		String dataString;
+		String result;
 		System.out.println("Output from Server .... \n");
-		while ((dataString = in.readLine()) != null) {
-			System.out.println(dataString);
+		while ((result = in.readLine()) != null) {
+			System.out.println(result);
 		}
 		
-		in.close();
-				
+			//JSON string returned by server
+		JSONObject data = new JSONObject(result);
+		String name = data.getString("username");
+		
+		
+		in.close();			
 		conn.disconnect();
 		
 	} catch (MalformedURLException e) {
