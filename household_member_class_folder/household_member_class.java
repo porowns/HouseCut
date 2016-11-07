@@ -54,7 +54,7 @@ public class household_member_class {
 		this.register(n, e, p);
 	}
 	
-	
+		/*Function that will register a house member via REST API requests*/
 	public void register(String name, String email, String password) {
 	
 			 //Encode POST values to send to HTTP Server
@@ -89,15 +89,6 @@ public class household_member_class {
 		conn.setRequestProperty("username", enc_name);
 		conn.setRequestProperty("email", enc_email);
 		conn.setRequestProperty("password", enc_pass);
-		
-		
-		
-		
-			/*If Response code isn't 200, throw exception.*/
-		
-		if (conn.getResponseCode() != 200) {
-			throw new IOException(conn.getResponseMessage());
-		}
 		
 	
 		//Opens up an outputstreamwriter for writing to server
