@@ -25,7 +25,8 @@ public class register_activity extends AppCompatActivity {
     private EditText mEmailConfirmView;
     private EditText mPasswordConfirmView;
     private EditText mUsernameView;
-
+    private EditText mEmailView;
+    private EditText mPasswordView;
 
 
 
@@ -34,40 +35,45 @@ public class register_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+
+
         mUsernameView = (EditText) findViewById(R.id.username);
         mEmailConfirmView = (EditText) findViewById(R.id.emailConfirm);
         mPasswordConfirmView = (EditText) findViewById(R.id.passwordConfirm);
+        mEmailView = (EditText) findViewById(R.id.email);
+        mPasswordView = (EditText) findViewById(R.id.password);
 
-
-
-        final String email = mEmailConfirmView.getText().toString();
-        final String password = mPasswordConfirmView.getText().toString();
-        final String username = mUsernameView.getText().toString();
 
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_user_button);
 
 
         mEmailRegisterButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                AsyncTaskRunner runner = new AsyncTaskRunner();
-                runner.doInBackground(password, username, email);
-                Intent intent = new Intent(register_activity.this, register_confirmation_activity.class);
-                startActivity(intent);
+                RegisterButton();
             }
         });
 
     }
 
+    public void RegisterButton() {
+        final String email = mEmailConfirmView.getText().toString();
+        final String password = mPasswordConfirmView.getText().toString();
+        final String username = mUsernameView.getText().toString();
+
+        AsyncTaskRunner runner = new AsyncTaskRunner();
+        runner.execute(password, username, email);
+
+    }
 
     class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
             household_member_class house = new household_member_class(params[0], params[1], params[2]);
-            return "All done!";
+            return "All Done";
         }
+
     }
 
 
