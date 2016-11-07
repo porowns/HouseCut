@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URLEncoder;
+import java.net.URLEncoder; 
 
 
 /*House member class*/
@@ -94,20 +94,21 @@ public class household_member_class {
 		//Opens up an outputstreamwriter for writing to server
 		
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-		out.write("username:" + enc_name);		//what will be written..
-		out.write("email:" + enc_email);
-		out.write("password:" + enc_pass);
+		out.write("username=" + enc_name);		//what will be written..
+		out.write("email=" + enc_email);
+		out.write("password=" + enc_pass);
 		out.close();	//flush?  .writeBytes?
 		
 			/*If HTTP connection fails, throw exception*/
-
+				//might ought to be 200
 		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 			throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
 		}
 		
-			//To test what the server outputs
+			//To test what the server outputs AND finish sending request
 		BufferedReader in = new BufferedReader(
-				new InputStreamReader((conn.getInputStream())));
+							new InputStreamReader(
+								conn.getInputStream()));
 				
 		String dataString;
 		System.out.println("Output from Server .... \n");
