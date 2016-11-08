@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.android.housecut.household_member_class;
 
 /**
  * Created by nick, jose and adam on 10/18/16.
@@ -57,15 +56,68 @@ public class register_activity extends AppCompatActivity {
     }
 
     public void RegisterButton() {
-        final String email = mEmailConfirmView.getText().toString();
-        final String password = mPasswordConfirmView.getText().toString();
-        final String username = mUsernameView.getText().toString();
+        String email = mEmailConfirmView.getText().toString();
+        String password = mPasswordConfirmView.getText().toString();
+        String username = mUsernameView.getText().toString();
 
         AsyncTaskRunner runner = new AsyncTaskRunner();
-        runner.execute(password, username, email);
+        runner.execute(username, email, password);
+        registrationConfirmationPage();
+/*
+        if(ValidInput(username, email, password)) {
+            AsyncTaskRunner runner = new AsyncTaskRunner();
+            runner.execute(username, email, password);
+            registrationConfirmationPage();
+        }
+        else {
+            while(!ValidInput(username, email, password)) {
+                email = mEmailConfirmView.getText().toString();
+                password = mPasswordConfirmView.getText().toString();
+                username = mUsernameView.getText().toString();
+
+                AsyncTaskRunner runner = new AsyncTaskRunner();
+                runner.execute(username, email, password);
+                registrationConfirmationPage();
+            }
+        }
+*/
+
+    }
+/*
+    public boolean ValidInput(String username, String email, String password) {
+        if (!CheckUsername(username))
+            return false;
+        else if (!CheckEmail(username))
+            return false;
+        else if (!CheckPassword(username))
+            return false;
+        else
+            return true;
+
 
     }
 
+    public boolean CheckEmail(String Email) {
+        String emailConfirm = mEmailView.getText().toString();
+        if(emailConfirm == Email)
+            return true;
+        else
+            return false;
+    }
+    public boolean CheckPassword(String Pass) {
+        String passConfirm = mPasswordView.getText().toString();
+        if(passConfirm == Pass)
+            return true;
+        else
+            return false;
+    }
+    public boolean CheckUsername(String User) {
+        if(User.length() > 3)
+            return true;
+        else
+            return false;
+    }
+*/
     class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         @Override
@@ -74,6 +126,10 @@ public class register_activity extends AppCompatActivity {
             return "All Done";
         }
 
+    }
+    public void registrationConfirmationPage() {
+        Intent intent = new Intent(register_activity.this, register_confirmation_activity.class);
+        startActivity(intent);
     }
 
 

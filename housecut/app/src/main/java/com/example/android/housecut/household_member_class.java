@@ -1,7 +1,7 @@
 package com.example.android.housecut;
 //Code by: Adam Faulkner
-//Debugging by: Jose Fernandes
-//10/09/2016
+//Debugging by: Jose Fernandes and Nick Johnson
+//11/08/2016
 //class testing, V.1.0
 
 import java.io.BufferedReader;
@@ -13,6 +13,9 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 
 /*House member class*/
@@ -25,7 +28,7 @@ public class household_member_class {
     protected String current_household;
     protected String user_name;
     protected String name;
-    protected String request = "http://housecut-145314.appspot.com/";	//this might not be needed
+    protected String request = "http://housecut-145314.appspot.com/";
     protected int ID;
     protected String password;
     protected String email;
@@ -54,7 +57,7 @@ public class household_member_class {
         this.register(n, e, p);
     }
 
-
+    /*Function that will register a house member via REST API requests*/
     public void register(String name, String email, String password) {
 
         //Encode POST values to send to HTTP Server
@@ -64,14 +67,16 @@ public class household_member_class {
 
         //Catch invalid Encoder setting exception
 
-        try {
+        System.out.println(email);
+
+        /*try {
             enc_name = URLEncoder.encode(name, "UTF-8");
             enc_pass = URLEncoder.encode(password, "UTF-8");
             enc_email= URLEncoder.encode(email, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
         try {
 
@@ -82,50 +87,67 @@ public class household_member_class {
             //Declare connection object
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-
-            //Register the user
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("username", enc_name);
-            conn.setRequestProperty("email", enc_email);
-            conn.setRequestProperty("password", enc_pass);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+           // conn.setRequestProperty("username", enc_name);
+           // conn.setRequestProperty("email", enc_email);
+            //conn.setRequestProperty("password", enc_pass);
 
+            //If i need to do JSON...
+            //	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email
 
-
-
-			/*If Response code isn't 200, throw exception.*/
-
-            if (conn.getResponseCode() != 200) {
-                throw new IOException(conn.getResponseMessage());
-            }
-
+            //Creates JSON string to write to server via POST
+            JSONObject json = new JSONObject();
+            json.put("username", name);
+                //System.out.println(name);
+            json.put("email", email);
+                //System.out.println(email);
+            json.put("password", password);
+                //System.out.println(password);
+            String requestBody = json.toString();
 
             //Opens up an outputstreamwriter for writing to server
+            //retrieve output stream that matches with Server input stream..
+            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            //out.write("username=" + enc_name);
+            //out.write("email=" + enc_email);
+            //out.write("password=" + enc_pass);
 
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-            out.write("username:" + enc_name);		//what will be written..
-            out.write("email:" + enc_email);
-            out.write("password:" + enc_pass);
+            //OR, with JSON....
+            out.write(json.toString());
+
             out.close();	//flush?  .writeBytes?
 
 			/*If HTTP connection fails, throw exception*/
-
+            //might ought to be 200
             if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
+                //throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
             }
 
-            //To test what the server outputs
+            //To test what the server outputs AND finish sending request
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader((conn.getInputStream())));
+                                new InputStreamReader(
+                            conn.getInputStream()));
 
-            String dataString;
+            //StringBuffer will hold JSON string
+            StringBuffer result = new StringBuffer();
+            String line = "";
             System.out.println("Output from Server .... \n");
-            while ((dataString = in.readLine()) != null) {
-                System.out.println(dataString);
+            while ((line = in.readLine()) != null) {
+                System.out.println(result);
+                result.append(line);
             }
+
+            //JSON string returned by server
+            JSONObject data = new JSONObject(String.valueOf(result));
+            //String named = data.getString("username");
+
+            System.out.println(data);
+
 
             in.close();
-
             conn.disconnect();
 
         } catch (MalformedURLException e) {
@@ -135,7 +157,10 @@ public class household_member_class {
         } catch (IOException e) {
 
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
     }
 
     //calls household_member_class & just passes in the new password, as well as original data
@@ -146,8 +171,7 @@ public class household_member_class {
         password = new_pass;
     }
 
-		/* Uses endpoint /deleteaccount & token */
-
+    /* Uses endpoint /deleteaccount & token */
     public void deleteAccount(String token) {
 
         //Encode token to send to HTTP Server
@@ -165,6 +189,10 @@ public class household_member_class {
 
         try {
 
+            //For JSON..
+            JSONObject jsonToken = new JSONObject();
+            jsonToken.put("token", token);
+
             //Open a connection (to the server) for POST
 
             URL url = new URL ("http://housecut-145314.appspot.com/deleteaccount");
@@ -178,13 +206,7 @@ public class household_member_class {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("token", enc_token);
-
-
-			/* If Response code isn't 200, throw exception. */
-
-            if (conn.getResponseCode() != 200) {
-                throw new IOException(conn.getResponseMessage());
-            }
+            conn.setRequestProperty("Content-Type", "application/json");
 
 
             //Opens up an outputstreamwriter for writing to server
@@ -193,25 +215,33 @@ public class household_member_class {
             out.write("token:" + enc_token);
             out.close();	//flush?
 
-			/* If HTTP connection fails, throw exception. */
+			/* If Response code isn't 200, throw exception. */
 
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                throw new RuntimeException("Failed : HTTP Error code : "
-                        + conn.getResponseCode());
+            if (conn.getResponseCode() != 200) {
+                throw new IOException(conn.getResponseMessage());
             }
+
+			/* If HTTP connection fails, throw exception.
+
+		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+			throw new RuntimeException("Failed : HTTP Error code : "
+				+ conn.getResponseCode());
+		}*/
 
             //To test what the server outputs
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader((conn.getInputStream())));
+                    new InputStreamReader(
+                            (conn.getInputStream())));
 
-            String dataString;
+            StringBuffer result = new StringBuffer();
+            String line = null;
             System.out.println("Output from Server .... \n");
-            while ((dataString = in.readLine()) != null) {
-                System.out.println(dataString);
+            while ((line = in.readLine()) != null) {
+                System.out.println(line);
+                result.append(line);
             }
 
             in.close();
-
             conn.disconnect();
 
         } catch (MalformedURLException e) {
@@ -220,6 +250,8 @@ public class household_member_class {
 
         } catch (IOException e) {
 
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

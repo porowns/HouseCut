@@ -4,18 +4,18 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:gravity="center_horizontal"
-    android:background="@drawable/living_room"
     tools:context="com.example.android.housecut.register_activity"
     >
 
     <!-- Background -->
     <ImageView
         android:id="@+id/bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/living_room"
+        android:src="@mipmap/living_room"
+
         android:contentDescription="Login and Register Background" />
 
 

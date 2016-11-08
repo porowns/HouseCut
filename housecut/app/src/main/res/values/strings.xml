@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_result" />
     <string name="app_name">Housecut</string>
-    <string name="register_result" />
 </resources>
