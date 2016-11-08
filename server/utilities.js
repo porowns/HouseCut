@@ -31,12 +31,17 @@ module.exports.checkUserIsInHousehold = function(userId, householdId, callback) 
     }
     if (hh) {
       if (userId) {
-        var index = hh.householdMembers.indexOf(userId);
-        if (index == -1) {
-          callback(false);
+        if (Array.isArray(hh.HouseholdMembers) && hh.HouseholdMembers.length > 0) {
+          var index = hh.HouseholdMembers.indexOf(userId);
+          if (index == -1) {
+            callback(false);
+          }
+          else {
+            callback(hh);
+          }
         }
         else {
-          callback(hh);
+          callback(false);
         }
       }
     }
@@ -168,12 +173,22 @@ module.exports.removeUserFromHousehold = function(userId, householdId, callback)
 module.exports.getNumAdmins = function(hh, callback) {
   var roommates = hh.HouseholdMembers;
   var numAdmins = 0;
+  var count = 0;
   for (var i = 0; i < roommates.length; i++) {
-    if (roommates[i].admin) {
-      numAdmins++;
-    }
+    User.findOne({ '_id': roommates[i] }, function(err, u) {
+      if (err) throw err;
+      if (u) {
+        if (u.admin) {
+          numAdmins++;
+        }
+      }
+      count++;
+      if (count === roommates.length) {
+        if (callback)
+          callback(numAdmins);
+      }
+    });
   }
-  callback(numAdmins);
 };
 
 /* Implemented by Chris */
