@@ -90,13 +90,14 @@ public class household_member_class {
 			//Register the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		//conn.setRequestProperty(Content-Type, application/json);
+		//conn.setRequestProperty("Content-Type", application/json);
+		//conn.setRequestProperty("Accept", "application/json");
 		conn.setRequestProperty("username", enc_name);
 		conn.setRequestProperty("email", enc_email);
 		conn.setRequestProperty("password", enc_pass);
 		
 		//If i need to do JSON...
-	//	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email \passwor
+		//	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email \passwor
 		
 		JSONObject send_data = new JSONObject();
 		send_data.put("username", enc_name);
@@ -105,10 +106,14 @@ public class household_member_class {
 		
 		//Opens up an outputstreamwriter for writing to server
 		
-		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-		out.write("username=" + enc_name);		//what will be written..
+		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");	//retrieve output stream that matches with Server input stream
+		out.write("username=" + enc_name);
 		out.write("email=" + enc_email);
 		out.write("password=" + enc_pass);
+		
+			//OR, with JSON....
+		send_data.write(out);
+		
 		out.close();	//flush?  .writeBytes?
 		
 			/*If HTTP connection fails, throw exception*/
@@ -121,11 +126,14 @@ public class household_member_class {
 		BufferedReader in = new BufferedReader(
 							new InputStreamReader(
 								conn.getInputStream()));
-				
-		String result;
+			
+			//StringBuffer will hold JSON string
+		StringBuffer result = new StringBuffer();
+		String line = null;
 		System.out.println("Output from Server .... \n");
-		while ((result = in.readLine()) != null) {
+		while ((line = in.readLine()) != null) {
 			System.out.println(result);
+			result.append(line);
 		}
 		
 			//JSON string returned by server
@@ -144,6 +152,7 @@ public class household_member_class {
 		
 		e.printStackTrace();
 	}
+	
 	}
 	
 		//calls household_member_class & just passes in the new password, as well as original data
