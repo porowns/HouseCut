@@ -13,10 +13,8 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
-import java.lang.Object.org.json.JSONObject;
 import org.json.JSONObject;
-//import javax.json.Json;
-//import javax.json.JsonObject;
+import org.json.JSONException;
 
 
 /*House member class*/
@@ -59,23 +57,19 @@ public class household_member_class {
 	}
 
 		/*Function that will register a house member via REST API requests*/
-	public void register(String name, String email, String password) {
-
-			 //Encode POST values to send to HTTP Server
-        String enc_pass = null;
-        String enc_name = null;
-        String enc_email = null;
+	public void register(String username, String email, String password) {
+				//register assumes correct user input
 
 		//Catch invalid Encoder setting exception
 
-	try {
-		    enc_name = URLEncoder.encode(name, "UTF-8");
+	/*try {
+		    		enc_name = URLEncoder.encode(username, "UTF-8");
             enc_pass = URLEncoder.encode(password, "UTF-8");
             enc_email= URLEncoder.encode(email, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
 	try {
 
@@ -88,48 +82,42 @@ public class household_member_class {
 
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		//conn.setRequestProperty("Content-Type", "application/json");
-		//conn.setRequestProperty("Accept", "application/json");
-		conn.setRequestProperty("username", enc_name);
-		conn.setRequestProperty("email", enc_email);
-		conn.setRequestProperty("password", enc_pass);
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("Accept", "application/json");
 
 		//If i need to do JSON...
 		//	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email
 
 			//Creates JSON string to write to server via POST
 		JSONObject json = new JSONObject();
-		json.put("username", enc_name);
-		json.put("email", enc_email);
-		json.put("password", enc_pass);
+		json.put("username", username);
+		json.put("email", email);
+		json.put("password", password);
 		String requestBody = json.toString();
 
 		//Opens up an outputstreamwriter for writing to server
 				//retrieve output stream that matches with Server input stream..
 		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-		out.write("username=" + enc_name);
-		out.write("email=" + enc_email);
-		out.write("password=" + enc_pass);
 
 			//OR, with JSON....
-		json.write(out);
+		out.write(requestBody);
 
 		out.close();	//flush?  .writeBytes?
 
 			/*If HTTP connection fails, throw exception*/
 				//might ought to be 200
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+	/*	if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 			throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
 		}
-
+		*/
 			//To test what the server outputs AND finish sending request
 		BufferedReader in = new BufferedReader(
-							new InputStreamReader(
-								conn.getInputStream()));
+												new InputStreamReader(
+														conn.getInputStream()));
 
 			//StringBuffer will hold JSON string
 		StringBuffer result = new StringBuffer();
-		String line = null;
+		String line = "";
 		System.out.println("Output from Server .... \n");
 		while ((line = in.readLine()) != null) {
 			System.out.println(result);
@@ -138,7 +126,9 @@ public class household_member_class {
 
 			//JSON string returned by server
 		JSONObject data = new JSONObject(result);
-		String name = data.getString("username");
+		String success = data.getString("success");
+
+		//error checking here
 
 
 		in.close();
@@ -149,6 +139,9 @@ public class household_member_class {
 		e.printStackTrace();
 
 	} catch (IOException e) {
+
+		e.printStackTrace();
+	} catch (JSONException e) {
 
 		e.printStackTrace();
 	}
