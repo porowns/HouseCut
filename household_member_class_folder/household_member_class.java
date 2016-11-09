@@ -102,7 +102,7 @@ public class household_member_class {
 			//OR, with JSON....
 		out.write(requestBody);
 
-		out.close();	//flush?  .writeBytes?
+		out.close();
 
 			/*If HTTP connection fails, throw exception*/
 				//might ought to be 200
@@ -174,9 +174,10 @@ public class household_member_class {
 
 	try {
 
-			//For JSON..
+				//For JSON..
 			JSONObject jsonToken = new JSONObject();
 			jsonToken.put("token", token);
+			String requestBody = jsonToken.toString();
 
 			//Open a connection (to the server) for POST
 
@@ -186,19 +187,17 @@ public class household_member_class {
 		HttpURLConnection conn =
 				(HttpURLConnection) url.openConnection();
 
-
 			//Delete the user
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("token", enc_token);
 		conn.setRequestProperty("Content-Type", "application/json");
-
+		conn.setRequestProperty("Accept", "application/json");
 
 			//Opens up an outputstreamwriter for writing to server
 
-		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-		out.write("token:" + enc_token);
-		out.close();	//flush?
+		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+		out.write(requestBody);
+		out.close();
 
 			/* If Response code isn't 200, throw exception. */
 
@@ -219,11 +218,23 @@ public class household_member_class {
 														(conn.getInputStream())));
 
 		StringBuffer result = new StringBuffer();
-		String line = null;
+		String line = "";
 		System.out.println("Output from Server .... \n");
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
 			result.append(line);
+		}
+
+			//JSON string returned by server
+		JSONObject data = new JSONObject(result);
+		Bool success = data.getBoolean("success");
+
+			//error checking
+		if (success == true)
+			System.out.println("Account has been deleted.");
+		else {
+			String message = data.getString("message");
+
 		}
 
 		in.close();
@@ -234,6 +245,10 @@ public class household_member_class {
 		e.printStackTrace();
 
 	} catch (IOException e) {
+
+		e.printStackTrace();
+
+	} catch (JSONException e) {
 
 		e.printStackTrace();
 	}
