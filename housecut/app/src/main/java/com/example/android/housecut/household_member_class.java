@@ -1,7 +1,7 @@
 package com.example.android.housecut;
 //Code by: Adam Faulkner
-//Debugging by: Jose Fernandes and Nick Johnson
-//11/08/2016
+//Debugging by: Jose Fernandes
+//10/09/2016
 //class testing, V.1.0
 
 import java.io.BufferedReader;
@@ -13,9 +13,8 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
-import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.json.JSONException;
 
 
 /*House member class*/
@@ -29,10 +28,12 @@ public class household_member_class {
     protected String user_name;
     protected String name;
     protected String request = "http://housecut-145314.appspot.com/";
-    protected int ID;
+    protected String id;
+    protected String token;
     protected String password;
     protected String email;
     protected String role = "member"; // roles can be member or admin
+    protected String errorMessage;
 
 
 
@@ -43,7 +44,7 @@ public class household_member_class {
         this.current_household = "null";
         this.name = "null";
         this.email = "null";
-        this.ID = 0;
+        this.id = "";
     }
 
 
@@ -58,25 +59,8 @@ public class household_member_class {
     }
 
     /*Function that will register a house member via REST API requests*/
-    public void register(String name, String email, String password) {
-
-        //Encode POST values to send to HTTP Server
-        String enc_pass = null;
-        String enc_name = null;
-        String enc_email = null;
-
-        //Catch invalid Encoder setting exception
-
-        System.out.println(email);
-
-        /*try {
-            enc_name = URLEncoder.encode(name, "UTF-8");
-            enc_pass = URLEncoder.encode(password, "UTF-8");
-            enc_email= URLEncoder.encode(email, "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
+    public boolean register(String username, String email, String password) {
+        //register assumes correct user input
 
         try {
 
@@ -91,44 +75,35 @@ public class household_member_class {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
-           // conn.setRequestProperty("username", enc_name);
-           // conn.setRequestProperty("email", enc_email);
-            //conn.setRequestProperty("password", enc_pass);
 
             //If i need to do JSON...
             //	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email
 
             //Creates JSON string to write to server via POST
             JSONObject json = new JSONObject();
-            json.put("username", name);
-                //System.out.println(name);
+            json.put("username", username);
             json.put("email", email);
-                //System.out.println(email);
             json.put("password", password);
-                //System.out.println(password);
             String requestBody = json.toString();
 
             //Opens up an outputstreamwriter for writing to server
             //retrieve output stream that matches with Server input stream..
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-            //out.write("username=" + enc_name);
-            //out.write("email=" + enc_email);
-            //out.write("password=" + enc_pass);
 
             //OR, with JSON....
-            out.write(json.toString());
+            out.write(requestBody);
 
-            out.close();	//flush?  .writeBytes?
+            out.close();
 
 			/*If HTTP connection fails, throw exception*/
             //might ought to be 200
-            if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-                //throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-            }
-
+	/*	if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+			throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
+		}
+		*/
             //To test what the server outputs AND finish sending request
             BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
+                    new InputStreamReader(
                             conn.getInputStream()));
 
             //StringBuffer will hold JSON string
@@ -141,14 +116,27 @@ public class household_member_class {
             }
 
             //JSON string returned by server
-            JSONObject data = new JSONObject(String.valueOf(result));
-            //String named = data.getString("username");
+            JSONObject data = new JSONObject(result.toString());
+            boolean success = data.getBoolean("success");
 
-            System.out.println(data);
+            //error checking
+            if (success == true)
+                System.out.println("Account has been deleted.");
+            else {
+                String message = data.getString("message");
 
+                //Set protected member string "errorMessage" to the server error message
+                errorMessage = message;
+                //return true/false based on server response
 
+            }
+
+            //Closes everything
             in.close();
             conn.disconnect();
+
+            //Returns the condition
+            return success;
 
         } catch (MalformedURLException e) {
 
@@ -158,9 +146,10 @@ public class household_member_class {
 
             e.printStackTrace();
         } catch (JSONException e) {
+
             e.printStackTrace();
         }
-
+        return false;
     }
 
     //calls household_member_class & just passes in the new password, as well as original data
@@ -172,26 +161,14 @@ public class household_member_class {
     }
 
     /* Uses endpoint /deleteaccount & token */
-    public void deleteAccount(String token) {
-
-        //Encode token to send to HTTP Server
-        String enc_token = null;
-
-        //Catch invalid Encoder setting exception
-
-        try {
-
-            enc_token = URLEncoder.encode(token, "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public boolean deleteAccount(String token) {
 
         try {
 
             //For JSON..
             JSONObject jsonToken = new JSONObject();
             jsonToken.put("token", token);
+            String requestBody = jsonToken.toString();
 
             //Open a connection (to the server) for POST
 
@@ -201,19 +178,17 @@ public class household_member_class {
             HttpURLConnection conn =
                     (HttpURLConnection) url.openConnection();
 
-
             //Delete the user
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("token", enc_token);
             conn.setRequestProperty("Content-Type", "application/json");
-
+            conn.setRequestProperty("Accept", "application/json");
 
             //Opens up an outputstreamwriter for writing to server
 
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());	//retrieve output stream that matches with Server input stream
-            out.write("token:" + enc_token);
-            out.close();	//flush?
+            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            out.write(requestBody);
+            out.close();
 
 			/* If Response code isn't 200, throw exception. */
 
@@ -234,16 +209,34 @@ public class household_member_class {
                             (conn.getInputStream())));
 
             StringBuffer result = new StringBuffer();
-            String line = null;
+            String line = "";
             System.out.println("Output from Server .... \n");
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
                 result.append(line);
             }
 
+            //JSON string returned by server
+            JSONObject data = new JSONObject(result.toString());
+            boolean success = data.getBoolean("success");
+
+            //error checking
+            if (success == true) {
+                System.out.println("Account has been deleted.");
+            }
+            else {
+                String message = data.getString("message");
+
+                //Set protected member string "errorMessage" to the server error message
+                errorMessage = message;
+                //return true/false based on server response
+            }
+
             in.close();
             conn.disconnect();
 
+            //Once everything has been closed, the result is returned
+            return success;
         } catch (MalformedURLException e) {
 
             e.printStackTrace();
@@ -251,9 +244,12 @@ public class household_member_class {
         } catch (IOException e) {
 
             e.printStackTrace();
+
         } catch (JSONException e) {
+
             e.printStackTrace();
         }
+        return false;
 
     }
 
@@ -302,9 +298,21 @@ public class household_member_class {
         return email;
     }
 
+    public String getID() {
+        return id;
+    }
+
+    public String getToken() {
+        return token;	//Check
+    }
+
     //Return current_household field
     public String getHousehold() {
         return current_household;
+    }
+
+    public String errorMessage() {
+        return errorMessage;
     }
 
 }
