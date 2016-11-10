@@ -32,6 +32,7 @@ public class household_member_class {
 		protected String password;
 		protected String email;
 		protected String role = "member"; // roles can be member or admin
+		protected String errorMessage;
 
 
 
@@ -57,7 +58,7 @@ public class household_member_class {
 	}
 
 		/*Function that will register a house member via REST API requests*/
-	public void register(String username, String email, String password) {
+	public Bool register(String username, String email, String password) {
 				//register assumes correct user input
 
 		//Catch invalid Encoder setting exception
@@ -126,9 +127,18 @@ public class household_member_class {
 
 			//JSON string returned by server
 		JSONObject data = new JSONObject(result);
-		String success = data.getString("success");
+		String success = data.getBoolean("success");
 
-		//error checking here
+			//error checking
+		if (success == true)
+			System.out.println("Account has been deleted.");
+		else {
+			String message = data.getString("message");
+
+				//Set protected member string "errorMessage" to the server error message
+			errorMessage = message;
+				//return true/false based on server response
+			return success;
 
 
 		in.close();
@@ -157,20 +167,20 @@ public class household_member_class {
 	}
 
 		/* Uses endpoint /deleteaccount & token */
-	public void deleteAccount(String token) {
+	public Bool deleteAccount(String token) {
 
 			//Encode token to send to HTTP Server
-		String enc_token = null;
+		//String enc_token = null;
 
 		//Catch invalid Encoder setting exception
-
+		/*
 	try {
 
 			enc_token = URLEncoder.encode(token, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
 
 	try {
 
@@ -235,6 +245,10 @@ public class household_member_class {
 		else {
 			String message = data.getString("message");
 
+				//Set protected member string "errorMessage" to the server error message
+			errorMessage = message;
+				//return true/false based on server response
+			return success;
 		}
 
 		in.close();
@@ -303,6 +317,10 @@ public class household_member_class {
 		//Return current_household field
 	public String getHousehold() {
 		return current_household;
+	}
+
+	public String errorMessage() {
+		return errorMessage;
 	}
 
 }
