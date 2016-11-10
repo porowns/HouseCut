@@ -28,7 +28,7 @@ public class household_member_class {
 		protected String user_name;
 		protected String name;
 		protected String request = "http://housecut-145314.appspot.com/";
-		protected int ID;
+		protected String id;
 		protected String password;
 		protected String email;
 		protected String role = "member"; // roles can be member or admin
@@ -127,7 +127,7 @@ public class household_member_class {
 
 			//JSON string returned by server
 		JSONObject data = new JSONObject(result);
-		String success = data.getBoolean("success");
+		Bool success = data.getBoolean("success");
 
 			//error checking
 		if (success == true)
@@ -169,19 +169,6 @@ public class household_member_class {
 		/* Uses endpoint /deleteaccount & token */
 	public Bool deleteAccount(String token) {
 
-			//Encode token to send to HTTP Server
-		//String enc_token = null;
-
-		//Catch invalid Encoder setting exception
-		/*
-	try {
-
-			enc_token = URLEncoder.encode(token, "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-
 	try {
 
 				//For JSON..
@@ -205,7 +192,7 @@ public class household_member_class {
 
 			//Opens up an outputstreamwriter for writing to server
 
-		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+		OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 		out.write(requestBody);
 		out.close();
 
@@ -312,6 +299,10 @@ public class household_member_class {
 		//Return email field
 	public String getEmail() {
 		return email;
+	}
+
+	public String getID() {
+		return id;
 	}
 
 		//Return current_household field
