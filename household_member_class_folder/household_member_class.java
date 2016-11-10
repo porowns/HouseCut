@@ -29,6 +29,7 @@ public class household_member_class {
 		protected String name;
 		protected String request = "http://housecut-145314.appspot.com/";
 		protected String id;
+		protected String token;
 		protected String password;
 		protected String email;
 		protected String role = "member"; // roles can be member or admin
@@ -60,17 +61,6 @@ public class household_member_class {
 		/*Function that will register a house member via REST API requests*/
 	public Bool register(String username, String email, String password) {
 				//register assumes correct user input
-
-		//Catch invalid Encoder setting exception
-
-	/*try {
-		    		enc_name = URLEncoder.encode(username, "UTF-8");
-            enc_pass = URLEncoder.encode(password, "UTF-8");
-            enc_email= URLEncoder.encode(email, "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
 
 	try {
 
@@ -303,6 +293,10 @@ public class household_member_class {
 
 	public String getID() {
 		return id;
+	}
+
+	public String getToken() {
+		return token;	//Check
 	}
 
 		//Return current_household field
