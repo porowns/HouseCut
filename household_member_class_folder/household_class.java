@@ -15,8 +15,7 @@ public class household_class {
 
 	// household class constructor
 	public household_class(household_member_class admin, String name) {
-		// add the first member (the admin) to the household
-		// when the household is created
+		// add the first member (the admin) to the household when the household is created
 		household_vector.add(admin);
 		currentAdmin = household_member_class.name;
 		householdName = name;
@@ -76,7 +75,7 @@ public class household_class {
 	// rename the household
 	public void renameHousehold(string newName)
 	{
-		// make sure the new name uses valid characters: letters and numbers and it not too long
+		// make sure the new name uses valid characters: letters and numbers and it is not too long
 		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+={[}]:;"'<,>.?/]*" && (newName.length() <= 30))
 			householdName = newName;
 		   
@@ -85,7 +84,7 @@ public class household_class {
 		   
 	// Accessors
 		   
-	//returns the size of the household
+	// returns the size of the household
 	public int size()
 	{
 		return household_vector.length();
