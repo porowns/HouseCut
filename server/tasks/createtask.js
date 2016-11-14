@@ -14,7 +14,7 @@ var utilities = require('../utilities.js');
 */
 
 module.exports = function(req, res) {
-  var token = req.query.token;
+  var token = req.body.token;
   var decoded = jwtDecode(token);
   var currentUserId = decoded.id;
 
@@ -29,8 +29,8 @@ module.exports = function(req, res) {
       success: false,
       message: "Give the task a name"
     });
-  } else if ( !type || type != "Rotating" ||
-               type != "Voluntary" || type != "Assigned")
+  } else if (!type || !(type === "Rotating" ||
+               type === "Voluntary" || type === "Assigned"))
   {
     res.json({
       success: false,

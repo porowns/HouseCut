@@ -73,7 +73,7 @@ module.exports = function(req, res) {
           hashed_password: hashed_password,
           salt: salt,
           id: id,
-          householdId: 0
+          householdId: "0"
         });
 
         /* add user to database */

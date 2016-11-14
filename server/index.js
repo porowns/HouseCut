@@ -19,6 +19,7 @@ var getTaskList = require('./tasks/gettasklist.js');
 var getRoommates = require('./roommates/getroommates.js');
 var postRoommates = require('./roommates/postroommates.js');
 var createTask = require('./tasks/createtask.js');
+var deleteTask = require('./tasks/deletetask.js');
 
 
 /* config */
@@ -56,6 +57,8 @@ app.get('/household/roommates', verifyToken, getRoommates);
 app.post('/household/roommates', verifyToken, postRoommates);
 
 app.post('/household/createtask', verifyToken, createTask);
+
+app.post('/household/deletetask', verifyToken, deleteTask);
 
 /* start the server */
 app.listen(port);

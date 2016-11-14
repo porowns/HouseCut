@@ -43,6 +43,7 @@ Tasks have the following schema:
 | Add roommate | `/household/roommates`| `POST` | None | { operation: 'add', userId: [String] [will default to current user's id], householdName: [String] OPTIONAL, householdPassword: [String] OPTIONAL } | { success: true, householdId: [String] } | { success: false, message: "Explanation" } | HH name and pass NOT needed if an admin is calling this. |
 | Remove roommate | `/household/roommates`| `POST` | None | { operation: 'remove', userId: [String] [will default to current user's id] } | { success: true } | { success: false, message: "Explanation" } | Sole admins of households cannot remove themselves until they appoint a new admin first. |
 | Create task | `/household/createtask` | `POST` | None | { token: [String], name: [String], type: [String]:(one of: `Rotating`, `Voluntary`, `Unassigned`), assigned: [String]:(only required if type is `Assigned`), recurring: [Boolean], recurringIntervalDays: [Integer]:(only required if `recurring` is true) } | { success: true } | { success: false, message: "Explanation" } | |
+| Delete task | `/household/deletetask` | `POST` | None | { token: [String], taskName: [String] } | { success: true } | { success: false, message: "Explanation" } | |
 
 # Starting the server
 

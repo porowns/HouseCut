@@ -85,8 +85,8 @@ module.exports.getHouseholdFromUserId = function(userId, callback) {
     if (!user)
       return callback(false);
 
-    if (userId.householdId === undefined ||
-        userId.householdId === '0')
+    if (user.householdId === undefined ||
+        user.householdId === '0')
       return callback(false);
 
     Household.findOne({ '_id': user.householdId }, function(err, hh) {
