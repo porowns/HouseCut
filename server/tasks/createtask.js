@@ -1,6 +1,6 @@
 /* Implemented by: Simon */
 /* 'Navigated' by Chris */
-
+/* Refactored by Kaleb & Chris 11/14/2016 */
 var task = require('../models/task.js');
 var jwtDecode = require('jwt-decode');
 var Household = require('../models/household.js');
