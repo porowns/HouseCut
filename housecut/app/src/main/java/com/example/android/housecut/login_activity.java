@@ -77,7 +77,7 @@ public class login_activity extends AppCompatActivity {
 
         runner.execute(email, password);
 
-        Intent intent = new Intent(login_activity.this, login_confirmation_activity.class);
+        Intent intent = new Intent(login_activity.this, main_page_activity.class);
         startActivity(intent);
     }
 
@@ -98,7 +98,7 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
         //Catch invalid Encoder setting exception
 
-        System.out.println(email);
+        //System.out.println(email);
 
 
         try {

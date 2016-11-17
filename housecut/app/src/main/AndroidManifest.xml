@@ -37,6 +37,12 @@
             android:label="Login Confirmation Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity
+            android:name=".main_page_activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+
+
     </application>
 
 </manifest>
