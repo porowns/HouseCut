@@ -334,11 +334,94 @@ public class household_member_class {
       }
     } //End Function
 
-      //user leaves current_household
     public boolean leaveHousehold() {
-
-      if
+      this.leaveHousehold(id);  //pass in default user id
     }
+
+      //user leaves current_household
+      //OR, if Admin, can remove/kick a roommate from household
+    public boolean leaveHousehold(String userID) {
+
+      if (current_household == null)
+        return false;
+      else {
+        //Begin Server call for /joinhousehold
+    try {
+
+          //Open a connection (to the server) for POST
+        URL url = new URL ("http://housecut-145314.appspot.com/household/roommates");
+
+          //Declare connection object
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Accept", "application/json");
+
+
+          //Creates JSON string to write to server via POST
+        JSONObject json = new JSONObject();
+        json.put("operation", "remove";
+        json.put("userId", userID);
+        String requestBody = json.toString();
+
+        //Opens up an outputstreamwriter for writing to server
+            //retrieve output stream that matches with Server input stream..
+        OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+
+          //Write with JSON....
+        out.write(requestBody);
+        out.close();
+
+    /* If Response code isn't 200, throw exception. */
+
+        if (conn.getResponseCode() != 200) {
+            throw new IOException(conn.getResponseMessage());
+        }
+
+          //To test what the server outputs AND finish sending request
+        BufferedReader in = new BufferedReader(
+                            new InputStreamReader(
+                                conn.getInputStream()));
+
+          //StringBuffer will hold JSON string
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        System.out.println("Output from Server .... \n");
+        while ((line = in.readLine()) != null) {
+          System.out.println(result);
+          result.append(line);
+        }
+
+          //JSON string returned by server
+        JSONObject data = new JSONObject(result);
+        boolean success = data.getBoolean("success");
+
+          //error checking
+        if (success == true)
+          System.out.println("Account has been deleted.");
+        else {
+          String message = data.getString("message");
+            //Set protected member string "errorMessage" to the server error message
+          this.setErrorMessage(message);
+        }
+
+        in.close();
+        conn.disconnect();
+
+          //return true/false based on server response
+        return success;
+
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+    }
+  } //END of Function
 
 
 	/* Simple getter functions */
@@ -375,20 +458,16 @@ public class household_member_class {
         return errorMessage;
     }
 
-
     		/* Private mutator functions */
 
-  	private setUserInfo(String u, String e, String p) {
-  		this.name = u;
-  		this.email = e;
-  		this.password = p;
+    private setUserInfo(String u, String e, String p) {
+        this.name = u;
+        this.email = e;
+        this.password = p;
   	}
 
   	private setErrorMessage(String m) {
-  		this.errorMessage = m;
+  		  this.errorMessage = m;
   	}
 
-  }
-
-
-}
+} //End of Class
