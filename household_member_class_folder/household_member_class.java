@@ -41,10 +41,10 @@ public class household_member_class {
     public household_member_class() {
 
         //Default constructor for Housemember
-        this.current_household = "null";
-        this.name = "null";
-        this.email = "null";
-        this.id = "";
+        this.current_household = null;
+        this.name = null;
+        this.email = null;
+        this.id = null;
     }
 
 
@@ -62,6 +62,9 @@ public class household_member_class {
     public boolean register(String username, String email, String password) {
         //register assumes correct user input
 
+        //set Object member data..
+        this.setUserInfo(username, email, password);
+
         try {
 
             //Open a connection (to the server) for POST
@@ -76,10 +79,7 @@ public class household_member_class {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
 
-            //If i need to do JSON...
-            //	String input = "{\"username\": \"" + enc_name "\""\email\": + enc_email
-
-            //Creates JSON string to write to server via POST
+              //Creates JSON string to write to server via POST
             JSONObject json = new JSONObject();
             json.put("username", username);
             json.put("email", email);
@@ -103,7 +103,7 @@ public class household_member_class {
 		*/
             //To test what the server outputs AND finish sending request
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
+                                new InputStreamReader(
                             conn.getInputStream()));
 
             //StringBuffer will hold JSON string
@@ -153,131 +153,191 @@ public class household_member_class {
         }
 
         //calls household_member_class & just passes in the new password, as well as original data
-    public void changePassword(String new_pass) {
+  public void changePassword(String new_pass) {
 
-        register(getName(), getEmail(), new_pass);
+      register(getName(), getEmail(), new_pass);
 
-        password = new_pass;
-    }
+      password = new_pass;
+  }
 
-    /* Uses endpoint /deleteaccount & token */
-    public boolean deleteAccount(String token) {
+  /* Uses endpoint /deleteaccount & token */
+  public boolean deleteAccount(String token) {
 
-        try {
+      try {
 
-            //For JSON..
-            JSONObject jsonToken = new JSONObject();
-            jsonToken.put("token", token);
-            String requestBody = jsonToken.toString();
+        //For JSON..
+        JSONObject jsonToken = new JSONObject();
+        jsonToken.put("token", token);
+        String requestBody = jsonToken.toString();
 
-            //Open a connection (to the server) for POST
+        //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://housecut-145314.appspot.com/deleteaccount");
+        URL url = new URL ("http://housecut-145314.appspot.com/deleteaccount");
 
-            //Declare connection object
-            HttpURLConnection conn =
-                    (HttpURLConnection) url.openConnection();
+        //Declare connection object
+        HttpURLConnection conn =
+                (HttpURLConnection) url.openConnection();
 
-            //Delete the user
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
+        //Delete the user
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Accept", "application/json");
 
-            //Opens up an outputstreamwriter for writing to server
+        //Opens up an outputstreamwriter for writing to server
 
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-            out.write(requestBody);
-            out.close();
+        OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+        out.write(requestBody);
+        out.close();
 
-			/* If Response code isn't 200, throw exception. */
+		/* If Response code isn't 200, throw exception. */
 
-            if (conn.getResponseCode() != 200) {
-                throw new IOException(conn.getResponseMessage());
-            }
-
-			/* If HTTP connection fails, throw exception.
-
-		if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-			throw new RuntimeException("Failed : HTTP Error code : "
-				+ conn.getResponseCode());
-		}*/
-
-            //To test what the server outputs
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            (conn.getInputStream())));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            System.out.println("Output from Server .... \n");
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-                result.append(line);
-            }
-
-            //JSON string returned by server
-            JSONObject data = new JSONObject(result.toString());
-            boolean success = data.getBoolean("success");
-
-            //error checking
-            if (success == true) {
-                System.out.println("Account has been deleted.");
-            }
-            else {
-                String message = data.getString("message");
-
-                //Set protected member string "errorMessage" to the server error message
-                errorMessage = message;
-                //return true/false based on server response
-            }
-
-            in.close();
-            conn.disconnect();
-
-            //Once everything has been closed, the result is returned
-            return success;
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
+        if (conn.getResponseCode() != 200) {
+            throw new IOException(conn.getResponseMessage());
         }
+
+        //To test what the server outputs
+        BufferedReader in = new BufferedReader(
+                            new InputStreamReader((conn.getInputStream())));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        System.out.println("Output from Server .... \n");
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+            result.append(line);
+        }
+
+        //JSON string returned by server
+        JSONObject data = new JSONObject(result.toString());
+        boolean success = data.getBoolean("success");
+
+        //error checking
+        if (success == true) {
+            System.out.println("Account has been deleted.");
+        }
+        else {
+          //Set protected member string "errorMessage" to the server error message
+            String message = data.getString("message");
+            this.setErrorMessage(message);
+        }
+
+        in.close();
+        conn.disconnect();
+
+        //Once everything has been closed, the result is returned
+        return success;
+
+    } catch (MalformedURLException e) {
+
+        e.printStackTrace();
+
+    } catch (IOException e) {
+
+        e.printStackTrace();
+
+    } catch (JSONException e) {
+
+        e.printStackTrace();
+    }
+
+  } //End Function
+
+      //Join a certain household
+  public boolean joinHousehold(String h, String p) {
+
+      if (current_household == null) {
+        current_household = h;
+
+      //Begin Server call for /joinhousehold
+      try {
+
+          //Open a connection (to the server) for POST
+
+        URL url = new URL ("http://housecut-145314.appspot.com/joinhousehold");
+
+          //Declare connection object
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Accept", "application/json");
+
+
+          //Creates JSON string to write to server via POST
+        JSONObject json = new JSONObject();
+        json.put("token", this.getToken());
+        json.put("houseHoldName", h);
+        json.put("houseHoldPassword", p);
+        String requestBody = json.toString();
+
+        //Opens up an outputstreamwriter for writing to server
+            //retrieve output stream that matches with Server input stream..
+        OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+
+          //Write with JSON....
+        out.write(requestBody);
+        out.close();
+
+    /* If Response code isn't 200, throw exception. */
+
+        if (conn.getResponseCode() != 200) {
+            throw new IOException(conn.getResponseMessage());
+        }
+
+          //To test what the server outputs AND finish sending request
+        BufferedReader in = new BufferedReader(
+                            new InputStreamReader(
+                                conn.getInputStream()));
+
+          //StringBuffer will hold JSON string
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        System.out.println("Output from Server .... \n");
+        while ((line = in.readLine()) != null) {
+          System.out.println(result);
+          result.append(line);
+        }
+
+          //JSON string returned by server
+        JSONObject data = new JSONObject(result);
+        boolean success = data.getBoolean("success");
+
+          //error checking
+        if (success == true)
+          System.out.println("Account has been deleted.");
+        else {
+          String message = data.getString("message");
+            //Set protected member string "errorMessage" to the server error message
+          this.setErrorMessage(message);
+        }
+
+          //return true/false based on server response
+        return success;
+
+        in.close();
+        conn.disconnect();
+
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+
+    }
+    else {
+        this.setErrorMessage("You must leave your current household first.");
         return false;
+      }
+    } //End Function
 
-    }
+      //user leaves current_household
+    public boolean leaveHousehold() {
 
-
-	/*	//log user out of account
-	public void logout() {
-
-
-	}*/
-
-
-    public void joinHousehold(String h) {
-
-        //Join a certain household
-
-        if (current_household == null)
-            current_household = h;
-        else
-            System.out.println("You must leave your current household first.\n");
-        //Might have to call a popup error, or simply not let the user have the option to
-        //join Household until they have left their current one
-    }
-
-    //user leaves current_household
-    public void leaveHousehold() {
-
-        current_household = null;
-
+      if
     }
 
 
@@ -306,7 +366,7 @@ public class household_member_class {
         return token;	//Check
     }
 
-    //Return current_household field
+      //Return current_household field
     public String getHousehold() {
         return current_household;
     }
@@ -314,5 +374,21 @@ public class household_member_class {
     public String errorMessage() {
         return errorMessage;
     }
+
+
+    		/* Private mutator functions */
+
+  	private setUserInfo(String u, String e, String p) {
+  		this.name = u;
+  		this.email = e;
+  		this.password = p;
+  	}
+
+  	private setErrorMessage(String m) {
+  		this.errorMessage = m;
+  	}
+
+  }
+
 
 }
