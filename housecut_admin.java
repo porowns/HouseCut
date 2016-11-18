@@ -25,13 +25,65 @@ public class household_admin extends household_member_class
 	public bool removeHouseholdMember(household_member_class member)
 	{
 		//only allowed if role of caller = admin
-    		//fail if no members would be left in household (done server-side?)
-		if (household_vector.size() <= 1)
-			return false;
-		else {
-			household.removeMember(member);
-			return true;
-		}
+    
+		try {
+			String url = request + "remove";
+			//Get /household /roommates
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Accept", "application/json");
+
+			JSONObject json = new JSONObject();
+			json.put("operation", remove);
+			json.put("userID", member.getID());
+			String requestBody = json.toString();
+
+			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+
+			out.write(requestBody);
+			out.close();
+
+			//getResponseCode()!
+
+			BufferedReader in = new BufferedReader(
+													new InputStreamReader(
+															conn.getInputStream()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			System.out.println("Output from Server .... \n");
+			while ((line = in.readLine()) != null) {
+				System.out.println(result);
+				result.append(line);
+			}
+
+				//JSON string returned by server
+			JSONObject data = new JSONObject(result);
+			Bool success = data.getBoolean("success");
+
+			if (success == true)
+				//member was removed
+				return true;
+			else {
+				//member was not removed
+				String message = data.getString("message");
+			}
+		        } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+     	}
+			
+		//fails if trying to remove the only admin, must appoint a new admin before removing
 		return false;
 	}
 
