@@ -95,4 +95,14 @@ public class household_class {
 	{
 		return currentAdmin;
 	}
+				    
+	public void printHouseholdMembers()
+	{
+		for(int i = 0; i < household_vector.size(); i++)
+		{
+			System.out.print(household_vector[i]);
+			if(i != household_vector.size() - 1)
+				System.out.print(", ")
+		}
+	}
 }
