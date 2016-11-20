@@ -27,7 +27,7 @@ public class household_member_class {
     protected String current_household;
     protected String user_name;
     protected String name;
-    protected String request = "http://housecut-145314.appspot.com/";
+    protected String serverURL = "http://10.0.2.2:8080/";
     protected String id;
     protected String token;
     protected String password;
@@ -66,7 +66,7 @@ public class household_member_class {
 
             //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://housecut-145314.appspot.com/register");
+            URL url = new URL (serverURL + "register");
 
             //Declare connection object
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -172,7 +172,7 @@ public class household_member_class {
 
             //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://housecut-145314.appspot.com/deleteaccount");
+            URL url = new URL (serverURL + "deleteaccount");
 
             //Declare connection object
             HttpURLConnection conn =
@@ -313,6 +313,24 @@ public class household_member_class {
 
     public String errorMessage() {
         return errorMessage;
+    }
+
+    /* Setter functions */
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setHouseholdId(String current_household) {
+        this.current_household = current_household;
     }
 
 }

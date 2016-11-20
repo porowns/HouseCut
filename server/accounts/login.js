@@ -60,7 +60,7 @@ module.exports = function(req, res) {
       else {
         res.json({
           success: false,
-          message: 'No user with that email is registered.'
+          message: 'Email not registered.'
         });
       }
     });

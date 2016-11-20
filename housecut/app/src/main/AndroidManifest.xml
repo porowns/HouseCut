@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name="com.example.android.housecut.HouseCutApp"
         android:allowBackup="true"
         android:icon="@mipmap/housecutlogo"
         android:label="Housecut"
@@ -30,11 +31,6 @@
         <activity
             android:name=".register_confirmation_activity"
             android:label="Register Confirmation Activity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
-            android:name=".login_confirmation_activity"
-            android:label="Login Confirmation Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
