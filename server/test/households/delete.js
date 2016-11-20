@@ -21,7 +21,7 @@ describe('deleteHouseholdTest', function() {
           password: 'test123'
         },  function(err, res) {
           token = res.res.body.token,
-          utilities.createHouseHold({
+          utilities.createHousehold({
             token: token,
             houseHoldName: 'houseHoldTest',
             houseHoldPassword: 'house123',
@@ -44,4 +44,4 @@ describe('deleteHouseholdTest', function() {
       }, done);
     });
   });
-}
+});
