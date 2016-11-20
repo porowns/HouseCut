@@ -48,7 +48,7 @@ public class household_member_class {
     }
 
 
-    //Constructor that will take in user data and register a user
+      //Constructor that will take in user data and register a user
     public household_member_class(String n, String e, String p) {
         this.name = n;
         this.email = e;
@@ -59,6 +59,7 @@ public class household_member_class {
     }
 
     /*Function that will register a house member via REST API requests*/
+
     public boolean register(String username, String email, String password) {
         //register assumes correct user input
 
@@ -67,95 +68,84 @@ public class household_member_class {
 
         try {
 
-            //Open a connection (to the server) for POST
+          //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://housecut-145314.appspot.com/register");
+          URL url = new URL ("http://housecut-145314.appspot.com/register");
 
-            //Declare connection object
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+          //Declare connection object
+          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
+          conn.setDoOutput(true);
+          conn.setRequestMethod("POST");
+          conn.setRequestProperty("Content-Type", "application/json");
+          conn.setRequestProperty("Accept", "application/json");
 
-              //Creates JSON string to write to server via POST
-            JSONObject json = new JSONObject();
-            json.put("username", username);
-            json.put("email", email);
-            json.put("password", password);
-            String requestBody = json.toString();
+            //Creates JSON string to write to server via POST
+          JSONObject json = new JSONObject();
+          json.put("username", username);
+          json.put("email", email);
+          json.put("password", password);
+          String requestBody = json.toString();
 
-            //Opens up an outputstreamwriter for writing to server
-            //retrieve output stream that matches with Server input stream..
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+          //Opens up an outputstreamwriter for writing to server
+          //retrieve output stream that matches with Server input stream..
+          OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
-            //OR, with JSON....
-            out.write(requestBody);
+          //OR, with JSON....
+          out.write(requestBody);
+          out.close();
 
-            out.close();
+          //To test what the server outputs AND finish sending request
+          BufferedReader in = new BufferedReader(
+                              new InputStreamReader(
+                              conn.getInputStream()));
 
-			/*If HTTP connection fails, throw exception*/
-            //might ought to be 200
-	/*	if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-			throw new RuntimeException("Failed : HTTP Error code : " + conn.getResponseCode());
-		}
-		*/
-            //To test what the server outputs AND finish sending request
-            BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                            conn.getInputStream()));
+          //StringBuffer will hold JSON string
+          StringBuffer result = new StringBuffer();
+          String line = "";
+          System.out.println("Output from Server .... \n");
+          while ((line = in.readLine()) != null) {
+              System.out.println(result);
+              result.append(line);
+          }
 
-            //StringBuffer will hold JSON string
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            System.out.println("Output from Server .... \n");
-            while ((line = in.readLine()) != null) {
-                System.out.println(result);
-                result.append(line);
-            }
+          //JSON string returned by server
+          JSONObject data = new JSONObject(result.toString());
+          boolean success = data.getBoolean("success");
 
-            //JSON string returned by server
-            JSONObject data = new JSONObject(result.toString());
-            boolean success = data.getBoolean("success");
-
-            //error checking
-            if (success == true)
-                System.out.println("Account has been deleted.");
-            else {
-                String message = data.getString("message");
-
+          //error checking
+          if (success == true)
+              System.out.println("Account has been deleted.");
+          else {
+              String message = data.getString("message");
                 //Set protected member string "errorMessage" to the server error message
-                errorMessage = message;
-                //return true/false based on server response
+              this.setErrorMessage(message);
+          }
 
-            }
+          //Closes everything
+          in.close();
+          conn.disconnect();
 
-            //Closes everything
-            in.close();
-            conn.disconnect();
+            //return true/false based on server response
+          return success;
 
-            //Returns the condition
-            return success;
+          } catch (MalformedURLException e) {
 
-            } catch (MalformedURLException e) {
+              e.printStackTrace();
 
-                e.printStackTrace();
+          } catch (IOException e) {
 
-            } catch (IOException e) {
+              e.printStackTrace();
+          } catch (JSONException e) {
 
-                e.printStackTrace();
-            } catch (JSONException e) {
+              e.printStackTrace();
+          }
+      }
 
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        //calls household_member_class & just passes in the new password, as well as original data
+      //calls household_member_class & just passes in the new password, as well as original data
   public void changePassword(String new_pass) {
 
-      register(getName(), getEmail(), new_pass);
+    /*THIS NEEDS EDITING*/
 
       password = new_pass;
   }
@@ -313,11 +303,11 @@ public class household_member_class {
           this.setErrorMessage(message);
         }
 
-          //return true/false based on server response
-        return success;
-
         in.close();
         conn.disconnect();
+
+        //return true/false based on server response
+      return success;
 
       } catch (MalformedURLException e) {
         e.printStackTrace();
@@ -458,7 +448,7 @@ public class household_member_class {
         return errorMessage;
     }
 
-    		/* Private mutator functions */
+    /* Private mutator functions */
 
     private setUserInfo(String u, String e, String p) {
         this.name = u;
