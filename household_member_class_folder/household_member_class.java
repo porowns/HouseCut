@@ -59,7 +59,9 @@ public class household_member_class {
     }
 
       //Private function to connect to the server, and write/return JSON
-    private boolean writeToServer (JSONObject json, String url) {
+    private JSONObject writeToServer (JSONObject json, String url) {
+
+        JSONObject data = new JSONObject();
 
       try {
           //Open a connection (to the server) for POST
@@ -105,7 +107,7 @@ public class household_member_class {
           }
 
           //JSON string returned by server
-          JSONObject data = new JSONObject(result.toString());
+          data = new JSONObject(result.toString());
 
           //Closes everything
           in.close();
@@ -135,6 +137,7 @@ public class household_member_class {
         //URL for connection to server using /register
         String url = request + "/register";
 
+      try {
         //Creates JSON string to write to server via POST
         JSONObject json = new JSONObject();
         json.put("username", username);
@@ -143,7 +146,7 @@ public class household_member_class {
 
         //Make call/write to server and take in returned JSON
         JSONObject serverJSON = writeToServer(json, url);
-        success = data.getBoolean("success");
+        success = serverJSON.getBoolean("success");
 
         //error checking
         if (success == true) {
@@ -151,9 +154,13 @@ public class household_member_class {
         }
         else {
             //Set protected member string "errorMessage" to the server error message
-            String message = data.getString("message");
+            String message = serverJSON.getString("message");
             this.setErrorMessage(message);
         }
+
+      } catch (JSONException e) {
+          e.printStackTrace();
+      }
 
         return success;
     }
@@ -173,6 +180,7 @@ public class household_member_class {
         //URL to open connection with
         String url = request + "/deleteaccount";
 
+      try {
         //For JSON..
         JSONObject jsonToken = new JSONObject();
         jsonToken.put("token", token);
@@ -191,6 +199,10 @@ public class household_member_class {
             String message = data.getString("message");
             this.setErrorMessage(message);
         }
+
+      } catch (JSONException e) {
+          e.printStackTrace();
+      }
 
         return success;
     } //End Function
