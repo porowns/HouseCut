@@ -46,7 +46,8 @@ module.exports = function(req, res) {
             id: user._id,
             householdId: user.householdId,
             admin: user.admin,
-            token: token
+            token: token,
+            displayName: user.displayName
           });
         }
         else {
