@@ -58,69 +58,71 @@ public class household_member_class {
         this.register(n, e, p);
     }
 
-      //Private function to connect to the server, and write/return JSON
-    private boolean writeToServer (JSONObject json, String url) {
+    //Private function to connect to the server, and write/return JSON
+    private JSONObject writeToServer (JSONObject json, String u) {
 
-      try {
-          //Open a connection (to the server) for POST
+        JSONObject data = new JSONObject();
 
-          URL url = new URL(url);
+        try {
+            //Open a connection (to the server) for POST
 
-          //Declare connection object
-          HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            URL url = new URL(u);
 
-          conn.setDoOutput(true);
-          conn.setRequestMethod("POST");
-          conn.setRequestProperty("Content-Type", "application/json");
-          conn.setRequestProperty("Accept", "application/json");
+            //Declare connection object
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-          String requestBody = json.toString();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
 
-          //Opens up an outputstreamwriter for writing to server
-          //retrieve output stream that matches with Server input stream..
-          OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            String requestBody = json.toString();
+
+            //Opens up an outputstreamwriter for writing to server
+            //retrieve output stream that matches with Server input stream..
+            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
             //Write data to Server..
-          out.write(requestBody);
-          out.close();
+            out.write(requestBody);
+            out.close();
 
           /* If Response code isn't 200, throw exception. */
 
-          if (conn.getResponseCode() != 200) {
-              throw new IOException(conn.getResponseMessage());
-          }
+            if (conn.getResponseCode() != 200) {
+                throw new IOException(conn.getResponseMessage());
+            }
 
-          //To test what the server outputs AND finish sending request
-          BufferedReader in = new BufferedReader(
-                              new InputStreamReader(
-                              conn.getInputStream()));
+            //To test what the server outputs AND finish sending request
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            conn.getInputStream()));
 
-          //StringBuffer will hold JSON string
-          StringBuffer result = new StringBuffer();
-          String line = "";
-          System.out.println("Output from Server .... \n");
-          while ((line = in.readLine()) != null) {
-              System.out.println(result);
-              result.append(line);
-          }
+            //StringBuffer will hold JSON string
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            System.out.println("Output from Server .... \n");
+            while ((line = in.readLine()) != null) {
+                System.out.println(result);
+                result.append(line);
+            }
 
-          //JSON string returned by server
-          JSONObject data = new JSONObject(result.toString());
+            //JSON string returned by server
+            data = new JSONObject(result.toString());
 
-          //Closes everything
-          in.close();
-          conn.disconnect();
+            //Closes everything
+            in.close();
+            conn.disconnect();
 
 
-      } catch (MalformedURLException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      } catch (JSONException e) {
-          e.printStackTrace();
-      }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         //Return JSON from server
-      return data;
+        return data;
     }
 
     /*Function that will register a house member via REST API requests*/
@@ -135,24 +137,29 @@ public class household_member_class {
         //URL for connection to server using /register
         String url = request + "/register";
 
-        //Creates JSON string to write to server via POST
-        JSONObject json = new JSONObject();
-        json.put("username", username);
-        json.put("email", email);
-        json.put("password", password);
+        try {
+            //Creates JSON string to write to server via POST
+            JSONObject json = new JSONObject();
+            json.put("username", username);
+            json.put("email", email);
+            json.put("password", password);
 
-        //Make call/write to server and take in returned JSON
-        JSONObject serverJSON = writeToServer(json, url);
-        success = data.getBoolean("success");
+            //Make call/write to server and take in returned JSON
+            JSONObject serverJSON = writeToServer(json, url);
+            success = serverJSON.getBoolean("success");
 
-        //error checking
-        if (success == true) {
-            System.out.println("\nUser has been registered.");
-        }
-        else {
-            //Set protected member string "errorMessage" to the server error message
-            String message = data.getString("message");
-            this.setErrorMessage(message);
+            //error checking
+            if (success == true) {
+                System.out.println("\nUser has been registered.");
+            }
+            else {
+                //Set protected member string "errorMessage" to the server error message
+                String message = serverJSON.getString("message");
+                this.setErrorMessage(message);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return success;
@@ -173,36 +180,41 @@ public class household_member_class {
         //URL to open connection with
         String url = request + "/deleteaccount";
 
-        //For JSON..
-        JSONObject jsonToken = new JSONObject();
-        jsonToken.put("token", token);
+        try {
+            //For JSON..
+            JSONObject jsonToken = new JSONObject();
+            jsonToken.put("token", token);
 
-        //Write/Get JSON from server
-        JSONObject data = writeToServer(jsonToken, url);
-        success = data.getBoolean("success");
+            //Write/Get JSON from server
+            JSONObject data = writeToServer(jsonToken, url);
+            success = data.getBoolean("success");
 
-        //error checking
-        if (success == true) {
-            success = true;
-            System.out.println("Account has been deleted.");
-        }
-        else {
-            //Set protected member string "errorMessage" to the server error message
-            String message = data.getString("message");
-            this.setErrorMessage(message);
+            //error checking
+            if (success == true) {
+                success = true;
+                System.out.println("Account has been deleted.");
+            }
+            else {
+                //Set protected member string "errorMessage" to the server error message
+                String message = data.getString("message");
+                this.setErrorMessage(message);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return success;
     } //End Function
 
     //Join a certain household
-    public boolean addHouseholdMember(String token, String uID = null,
-                                      String hhName = null, String hhPass = null)
+    public boolean addHouseholdMember(String token, String uID,
+                                      String hhName, String hhPass)
     {
 
         boolean success = false;
         if (current_household == null) {
-            current_household = h;
+            //current_household = h;
 
             //Begin Server call for /household/roommates
             try {
@@ -223,9 +235,9 @@ public class household_member_class {
                 //Creates JSON string to write to server via POST
                 JSONObject json = new JSONObject();
                 json.put("token", this.getToken());
-                json.put("userId", )
-                json.put("householdName", h);
-                json.put("householdPassword", p);
+               // json.put("userId", )
+               // json.put("householdName", h);
+                //json.put("householdPassword", p);
                 String requestBody = json.toString();
 
                 //Opens up an outputstreamwriter for writing to server
@@ -244,8 +256,8 @@ public class household_member_class {
 
                 //To test what the server outputs AND finish sending request
                 BufferedReader in = new BufferedReader(
-                                                       new InputStreamReader(
-                                                                             conn.getInputStream()));
+                        new InputStreamReader(
+                                conn.getInputStream()));
 
                 //StringBuffer will hold JSON string
                 StringBuffer result = new StringBuffer();
@@ -285,79 +297,80 @@ public class household_member_class {
             this.setErrorMessage("You must leave your current household first.");
             success = false;
         }
-          //return true/false based on server response
+        //return true/false based on server response
         return success;
     } //End Function
 
+/*
+    public Boolean removeHouseholdMember(String uID)
+    {
+        //written by Logan Vega//
+        try {
+            String url = request + "/household/roommates";
+            //Get /household /roommates
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-	public bool removeHouseholdMember(String uID = null)
-	{
-		//written by Logan Vega//
-		try {
-			String url = request + "/household/roommates";
-			//Get /household /roommates
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
 
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("Accept", "application/json");
+            JSONObject json = new JSONObject();
+            json.put("operation", "remove");
 
-			JSONObject json = new JSONObject();
-			json.put("operation", "remove");
+            //error checking for Admins
+            if (isAdmin && uID != null) {
 
-        //error checking for Admins
-      if (isAdmin && uID != null) {
+                json.put("userID", uID);
+            }
+            String requestBody = json.toString();
 
-        json.put("userID", uID);
-      }
-			String requestBody = json.toString();
+            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
-			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+            out.write(requestBody);
+            out.close();
 
-			out.write(requestBody);
-			out.close();
+            //getResponseCode()!
 
-			//getResponseCode()!
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            conn.getInputStream()));
 
-			BufferedReader in = new BufferedReader(
-					    new InputStreamReader(
-					    conn.getInputStream()));
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            System.out.println("Output from Server .... \n");
+            while ((line = in.readLine()) != null) {
+                System.out.println(result);
+                result.append(line);
+            }
 
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			System.out.println("Output from Server .... \n");
-			while ((line = in.readLine()) != null) {
-				System.out.println(result);
-				result.append(line);
-			}
+            //JSON string returned by server
+            JSONObject data = new JSONObject(result);
+            Bool success = data.getBoolean("success");
 
-			//JSON string returned by server
-			JSONObject data = new JSONObject(result);
-			Bool success = data.getBoolean("success");
+            if (success == true)
+                //member was removed
+                return true;
+            else {
+                //member was not removed
+                String message = data.getString("message");
+            }
+        } catch (MalformedURLException e) {
 
-			if (success == true)
-			//member was removed
-				return true;
-			else {
-			//member was not removed
-				String message = data.getString("message");
-			}
-		        } catch (MalformedURLException e) {
+            e.printStackTrace();
 
-               		e.printStackTrace();
+        } catch (IOException e) {
 
-            		} catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
 
-                	e.printStackTrace();
-          		} catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                	e.printStackTrace();
-     			}
-
-		//fails if trying to remove the only admin, must appoint a new admin before removing
-		return false;
-	}
+        //fails if trying to remove the only admin, must appoint a new admin before removing
+        return false;
+    }
+    */
 
     /* Simple getter functions */
 
