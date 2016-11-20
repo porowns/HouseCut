@@ -21,7 +21,7 @@ describe('deleteHouseholdSuccessTest', function() {
           password: 'test123'
         },  function(err, res) {
           token = res.res.body.token,
-          utilities.createHouseHold({
+          utilities.createHousehold({
             token: token,
             houseHoldName: 'houseHoldTest',
             houseHoldPassword: 'house123',
@@ -66,7 +66,7 @@ describe('deleteHouseholdFailureTest', function() {
           password: 'test123'
         },  function(err, res) {
           token = res.res.body.token,
-          utilities.createHouseHold({
+          utilities.createHousehold({
             token: token,
             houseHoldName: 'houseHoldTest',
             houseHoldPassword: 'house123',
@@ -85,7 +85,7 @@ describe('deleteHouseholdFailureTest', function() {
   describe('Delete the Household no token provided', function() {
     it('delete the existing household w/ no token provided', function(done) {
       utilities.deleteHousehold({
-        
+
       }, function(err, res) {
         res.res.body.should.have.property('success');
         res.res.body.success.should.be.eql(false);
@@ -93,5 +93,6 @@ describe('deleteHouseholdFailureTest', function() {
       });
     });
   });
+  // describe('')
 
 });
