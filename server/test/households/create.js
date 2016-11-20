@@ -78,10 +78,16 @@ describe ('householdFailureTests', function () {
     });
   });
   after(function(done) {
-    utilities.deleteAccount({
-      email: 'test@test',
-      password: 'test123',
-    }, done);
+    utilities.deleteHousehold({
+      token: token
+    }, function(err, res) {
+      utilities.deleteAccount({
+        email: 'test@test',
+        password: 'test123'
+      }, function(err, res) {
+        done();
+      });
+    });
   });
 
   describe('Create a household, no token, fail', function() {
@@ -119,6 +125,41 @@ describe ('householdFailureTests', function () {
         res.res.body.should.have.property('success');
         res.res.body.success.should.be.eql(false);
         done();
+      });
+    });
+  });
+
+  describe('Create a household, no inputs, fail', function() {
+    it('Create a household with no inputs', function(done) {
+      utilities.createHousehold({
+
+      }, function(err, res) {
+        res.res.body.should.have.property('success');
+        res.res.body.success.should.be.eql(false);
+        done();
+      });
+    });
+  });
+
+  describe('Create 2 Households', function() {
+    it('User creates household, then attempts to create another', function(done) {
+      utilities.createHousehold({
+        houseHoldName: 'testhousehold',
+        houseHoldPassword: 'testpassword',
+        token: token
+      }, function(err, res) {
+        res.should.have.status(200);
+        res.res.body.should.have.property('success');
+        res.res.body.success.should.be.eql(true);
+        utilities.createHousehold({
+          houseHoldName: 'testhousehold',
+          houseHoldPassword: 'testpassword',
+          token: token
+        }, function(err, res) {
+          res.res.body.should.have.property('success');
+          res.res.body.success.should.be.eql(false);
+          done();
+        });
       });
     });
   });
