@@ -19,8 +19,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.lang.String;
 
-
+//Implemented by Nick and Jose
 public class login_activity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -35,7 +36,6 @@ public class login_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         mEmailView = (EditText) findViewById(R.id.email1);
         mPasswordView = (EditText) findViewById(R.id.password1);
@@ -72,13 +72,23 @@ public class login_activity extends AppCompatActivity {
     public void attemptLogin() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        //String line = "";
 
         AsyncTaskRunner runner = new AsyncTaskRunner();
 
+        //runner.execute(email, password, line);
         runner.execute(email, password);
+        //if(line.contains("\"success\":true"))
+        {
+            Intent intent = new Intent(login_activity.this, main_page_activity.class);
+            startActivity(intent);
+        }
+        //else
+        {
+            //Intent issue = new Intent(login_activity.this, login_issue_activity.class);
+            //startActivity(issue);
+        }
 
-        Intent intent = new Intent(login_activity.this, main_page_activity.class);
-        startActivity(intent);
     }
 
 
@@ -90,12 +100,14 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        //loginToServer(params[0], params[1], params[2]);
         loginToServer(params[0], params[1]);
         return null;
     }
 
-    public void loginToServer(String email, String password){
 
+    //public void loginToServer(String email, String password, String line){
+    public void loginToServer(String email, String password){
         //Catch invalid Encoder setting exception
 
         //System.out.println(email);

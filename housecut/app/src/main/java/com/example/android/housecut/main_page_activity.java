@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * Created by nickjohnson on 11/17/16.
+ * Implemented by Nick and Jose
  */
 
 public class main_page_activity extends AppCompatActivity{

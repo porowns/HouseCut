@@ -5,6 +5,7 @@
     android:theme="@style/Theme.AppCompat.NoActionBar"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/options_toolbar"
         android:layout_width="match_parent"

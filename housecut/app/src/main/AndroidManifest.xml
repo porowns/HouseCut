@@ -39,8 +39,13 @@
 
         <activity
             android:name=".main_page_activity"
+            android:label="Main Page Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <activity
+            android:name=".login_issue_activity"
+            android:label="Login Issue Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
 
     </application>
