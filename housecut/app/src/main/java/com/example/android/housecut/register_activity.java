@@ -26,6 +26,7 @@ public class register_activity extends AppCompatActivity {
     private EditText mUsernameView;
     private EditText mEmailView;
     private EditText mPasswordView;
+    private ShowPopUpWindow mRegisterPopup;
 
 
 
@@ -60,37 +61,18 @@ public class register_activity extends AppCompatActivity {
         String password = mPasswordConfirmView.getText().toString();
         String username = mUsernameView.getText().toString();
 
+
+
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute(username, email, password);
-        registrationConfirmationPage();
-/*
-        if(ValidInput(username, email, password)) {
-            AsyncTaskRunner runner = new AsyncTaskRunner();
-            runner.execute(username, email, password);
-            registrationConfirmationPage();
-        }
-        else {
-            while(!ValidInput(username, email, password)) {
-                email = mEmailConfirmView.getText().toString();
-                password = mPasswordConfirmView.getText().toString();
-                username = mUsernameView.getText().toString();
 
-                AsyncTaskRunner runner = new AsyncTaskRunner();
-                runner.execute(username, email, password);
-                registrationConfirmationPage();
-            }
-        }
-*/
 
     }
-/*
-    public boolean ValidInput(String username, String email, String password) {
-        if (!CheckUsername(username))
+
+    public boolean ValidInput(String email, String password) {
+        if ((!CheckEmail(email)) || (!CheckPassword(password)))
             return false;
-        else if (!CheckEmail(username))
-            return false;
-        else if (!CheckPassword(username))
-            return false;
+
         else
             return true;
 
@@ -111,24 +93,37 @@ public class register_activity extends AppCompatActivity {
         else
             return false;
     }
-    public boolean CheckUsername(String User) {
-        if(User.length() > 3)
-            return true;
-        else
-            return false;
-    }
-*/
+
+
     class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            household_member_class house = new household_member_class(params[0], params[1], params[2]);
-            return "All Done";
+            if(ValidInput(params[1], params[2])) {
+                household_member_class house = new household_member_class(params[0], params[1], params[2]);
+                if (house.errorMessage() != null) {
+                    return house.errorMessage();
+                }
+                else {
+                    backtoLoginPage();
+                    return "Registration Success";
+                }
+            }
+            else
+                return "Invalid Input";
         }
 
+        /*
+        @Override
+        protected void onPostExecute(String errorMessage){
+            ShowPopUpWindow message = null;
+            setContentView(register_message) = ;
+
+        }
+        */
     }
-    public void registrationConfirmationPage() {
-        Intent intent = new Intent(register_activity.this, register_confirmation_activity.class);
+    public void backtoLoginPage() {
+        Intent intent = new Intent(register_activity.this, login_activity.class);
         startActivity(intent);
     }
 

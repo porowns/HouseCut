@@ -33,18 +33,18 @@ public class main_page_activity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_icon:
-                //Intent intent = new Intent(main_page_activity.this, settings_activity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(main_page_activity.this, settings_activity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.grocery_list_icon:
-                //Intent intent2 = new Intent(main_page_activity.this, grocery_list_activity.class);
-                //startActivity(intent2);
+                Intent intent2 = new Intent(main_page_activity.this, grocery_list_activity.class);
+                startActivity(intent2);
                 return true;
 
             case R.id.task_list_icon:
-                //Intent intent3 = new Intent(main_page_activity.this, task_list_activity.class);
-                //startActivity(intent3);
+                Intent intent3 = new Intent(main_page_activity.this, task_list_activity.class);
+                startActivity(intent3);
                 return true;
 
             case R.id.home_page_icon:

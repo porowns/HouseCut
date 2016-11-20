@@ -26,8 +26,8 @@ public class household_admin extends household_member_class
 	{
 		//only allowed if role of caller = admin
 		try {
-			String url = request + "setadmin";
-			//Get /household /roommates
+			String url = request + "/setadmin";
+			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setDoOutput(true);
@@ -91,8 +91,8 @@ public class household_admin extends household_member_class
 		//only allowed if role of caller = admin
 
 		try {
-			String url = request + "setadmin";
-			//Get /household /roommates
+			String url = request + "/setadmin";
+			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setDoOutput(true);
