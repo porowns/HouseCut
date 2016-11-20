@@ -406,6 +406,24 @@ public class household_member_class {
         return errorMessage;
     }
 
+    /* Setter functions */
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setHouseholdId(String current_household) {
+        this.current_household = current_household;
+    }
+
     /* Private mutator functions */
 
     private void setUserInfo(String u, String e, String p) {

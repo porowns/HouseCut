@@ -77,16 +77,33 @@
             android:textColorHint="@color/white"
             android:inputType="textPassword" />
 
+        <!-- Error message if logging in doesn't work -->
+        <TextView
+            android:id="@+id/loginerror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password1"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Error"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="24sp"
+            android:padding="0dp"
+            android:textColor="#FFD91818"
+            android:textColorHint="#FFD91818" />
+
         <!-- Button to login, calls the login function -->
         <Button
             android:id="@+id/email_sign_in_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/password1"
+            android:layout_below="@id/loginerror"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="3dp"
             android:layout_marginBottom="4dp"
             android:background="@color/colorPrimary"
             android:paddingLeft="4dp"

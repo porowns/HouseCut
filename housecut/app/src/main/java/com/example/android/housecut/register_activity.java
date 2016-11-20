@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.example.android.housecut.HouseCutApp;
 
 /**
  * Created by nick, jose and adam on 10/18/16.
@@ -100,9 +101,10 @@ public class register_activity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             if(ValidInput(params[1], params[2])) {
-                household_member_class house = new household_member_class(params[0], params[1], params[2]);
-                if (house.errorMessage() != null) {
-                    return house.errorMessage();
+                household_member_class user = new household_member_class(params[0], params[1], params[2]);
+                ((HouseCutApp)getApplication()).setUser(user);
+                if (user.errorMessage() != null) {
+                    return user.errorMessage();
                 }
                 else {
                     backtoLoginPage();

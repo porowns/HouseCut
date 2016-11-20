@@ -1,5 +1,6 @@
 package com.example.android.housecut;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class login_activity extends AppCompatActivity {
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
+    private TextView mErrorView;
 
 
     @Override
@@ -39,7 +41,7 @@ public class login_activity extends AppCompatActivity {
 
         mEmailView = (EditText) findViewById(R.id.email1);
         mPasswordView = (EditText) findViewById(R.id.password1);
-
+        mErrorView = (TextView)findViewById(R.id.loginerror);
 
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -61,6 +63,8 @@ public class login_activity extends AppCompatActivity {
             }
         });
 
+        mErrorView.setVisibility(View.GONE);
+
     }
 
     public void registerUser() {
@@ -72,12 +76,11 @@ public class login_activity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        AsyncTaskRunner runner = new AsyncTaskRunner();
+        mErrorView.setVisibility(View.GONE);
+
+        AsyncTaskRunner runner = new AsyncTaskRunner(this, mErrorView);
 
         runner.execute(email, password);
-        Intent intent = new Intent(login_activity.this, main_page_activity.class);
-        startActivity(intent);
-
     }
 
 
@@ -87,14 +90,34 @@ public class login_activity extends AppCompatActivity {
 
 class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
-    @Override
-    protected String doInBackground(String... params) {
-        loginToServer(params[0], params[1]);
-        return null;
+    private Context ctx;
+    private TextView errorTextView;
+
+    public AsyncTaskRunner(Context ctx, TextView errorTextView){
+        this.ctx = ctx;
+        this.errorTextView = errorTextView;
     }
 
+    @Override
+    protected String doInBackground(String... params) {
+        return loginToServer(params[0], params[1]);
+    }
 
-    public void loginToServer(String email, String password){
+    @Override
+    protected void onPostExecute(String responseString) {
+        System.out.println("Login post-execute success:");
+        System.out.println(responseString);
+        if (responseString.equals("success")) {
+            Intent intent = new Intent(this.ctx, main_page_activity.class);
+            this.ctx.startActivity(intent);
+        }
+        else {
+            this.errorTextView.setVisibility(View.VISIBLE);
+            this.errorTextView.setText(responseString);
+        }
+    }
+
+    public String loginToServer(String email, String password){
         //Catch invalid Encoder setting exception
 
         //System.out.println(email);
@@ -104,7 +127,7 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
             //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://housecut-145314.appspot.com/login");
+            URL url = new URL ("http://10.0.2.2:8080/login");
 
             //Declare connection object
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -152,12 +175,39 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
             //JSON string returned by server
             JSONObject data = new JSONObject(String.valueOf(result));
 
-
             System.out.println(data);
+
+            Boolean success = data.getBoolean("success");
+
+            String responseString;
+
+            if (success) {
+                System.out.println("Login success\n");
+                String householdId = data.getString("householdId");
+                String name = data.getString("displayName");
+                String userId = data.getString("id");
+                String token = data.getString("token");
+
+                household_member_class user = new household_member_class();
+                user.setHouseholdId(householdId);
+                user.setName(name);
+                user.setToken(token);
+                user.setId(userId);
+                ((HouseCutApp)this.ctx.getApplicationContext()).setUser(user);
+                responseString = "success";
+            }
+            else {
+                System.out.println("Login failure\n");
+                String message = data.getString("message");
+                System.out.println(message + "\n");
+                responseString = data.getString("message");
+            }
 
 
             in.close();
             conn.disconnect();
+
+            return responseString;
 
         } catch (MalformedURLException e) {
 
@@ -169,5 +219,7 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        return "Failure";
     }
 }
