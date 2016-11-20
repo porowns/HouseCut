@@ -8,18 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * Implemented by Nick and Jose
+ * Created by nickjohnson on 11/18/16.
  */
 
-public class main_page_activity extends AppCompatActivity{
-
+public class task_list_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+        setContentView(R.layout.activity_task_list);
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
-
-
     }
 
     @Override
@@ -33,21 +30,23 @@ public class main_page_activity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_icon:
-                Intent intent = new Intent(main_page_activity.this, settings_activity.class);
+                Intent intent = new Intent(task_list_activity.this, settings_activity.class);
                 startActivity(intent);
                 return true;
 
             case R.id.grocery_list_icon:
-                Intent intent2 = new Intent(main_page_activity.this, grocery_list_activity.class);
+                Intent intent2 = new Intent(task_list_activity.this, grocery_list_activity.class);
                 startActivity(intent2);
                 return true;
 
             case R.id.task_list_icon:
-                Intent intent3 = new Intent(main_page_activity.this, task_list_activity.class);
+                Intent intent3 = new Intent(task_list_activity.this, task_list_activity.class);
                 startActivity(intent3);
                 return true;
 
             case R.id.home_page_icon:
+                Intent intent4 = new Intent(task_list_activity.this, task_list_activity.class);
+                startActivity(intent4);
                 return true;
 
             default:

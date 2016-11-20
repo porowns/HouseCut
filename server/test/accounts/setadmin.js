@@ -1,5 +1,5 @@
 /* Implemented by Chris */
-
+/*
 process.env.NODE_ENV = 'test';
 
 var chai = require('chai');
@@ -336,3 +336,4 @@ describe('setAdminFailureTests', function() {
     });
   });
 });
+*/

@@ -17,30 +17,13 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/main_page_view"
+        android:id="@+id/task_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/options_toolbar"
-        android:text="Main Page"
+        android:text="Task List"
         android:textSize="48dp"
         android:textAllCaps="true"
         android:layout_centerHorizontal="true"
         />
-
-    <Button
-    android:id="@+id/_button"
-    style="?android:textAppearanceSmall"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/main_page_view"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="16dp"
-    android:background="@color/colorPrimary"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:text=""
-    android:textStyle="bold"/>
-
-
 </RelativeLayout>

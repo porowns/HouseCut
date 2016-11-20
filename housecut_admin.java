@@ -22,78 +22,12 @@ public class household_admin extends household_member_class
 		giveAdminPrivileges(member);
 	}
 
-	public bool removeHouseholdMember(household_member_class member)
-	{
-		//only allowed if role of caller = admin
-    
-		try {
-			String url = request + "remove";
-			//Get /household /roommates
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-			conn.setDoOutput(true);
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("Accept", "application/json");
-
-			JSONObject json = new JSONObject();
-			json.put("operation", remove);
-			json.put("userID", member.getID());
-			String requestBody = json.toString();
-
-			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-
-			out.write(requestBody);
-			out.close();
-
-			//getResponseCode()!
-
-			BufferedReader in = new BufferedReader(
-													new InputStreamReader(
-															conn.getInputStream()));
-
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			System.out.println("Output from Server .... \n");
-			while ((line = in.readLine()) != null) {
-				System.out.println(result);
-				result.append(line);
-			}
-
-				//JSON string returned by server
-			JSONObject data = new JSONObject(result);
-			Bool success = data.getBoolean("success");
-
-			if (success == true)
-				//member was removed
-				return true;
-			else {
-				//member was not removed
-				String message = data.getString("message");
-			}
-		        } catch (MalformedURLException e) {
-
-                e.printStackTrace();
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-     	}
-			
-		//fails if trying to remove the only admin, must appoint a new admin before removing
-		return false;
-	}
-
 	public bool giveAdminPrivileges(household_member_class member)
 	{
 		//only allowed if role of caller = admin
-		member.role = "admin";
 		try {
-			String url = request + "setadmin";
-			//Get /household /roommates
+			String url = request + "/setadmin";
+			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setDoOutput(true);
@@ -115,8 +49,8 @@ public class household_admin extends household_member_class
 			//getResponseCode()!
 
 			BufferedReader in = new BufferedReader(
-													new InputStreamReader(
-															conn.getInputStream()));
+					    new InputStreamReader(
+					    conn.getInputStream()));
 
 			StringBuffer result = new StringBuffer();
 			String line = "";
@@ -126,40 +60,39 @@ public class household_admin extends household_member_class
 				result.append(line);
 			}
 
-				//JSON string returned by server
+			//JSON string returned by server
 			JSONObject data = new JSONObject(result);
 			Bool success = data.getBoolean("success");
 
 			if (success == true)
-				//admin was given
+			//admin was given
 				return true;
 			else {
-				//admin was not given
+			//admin was not given
 				String message = data.getString("message");
 			}
 		        } catch (MalformedURLException e) {
 
-                e.printStackTrace();
+                	e.printStackTrace();
 
-            } catch (IOException e) {
+            		} catch (IOException e) {
 
-                e.printStackTrace();
-            } catch (JSONException e) {
+                	e.printStackTrace();
+            		} catch (JSONException e) {
 
-                e.printStackTrace();
-     	}
+                	e.printStackTrace();
+     			}
 			
-			return false;
+		return false;
 	}
 
 	public bool revokeAdminPrivileges(household_admin admin)
 	{
 		//only allowed if role of caller = admin
-		admin.role = "member";
 
-				try {
-			String url = request + "setadmin";
-			//Get /household /roommates
+		try {
+			String url = request + "/setadmin";
+			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 			conn.setDoOutput(true);
@@ -181,8 +114,8 @@ public class household_admin extends household_member_class
 			//getResponseCode()!
 
 			BufferedReader in = new BufferedReader(
-													new InputStreamReader(
-															conn.getInputStream()));
+					    new InputStreamReader(
+					    conn.getInputStream()));
 
 			StringBuffer result = new StringBuffer();
 			String line = "";
@@ -192,29 +125,29 @@ public class household_admin extends household_member_class
 				result.append(line);
 			}
 
-				//JSON string returned by server
+			//JSON string returned by server
 			JSONObject data = new JSONObject(result);
 			Bool success = data.getBoolean("success");
 
 			if (success == true)
-				//admin was taken away
+			//admin was taken away
 				return true;
 			else {
-				//admin was not taken away
+			//admin was not taken away
 				String message = data.getString("message");
 			}
 		        } catch (MalformedURLException e) {
 
-                e.printStackTrace();
+                	e.printStackTrace();
 
-            } catch (IOException e) {
+            		} catch (IOException e) {
 
-                e.printStackTrace();
-            } catch (JSONException e) {
+                	e.printStackTrace();
+            		} catch (JSONException e) {
 
-                e.printStackTrace();
-     	}
+                	e.printStackTrace();
+     			}
 			
-			return false;
+		return false;
 	}
 }

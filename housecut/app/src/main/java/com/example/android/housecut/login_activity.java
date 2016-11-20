@@ -20,8 +20,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.lang.String;
 
-
+//Implemented by Nick and Jose
 public class login_activity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -37,7 +38,6 @@ public class login_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         mEmailView = (EditText) findViewById(R.id.email1);
         mPasswordView = (EditText) findViewById(R.id.password1);
@@ -68,11 +68,10 @@ public class login_activity extends AppCompatActivity {
     }
 
     public void registerUser() {
-
-
         Intent intent = new Intent(login_activity.this, register_activity.class);
         startActivity(intent);
     }
+
     public void attemptLogin() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
@@ -119,7 +118,6 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
     }
 
     public String loginToServer(String email, String password){
-
         //Catch invalid Encoder setting exception
 
         //System.out.println(email);
