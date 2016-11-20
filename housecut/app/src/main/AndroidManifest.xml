@@ -47,6 +47,20 @@
             android:label="Login Issue Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <activity
+            android:name=".grocery_list_activity"
+            android:label="Grocery List Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name=".task_list_activity"
+            android:label="Task List Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name=".settings_activity"
+            android:label="Settings Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>
 

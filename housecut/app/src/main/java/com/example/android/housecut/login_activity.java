@@ -64,30 +64,19 @@ public class login_activity extends AppCompatActivity {
     }
 
     public void registerUser() {
-
-
         Intent intent = new Intent(login_activity.this, register_activity.class);
         startActivity(intent);
     }
+
     public void attemptLogin() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        //String line = "";
 
         AsyncTaskRunner runner = new AsyncTaskRunner();
 
-        //runner.execute(email, password, line);
         runner.execute(email, password);
-        //if(line.contains("\"success\":true"))
-        {
-            Intent intent = new Intent(login_activity.this, main_page_activity.class);
-            startActivity(intent);
-        }
-        //else
-        {
-            //Intent issue = new Intent(login_activity.this, login_issue_activity.class);
-            //startActivity(issue);
-        }
+        Intent intent = new Intent(login_activity.this, main_page_activity.class);
+        startActivity(intent);
 
     }
 
@@ -100,13 +89,11 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        //loginToServer(params[0], params[1], params[2]);
         loginToServer(params[0], params[1]);
         return null;
     }
 
 
-    //public void loginToServer(String email, String password, String line){
     public void loginToServer(String email, String password){
         //Catch invalid Encoder setting exception
 

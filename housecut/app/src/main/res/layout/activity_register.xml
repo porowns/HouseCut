@@ -15,7 +15,6 @@
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:src="@mipmap/living_room"
-
         android:contentDescription="Login and Register Background" />
 
 
