@@ -169,83 +169,29 @@ public class household_member_class {
     /* Uses endpoint /deleteaccount & token */
     public boolean deleteAccount(String token) {
         boolean success = false;
-        try {
 
-            //For JSON..
-            JSONObject jsonToken = new JSONObject();
-            jsonToken.put("token", token);
-            String requestBody = jsonToken.toString();
+        //URL to open connection with
+        String url = request + "/deleteaccount";
 
-            //Open a connection (to the server) for POST
+        //For JSON..
+        JSONObject jsonToken = new JSONObject();
+        jsonToken.put("token", token);
 
-            URL url = new URL (request + "/deleteaccount");
+        //Write/Get JSON from server
+        JSONObject data = writeToServer(jsonToken, url);
+        success = data.getBoolean("success");
 
-            //Declare connection object
-            HttpURLConnection conn =
-            (HttpURLConnection) url.openConnection();
-
-            //Delete the user
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-
-            //Opens up an outputstreamwriter for writing to server
-
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-            out.write(requestBody);
-            out.close();
-
-            /* If Response code isn't 200, throw exception. */
-
-            if (conn.getResponseCode() != 200) {
-                throw new IOException(conn.getResponseMessage());
-            }
-
-            //To test what the server outputs
-            BufferedReader in = new BufferedReader(
-                                                   new InputStreamReader((conn.getInputStream())));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            System.out.println("Output from Server .... \n");
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-                result.append(line);
-            }
-
-            //JSON string returned by server
-            JSONObject data = new JSONObject(result.toString());
-            success = data.getBoolean("success");
-
-            //error checking
-            if (success == true) {
-                System.out.println("Account has been deleted.");
-            }
-            else {
-                //Set protected member string "errorMessage" to the server error message
-                String message = data.getString("message");
-                this.setErrorMessage(message);
-            }
-
-            in.close();
-            conn.disconnect();
-
-            //Once everything has been closed, the result is returned
-
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } catch (JSONException e) {
-
-            e.printStackTrace();
+        //error checking
+        if (success == true) {
+            success = true;
+            System.out.println("Account has been deleted.");
         }
+        else {
+            //Set protected member string "errorMessage" to the server error message
+            String message = data.getString("message");
+            this.setErrorMessage(message);
+        }
+
         return success;
     } //End Function
 
