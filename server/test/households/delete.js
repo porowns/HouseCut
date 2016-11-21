@@ -77,10 +77,14 @@ describe('deleteHouseholdFailureTest', function() {
       });
   });
   after(function(done) {
+    utilities.deleteHousehold({
+      token: token
+    }, function(err, res) {
       utilities.deleteAccount({
         email: 'test@test',
         password: 'test123'
       }, done);
+    });
   });
   describe('Delete the Household no token provided', function() {
     it('delete the existing household w/ no token provided', function(done) {
