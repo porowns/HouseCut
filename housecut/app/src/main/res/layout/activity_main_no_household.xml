@@ -39,7 +39,7 @@
         android:background="@color/colorPrimary"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:paddingBelow="4dp"
+        android:paddingBottom="4dp"
         android:text="Create Household"
         android:textStyle="bold"/>
 
