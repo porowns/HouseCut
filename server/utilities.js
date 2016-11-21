@@ -201,3 +201,18 @@ module.exports.getToken = function(user) {
               });
   return token;
 }
+
+/* Implemented by Simon and Chris 3:24 PM 11/22/16 */
+module.exports.deleteTask = function ( householdId, taskName ) {
+  Household.update({ '_id': householdId }, {
+    $pull: { 'taskList.name': taskName }
+  }, undefined, function(err, r) {
+    if (err) {
+      throw err;
+    }
+    callback({
+      success: true,
+      message: "Successfully removed task from household taskList"
+    });
+  });
+};
