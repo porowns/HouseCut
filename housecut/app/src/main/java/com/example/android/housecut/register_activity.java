@@ -76,8 +76,6 @@ public class register_activity extends AppCompatActivity {
 
         else
             return true;
-
-
     }
 
     public boolean CheckEmail(String Email) {
@@ -126,6 +124,7 @@ public class register_activity extends AppCompatActivity {
     }
     public void backtoLoginPage() {
         Intent intent = new Intent(register_activity.this, login_activity.class);
+        System.out.println(register_activity.this.CheckEmail("test"));
         startActivity(intent);
     }
 
