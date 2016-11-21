@@ -208,86 +208,40 @@ public class household_member_class {
     } //End Function
 
     //Join a certain household
+    //NEEDS FINISIHING
     public boolean addHouseholdMember(String token, String uID,
                                       String hhName, String hhPass)
     {
-
         boolean success = false;
+
         if (current_household == null) {
-            //current_household = h;
+            current_household = hhName;
 
             //Begin Server call for /household/roommates
+
+            //URL to open connection with
+            String url = request + "/household/roommates";
+
             try {
-
-                //Open a connection (to the server) for POST
-
-                URL url = new URL (request + "/household/roommates");
-
-                //Declare connection object
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("Accept", "application/json");
-
-
-                //Creates JSON string to write to server via POST
+                //For JSON..
                 JSONObject json = new JSONObject();
-                json.put("token", this.getToken());
-               // json.put("userId", )
-               // json.put("householdName", h);
-                //json.put("householdPassword", p);
-                String requestBody = json.toString();
+                json.put("token", token);
+                //put more stuff
 
-                //Opens up an outputstreamwriter for writing to server
-                //retrieve output stream that matches with Server input stream..
-                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-
-                //Write with JSON....
-                out.write(requestBody);
-                out.close();
-
-                /* If Response code isn't 200, throw exception. */
-
-                if (conn.getResponseCode() != 200) {
-                    throw new IOException(conn.getResponseMessage());
-                }
-
-                //To test what the server outputs AND finish sending request
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                conn.getInputStream()));
-
-                //StringBuffer will hold JSON string
-                StringBuffer result = new StringBuffer();
-                String line = "";
-                System.out.println("Output from Server .... \n");
-                while ((line = in.readLine()) != null) {
-                    System.out.println(result);
-                    result.append(line);
-                }
-
-                //JSON string returned by server
-                JSONObject data = new JSONObject(result.toString());
+                //Write/Get JSON from server
+                JSONObject data = writeToServer(json, url);
                 success = data.getBoolean("success");
 
                 //error checking
-                if (success == true)
-                    System.out.println("Account has been deleted.");
+                if (success == true) {
+                    System.out.println("User has been added to HouseHold.");
+                }
                 else {
-                    String message = data.getString("message");
                     //Set protected member string "errorMessage" to the server error message
+                    String message = data.getString("message");
                     this.setErrorMessage(message);
                 }
 
-                in.close();
-                conn.disconnect();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -299,54 +253,31 @@ public class household_member_class {
         }
         //return true/false based on server response
         return success;
+
     } //End Function
 
-/*
-    public Boolean removeHouseholdMember(String uID)
+
+    public boolean removeHouseholdMember(String uID)
     {
         //written by Logan Vega//
+
+        boolean success = false;
+        String url = request + "/household/roommates";
+
         try {
-            String url = request + "/household/roommates";
+
             //Get /household /roommates
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-
             JSONObject json = new JSONObject();
             json.put("operation", "remove");
 
             //error checking for Admins
             if (isAdmin && uID != null) {
-
                 json.put("userID", uID);
             }
-            String requestBody = json.toString();
 
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-
-            out.write(requestBody);
-            out.close();
-
-            //getResponseCode()!
-
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            conn.getInputStream()));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            System.out.println("Output from Server .... \n");
-            while ((line = in.readLine()) != null) {
-                System.out.println(result);
-                result.append(line);
-            }
-
-            //JSON string returned by server
-            JSONObject data = new JSONObject(result);
-            Bool success = data.getBoolean("success");
+            //Get/Write json to Server
+            JSONObject data = writeToServer(json, url);
+            success = data.getBoolean("success");
 
             if (success == true)
                 //member was removed
@@ -355,22 +286,15 @@ public class household_member_class {
                 //member was not removed
                 String message = data.getString("message");
             }
-        } catch (MalformedURLException e) {
 
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
         } catch (JSONException e) {
-
             e.printStackTrace();
         }
 
         //fails if trying to remove the only admin, must appoint a new admin before removing
         return false;
     }
-    */
+
 
     /* Simple getter functions */
 
