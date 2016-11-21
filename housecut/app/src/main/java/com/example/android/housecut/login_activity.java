@@ -108,8 +108,17 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
         System.out.println("Login post-execute success:");
         System.out.println(responseString);
         if (responseString.equals("success")) {
-            Intent intent = new Intent(this.ctx, main_page_activity.class);
-            this.ctx.startActivity(intent);
+            HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+            household_member_class user = app.getUser();
+
+            if (user.getHousehold().equals("0")) {
+                Intent intent = new Intent(this.ctx, main_no_household_activity.class);
+                this.ctx.startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(this.ctx, main_page_activity.class);
+                this.ctx.startActivity(intent);
+            }
         }
         else {
             this.errorTextView.setVisibility(View.VISIBLE);
