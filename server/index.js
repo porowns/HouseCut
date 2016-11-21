@@ -20,6 +20,7 @@ var getRoommates = require('./roommates/getroommates.js');
 var postRoommates = require('./roommates/postroommates.js');
 var createTask = require('./tasks/createtask.js');
 var deleteTask = require('./tasks/deletetask.js');
+var getHousehold = require('./households/gethousehold.js');
 
 
 /* config */
@@ -49,6 +50,8 @@ app.post('/joinhousehold', verifyToken, joinhousehold);
 app.post('/deletehousehold', verifyToken, deletehousehold);
 
 app.post('/setadmin', verifyToken, setAdmin);
+
+app.get('/household/name', verifyToken, getHousehold);
 
 app.get('/household/tasklist', verifyToken, getTaskList);
 
