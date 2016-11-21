@@ -63,4 +63,4 @@ describe('joinHouseholdSuccessTest', function() {
       })
     })
   })
-}
+});

@@ -95,4 +95,5 @@ module.exports = function(req, res) {
         }
         break;
     }
+  });
 };
