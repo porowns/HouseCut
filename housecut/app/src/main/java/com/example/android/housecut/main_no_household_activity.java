@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 /**
  * Created by Jose on 11/21/2016.
@@ -18,6 +19,12 @@ public class main_no_household_activity extends AppCompatActivity{
         setContentView(R.layout.activity_register_confirmation);
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
+
+        Button createHousehold =(Button) findViewById(R.id._create_button);
+        Button joinHousehold =(Button) findViewById(R.id._join_button);
+
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:gravity="center_horizontal"
+    tools:context="com.example.android.housecut.register_activity"
+    >
+
+
+    <!-- Household Information -->
+    <LinearLayout
+        android:id="@+id/household_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/household_id_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Enter Household Name"
+            android:inputType=""
+            android:maxLines="1"
+            android:padding="8dp"
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+
+        <EditText
+            android:id="@+id/household_id_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Enter Household Name (Confirm)"
+            android:inputType=""
+            android:maxLines="1"
+            android:padding="8dp"
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+
+
+        <EditText
+            android:id="@+id/household_pw_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+
+
+        <EditText
+            android:id="@+id/household_pw_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Password (Confirm)"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:background="#58000000"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/_create_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/household_form"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Create Houshold"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>

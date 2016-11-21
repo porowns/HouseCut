@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:gravity="center_horizontal"
+    tools:context="com.example.android.housecut.join_houshold_activity"
+    >
+
+
+    <EditText
+        android:id="@+id/household_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:hint="Household Name"
+        android:inputType=""
+        android:maxLines="1"
+        android:padding="8dp"
+        android:background="#58000000"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+    <EditText
+        android:id="@+id/household_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_below="@id/household_id"
+        android:hint="Household Password"
+        android:inputType=""
+        android:maxLines="1"
+        android:padding="8dp"
+        android:background="#58000000"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+
+
+    <Button
+        android:id="@+id/join_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/household_pw"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Register user"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>
