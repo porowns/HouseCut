@@ -25,7 +25,14 @@ public class household_class {
 	// adds a new roommate to the household
 	public void addMember (household_member_class member)
 	{
-		household_vector.add(member);
+		bool added = false;
+		for(int i = 0; i < household_vector.size(); i++)
+		{
+			if(household_vector[i].name == member.name)
+				added = true;
+		}
+		if (added)
+			household_vector.add(member);
 		
 		return;
 	}
@@ -105,4 +112,6 @@ public class household_class {
 				System.out.print(", ")
 		}
 	}
+				    
+	
 }
