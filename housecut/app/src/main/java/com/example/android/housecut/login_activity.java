@@ -69,6 +69,10 @@ public class login_activity extends AppCompatActivity {
 
     public void registerUser() {
         Intent intent = new Intent(login_activity.this, register_activity.class);
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
         startActivity(intent);
     }
 
@@ -86,148 +90,144 @@ public class login_activity extends AppCompatActivity {
 
 
 
+    class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
-}
+        private Context ctx;
+        private TextView mMessageView;
 
-class AsyncTaskRunner extends AsyncTask<String, Void, String> {
+        public AsyncTaskRunner(Context ctx, TextView mMessageView){
+            this.ctx = ctx;
+            this.mMessageView = mMessageView;
+        }
 
-    private Context ctx;
-    private TextView mMessageView;
+        @Override
+        protected String doInBackground(String... params) {
+            return loginToServer(params[0], params[1]);
+        }
 
-    public AsyncTaskRunner(Context ctx, TextView mMessageView){
-        this.ctx = ctx;
-        this.mMessageView = mMessageView;
-    }
+        @Override
+        protected void onPostExecute(String responseString) {
+            if (responseString.equals("success")) {
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
 
-    @Override
-    protected String doInBackground(String... params) {
-        return loginToServer(params[0], params[1]);
-    }
-
-    @Override
-    protected void onPostExecute(String responseString) {
-        if (responseString.equals("success")) {
-            HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
-            household_member_class user = app.getUser();
-
-            if (user.getHousehold().equals("0")) {
-                Intent intent = new Intent(this.ctx, main_no_household_activity.class);
-                this.ctx.startActivity(intent);
+                if (user.getHousehold().equals("0")) {
+                    Intent intent = new Intent(this.ctx, main_no_household_activity.class);
+                    this.ctx.startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(this.ctx, main_page_activity.class);
+                    this.ctx.startActivity(intent);
+                }
             }
             else {
-                Intent intent = new Intent(this.ctx, main_page_activity.class);
-                this.ctx.startActivity(intent);
+                this.mMessageView.setVisibility(View.VISIBLE);
+                this.mMessageView.setText(responseString);
             }
         }
-        else {
-            this.mMessageView.setVisibility(View.VISIBLE);
-            this.mMessageView.setText(responseString);
-        }
-    }
 
-    public String loginToServer(String email, String password){
-        //Catch invalid Encoder setting exception
+        public String loginToServer(String email, String password){
+            //Catch invalid Encoder setting exception
 
-        //System.out.println(email);
+            //System.out.println(email);
 
 
-        try {
+            try {
 
-            //Open a connection (to the server) for POST
+                //Open a connection (to the server) for POST
 
-            URL url = new URL ("http://10.0.2.2:8080/login");
+                URL url = new URL ("http://10.0.2.2:8080/login");
 
-            //Declare connection object
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                //Declare connection object
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
 
 
-            //Creates JSON string to write to server via POST
-            JSONObject json = new JSONObject();
-            json.put("email", email);
+                //Creates JSON string to write to server via POST
+                JSONObject json = new JSONObject();
+                json.put("email", email);
 
-            json.put("password", password);
+                json.put("password", password);
 
-            String requestBody = json.toString();
+                //Opens up an outputstreamwriter for writing to server
+                //retrieve output stream that matches with Server input stream..
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 
-            //Opens up an outputstreamwriter for writing to server
-            //retrieve output stream that matches with Server input stream..
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                //OR, with JSON....
+                out.write(json.toString());
 
-            //OR, with JSON....
-            out.write(json.toString());
-
-            out.close();	//flush?  .writeBytes?
+                out.close();	//flush?  .writeBytes?
 
 			/*If HTTP connection fails, throw exception*/
 
 
-            //To test what the server outputs AND finish sending request
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            conn.getInputStream()));
+                //To test what the server outputs AND finish sending request
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(
+                                conn.getInputStream()));
 
-            //StringBuffer will hold JSON string
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            System.out.println("Output from Server .... \n");
-            while ((line = in.readLine()) != null) {
-                System.out.println(result);
-                result.append(line);
+                //StringBuffer will hold JSON string
+                StringBuffer result = new StringBuffer();
+                String line;
+                System.out.println("Output from Server .... \n");
+                while ((line = in.readLine()) != null) {
+                    System.out.println(result);
+                    result.append(line);
+                }
+
+                //JSON string returned by server
+                JSONObject data = new JSONObject(String.valueOf(result));
+
+                System.out.println(data);
+
+                Boolean success = data.getBoolean("success");
+
+                String responseString;
+
+                if (success) {
+                    System.out.println("Login success\n");
+                    String householdId = data.getString("householdId");
+                    String name = data.getString("displayName");
+                    String userId = data.getString("id");
+                    String token = data.getString("token");
+
+                    household_member_class user = new household_member_class();
+                    user.setHouseholdId(householdId);
+                    user.setName(name);
+                    user.setToken(token);
+                    user.setId(userId);
+                    ((HouseCutApp)this.ctx.getApplicationContext()).setUser(user);
+                    responseString = "success";
+                }
+                else {
+                    System.out.println("Login failure\n");
+                    String message = data.getString("message");
+                    System.out.println(message + "\n");
+                    responseString = data.getString("message");
+                }
+
+                in.close();
+                conn.disconnect();
+
+                return responseString;
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            //JSON string returned by server
-            JSONObject data = new JSONObject(String.valueOf(result));
-
-            System.out.println(data);
-
-            Boolean success = data.getBoolean("success");
-
-            String responseString;
-
-            if (success) {
-                System.out.println("Login success\n");
-                String householdId = data.getString("householdId");
-                String name = data.getString("displayName");
-                String userId = data.getString("id");
-                String token = data.getString("token");
-
-                household_member_class user = new household_member_class();
-                user.setHouseholdId(householdId);
-                user.setName(name);
-                user.setToken(token);
-                user.setId(userId);
-                ((HouseCutApp)this.ctx.getApplicationContext()).setUser(user);
-                responseString = "success";
-            }
-            else {
-                System.out.println("Login failure\n");
-                String message = data.getString("message");
-                System.out.println(message + "\n");
-                responseString = data.getString("message");
-            }
-
-
-            in.close();
-            conn.disconnect();
-
-            return responseString;
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return "Failure";
         }
-
-        return "Failure";
     }
+
 }

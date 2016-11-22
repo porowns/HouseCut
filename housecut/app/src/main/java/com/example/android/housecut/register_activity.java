@@ -36,13 +36,21 @@ public class register_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
-
         mUsernameView = (EditText) findViewById(R.id.username);
         mEmailConfirmView = (EditText) findViewById(R.id.emailConfirm);
         mPasswordConfirmView = (EditText) findViewById(R.id.passwordConfirm);
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        String password = intent.getStringExtra("password");
+        if (email != null && !email.isEmpty()) {
+            mEmailView.setText(email);
+        }
+        if (password != null && !password.isEmpty()) {
+            mPasswordView.setText(password);
+        }
 
 
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_user_button);

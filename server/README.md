@@ -34,7 +34,7 @@ Tasks have the following schema:
 | Login | `/login` | `POST` | None | { email: [String], password: [String] } | { success: true, id: [String], token: [String] } | { success: false, message: [String] } | |
 | Delete account | `/deleteaccount` | `POST` | None | { token: [String] } | { success: true } | { success: false, message: [String] } | |
 | Create Household | `/createhousehold` | `POST` | None | { token: [String], houseHoldName : [String], houseHoldPassword: [String] } | { success: true } | { success: false, message: [String] } | User may not be in a household, user will be set as admin|
-| Join Household | `/joinhousehold` | `POST` | None | { token: [String], houseHoldName : [String], houseHoldPassword: [String] } | { success: true } | { success: false, message: [String] } | User may not be in a household |
+| Join Household | `/joinhousehold` | `POST` | None | { token: [String], houseHoldName : [String], houseHoldPassword: [String] } | { success: true, householdId: [String] } | { success: false, message: [String] } | User may not be in a household |
 | Delete Household | `/deletehousehold` | `POST` | None | { token: [String]} | { success: true } | { success: false, message: [String] } | Only admin can delete the household. |
 | Set admin privilege | `/setadmin` | `POST` | None | { userId: [String] OPTIONAL (defaults to current user's id), setAdmin: ('true'&#124;'false'), token: [String] } | { success: true } | { success: false, message: [String] } | userId will default to the calling user |
 | Get tasklist (for a user or a household) | `/household/tasklist` | `GET` | token=[String] and optional userId=[String] | None | { success: true, tasklist: [Array of Tasks] } | { success: false, message: [String] } | |

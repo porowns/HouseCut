@@ -2,60 +2,127 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:baselineAligned="false"
     android:theme="@style/Theme.AppCompat.NoActionBar"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/options_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-    </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/main_page_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/options_toolbar"
-        android:text="Main Page"
-        android:textSize="48dp"
-        android:textAllCaps="true"
+    <!-- Background -->
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_centerHorizontal="true"
-        />
+        android:scaleType="centerCrop"
+        android:src="@mipmap/living_room"
+        android:contentDescription="Login and Register Background" />
 
-    <Button
-        android:id="@+id/_create_button"
-        style="?android:textAppearanceSmall"
+    <!-- Main Logo -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/housecutlogo"
+        android:contentDescription="Housecut Logo transparent"/>
+
+    <!-- Login Form -->
+
+    <RelativeLayout
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_page_view"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_below="@id/logo"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingBottom="4dp"
-        android:text="Create Household"
-        android:textStyle="bold"/>
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/_join_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/_create_button"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="Join Household"
-        android:textStyle="bold"/>
+        <!-- First form, takes in a Household name -->
+        <EditText
+            android:id="@+id/householdname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#58000000"
+            android:hint="Household name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
+
+        <!-- Second form, takes in a password -->
+        <EditText
+            android:id="@+id/householdpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/householdname"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#58000000"
+            android:hint="Household password"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:inputType="textPassword" />
+
+        <!-- Message for logging in error or loading message -->
+        <TextView
+            android:id="@+id/householdloginmessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/householdpassword"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="Login message"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="24sp"
+            android:padding="0dp"
+            android:textColor="#1b96fe"
+            android:textColorHint="#1b96fe" />
+
+        <Button
+            android:id="@+id/_join_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/householdloginmessage"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Join Household"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/_create_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/_join_button"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="4dp"
+            android:text="Create Household"
+            android:textStyle="bold"/>
+
+
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

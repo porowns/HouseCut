@@ -50,6 +50,7 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
                 }
                 res.json({
                   success: true,
+                  householdId: household._id,
                   message: "User was successfully added to the household."
                 });
               });

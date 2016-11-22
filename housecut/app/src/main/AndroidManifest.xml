@@ -29,18 +29,8 @@
             android:label="Register Activity" />
 
         <activity
-            android:name=".register_confirmation_activity"
-            android:label="Register Confirmation Activity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
-        <activity
             android:name=".main_page_activity"
             android:label="Main Page Activity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-
-        <activity
-            android:name=".login_issue_activity"
-            android:label="Login Issue Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
@@ -61,6 +51,11 @@
         <activity
             android:name=".main_no_household_activity"
             android:label="No Household Activity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name=".create_household_activity"
+            android:label="Create Household Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>
