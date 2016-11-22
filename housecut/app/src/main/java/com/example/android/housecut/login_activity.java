@@ -112,7 +112,7 @@ public class login_activity extends AppCompatActivity {
                 household_member_class user = app.getUser();
 
                 if (user.getHousehold().equals("0")) {
-                    Intent intent = new Intent(this.ctx, main_no_household_activity.class);
+                    Intent intent = new Intent(this.ctx, join_household_activity.class);
                     this.ctx.startActivity(intent);
                 }
                 else {

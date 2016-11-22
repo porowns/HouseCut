@@ -113,7 +113,7 @@ public class create_household_activity extends AppCompatActivity {
         */
     }
     public void backToLoginPage() {
-        Intent intent = new Intent(create_household_activity.this, main_no_household_activity.class);
+        Intent intent = new Intent(create_household_activity.this, join_household_activity.class);
         System.out.println(create_household_activity.this.CheckName("test"));
         startActivity(intent);
     }

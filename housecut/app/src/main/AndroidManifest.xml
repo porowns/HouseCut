@@ -49,7 +49,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity
-            android:name=".main_no_household_activity"
+            android:name=".join_household_activity"
             android:label="No Household Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
