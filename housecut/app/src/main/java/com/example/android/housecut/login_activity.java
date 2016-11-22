@@ -31,7 +31,7 @@ public class login_activity extends AppCompatActivity {
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
-    private TextView mErrorView;
+    private TextView mMessageView;
 
 
     @Override
@@ -41,7 +41,7 @@ public class login_activity extends AppCompatActivity {
 
         mEmailView = (EditText) findViewById(R.id.email1);
         mPasswordView = (EditText) findViewById(R.id.password1);
-        mErrorView = (TextView)findViewById(R.id.loginerror);
+        mMessageView = (TextView)findViewById(R.id.loginmessage);
 
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -63,7 +63,7 @@ public class login_activity extends AppCompatActivity {
             }
         });
 
-        mErrorView.setVisibility(View.GONE);
+        mMessageView.setVisibility(View.GONE);
 
     }
 
@@ -76,9 +76,10 @@ public class login_activity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        mErrorView.setVisibility(View.GONE);
+        mMessageView.setVisibility(View.VISIBLE);
+        mMessageView.setText("Loading...");
 
-        AsyncTaskRunner runner = new AsyncTaskRunner(this, mErrorView);
+        AsyncTaskRunner runner = new AsyncTaskRunner(this, mMessageView);
 
         runner.execute(email, password);
     }
@@ -91,11 +92,11 @@ public class login_activity extends AppCompatActivity {
 class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
     private Context ctx;
-    private TextView errorTextView;
+    private TextView mMessageView;
 
-    public AsyncTaskRunner(Context ctx, TextView errorTextView){
+    public AsyncTaskRunner(Context ctx, TextView mMessageView){
         this.ctx = ctx;
-        this.errorTextView = errorTextView;
+        this.mMessageView = mMessageView;
     }
 
     @Override
@@ -105,8 +106,6 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String responseString) {
-        System.out.println("Login post-execute success:");
-        System.out.println(responseString);
         if (responseString.equals("success")) {
             HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
             household_member_class user = app.getUser();
@@ -121,8 +120,8 @@ class AsyncTaskRunner extends AsyncTask<String, Void, String> {
             }
         }
         else {
-            this.errorTextView.setVisibility(View.VISIBLE);
-            this.errorTextView.setText(responseString);
+            this.mMessageView.setVisibility(View.VISIBLE);
+            this.mMessageView.setText(responseString);
         }
     }
 

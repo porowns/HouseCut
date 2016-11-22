@@ -1,6 +1,5 @@
 package com.example.android.housecut;
 
-import com.example.android.housecut.household_member_class;
 import android.app.Application;
 
 /**
