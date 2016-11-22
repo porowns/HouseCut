@@ -37,6 +37,19 @@ module.exports.makeCleanAccount = function(data, callback) {
   });
 };
 
+/* Implemented by Simon */
+module.exports.makeCleanAccountAndLogin = function(data, callback) {
+  module.exports.makeCleanAccount(data, function() {
+    chai.request(config.hostname)
+      .post('/login')
+      .send(data)
+      .end(function(err, res) {
+        if (callback)
+          callback(err, res);
+      });
+  });
+};
+
 /* Implemented by Chris */
 module.exports.makeAccount = function(data, callback) {
   chai.request(config.hostname)

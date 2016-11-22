@@ -60,7 +60,8 @@ describe('joinHouseholdSuccessTest', function() {
         res.should.have.status(200);
         res.res.body.should.have.property('success');
         res.res.body.success.should.be.eql(true);
-      })
-    })
-  })
+        done();
+      });
+    });
+  });
 });
