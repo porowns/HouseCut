@@ -25,52 +25,58 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
     throw err;
   }
   if (user) {
-    if (user.householdId != 0) {
-      // If user has a household...
-      res.json({
-        success: false,
-        message: "User already has a household"
-      });
-    }
-    else {
-      // If user does not have household...
-      Household.findOne({ 'houseHoldName' : houseHoldName}, function (err, household) {
-        if (household) {
-          // Check Password
-          var hash_pw = crypto.createHash('sha512').update(household.salt + houseHoldPassword).digest("hex");
-          if (hash_pw == household.hashed_password) {
-            // Add the User to Household
-            User.update({ '_id': currentUserId}, {householdId: household._id, admin: false}, function (err) {
+    // If user does not have household...
+    Household.findOne({ 'houseHoldName' : houseHoldName}, function (err, household) {
+      if (household) {
+        if (user.householdId === household._id) {
+          res.json({
+            success: true,
+            message: "User was already in that household"
+          });
+          return;
+        }
+        else if (user.householdId != 0) {
+          res.json({
+            success: false,
+            message: "User already has a household"
+          });
+          return;
+        }
+
+        // Check Password
+        var hash_pw = crypto.createHash('sha512').update(household.salt + houseHoldPassword).digest("hex");
+        if (hash_pw == household.hashed_password) {
+          // Add the User to Household
+          User.update({ '_id': currentUserId}, {householdId: household._id, admin: false}, function (err) {
+            if (err) {
+              throw (err);
+            }
+            Household.update({ 'houseHoldName' : houseHoldName}, { $push: {'HouseholdMembers': currentUserId} }, function(err) {
               if (err) {
-                throw (err);
+                throw err;
               }
-              Household.update({ 'houseHoldName' : houseHoldName}, { $push: {'HouseholdMembers': currentUserId} }, function(err) {
-                if (err) {
-                  throw err;
-                }
-                res.json({
-                  success: true,
-                  householdId: household._id,
-                  message: "User was successfully added to the household."
-                });
+              res.json({
+                success: true,
+                householdId: household._id,
+                message: "User was successfully added to the household."
               });
             });
-          }
-          else {
-            res.json({
-              success: false,
-              message: "Incorrect Household Password"
-            });
-          }
+          });
         }
         else {
           res.json({
-            success:false,
-            message: "Household does not exist.."
+            success: false,
+            message: "Incorrect Household Password"
           });
         }
-      });
-    }
+      }
+      else {
+        res.json({
+          success:false,
+          message: "Household does not exist.."
+        });
+      }
+    });
   }
   else {
     res.json({
