@@ -18,7 +18,7 @@ Users have the following schema:
 Tasks have the following schema:
 ~~~
 {
-	name: { type: String, minLength: 1 },
+  name: { type: String, minLength: 1 },
   recurring: Boolean,
   recurringIntervalDays: Number,
   type: { type: String, minLength: 1, enum: [ 'Rotating', 'Assigned', 'Voluntary' ] },
