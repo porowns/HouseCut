@@ -44,7 +44,7 @@ public class settings_activity extends AppCompatActivity {
                 return true;
 
             case R.id.home_page_icon:
-                Intent intent4 = new Intent(settings_activity.this, task_list_activity.class);
+                Intent intent4 = new Intent(settings_activity.this, main_page_activity.class);
                 startActivity(intent4);
                 return true;
 

@@ -12,6 +12,7 @@ import com.example.android.housecut.HouseCutApp;
 
 /**
  * Created by nick, jose and adam on 10/18/16.
+ * Edited by Chris
  */
 
 public class register_activity extends AppCompatActivity {

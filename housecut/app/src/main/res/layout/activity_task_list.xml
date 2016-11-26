@@ -16,14 +16,26 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/task_list_view"
-        android:layout_width="match_parent"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:id="@+id/container_layout"
         android:layout_height="wrap_content"
-        android:layout_below="@id/options_toolbar"
-        android:text="Task List"
-        android:textSize="48dp"
-        android:textAllCaps="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:orientation="vertical"
+        android:layout_below="@id/options_toolbar">
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/task_layout_1"
+        android:background="#1b96fe"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/container_layout"
+        android:layout_marginBottom="20dp">
+
+
+    </LinearLayout>
+
 </RelativeLayout>

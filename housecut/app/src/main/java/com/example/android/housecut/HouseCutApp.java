@@ -3,7 +3,7 @@ package com.example.android.housecut;
 import android.app.Application;
 
 /**
- * Created by ckm13 on 11/20/2016.
+ * Created by Chris on 11/20/2016.
  */
 public class HouseCutApp extends Application {
 

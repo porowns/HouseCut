@@ -22,7 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.lang.String;
 
-//Implemented by Nick and Jose
+//Implemented by Nick and Jose and Chris
 public class login_activity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
