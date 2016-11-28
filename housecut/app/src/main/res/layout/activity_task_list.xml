@@ -29,11 +29,20 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:id="@+id/task_layout_1"
-        android:background="#1b96fe"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/container_layout"
         android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/task_list_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Loading task list..."
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            />
 
         <ListView
             android:id="@+id/list"

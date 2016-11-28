@@ -53,7 +53,7 @@ public class task_list_activity extends AppCompatActivity {
     class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
         private Context ctx;
-        Task[] tasks;
+        ArrayList<Task> tasks;
 
         public AsyncTaskRunner(Context ctx){
             this.ctx = ctx;
@@ -66,9 +66,10 @@ public class task_list_activity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String responseString) {
+            TextView loading = (TextView) findViewById(R.id.task_list_loading);
+            loading.setVisibility(View.GONE);
             if (responseString.equals("success")) {
-                ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(task_list_activity.this,
-                        R.layout.tasklist_listview, this.tasks);
+                TaskAdapter adapter = new TaskAdapter(task_list_activity.this, this.tasks);
 
                 ListView listView = (ListView) findViewById(R.id.list);
                 listView.setAdapter(adapter);
@@ -87,8 +88,6 @@ public class task_list_activity extends AppCompatActivity {
                 String token = user.getToken();
 
                 URL url = new URL ("http://10.0.2.2:8080/household/tasklist?token=" + token);
-
-                System.out.println("GETting from url: " + url.toString());
 
                 //Declare connection object
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -116,28 +115,19 @@ public class task_list_activity extends AppCompatActivity {
                 if (success) {
                     System.out.println("Get tasklist success\n");
                     JSONArray tasklist = data.getJSONArray("tasklist");
-                    System.out.println("Tasklist:\n---------");
-                    final LinearLayout container = (LinearLayout) findViewById(R.id.container_layout);
-                    tasks = new Task[tasklist.length()];
-                    household.printRoommates();
+                    tasks = new ArrayList<Task>(tasklist.length());
                     for (int i = 0; i < tasklist.length(); i++) {
                         JSONObject taskJSON = tasklist.getJSONObject(i);
                         String name = taskJSON.getString("name");
                         String type = taskJSON.getString("type");
                         String currentlyAssignedId = taskJSON.getString("currentlyAssigned");
                         String currentlyAssignedName = household.getRoommateNameFromId(currentlyAssignedId);
-                        System.out.println("Task " + i);
-                        System.out.println(name);
-                        System.out.println(type);
-                        System.out.println(currentlyAssignedId);
-                        System.out.println(currentlyAssignedName);
-                        System.out.println("----");
-                        tasks[i] = new Task(name, type, currentlyAssignedId, currentlyAssignedName);
+                        tasks.add(new Task(name, type, currentlyAssignedId, currentlyAssignedName));
                     }
                     responseString = "success";
                 }
                 else {
-                    System.out.println("Login failure\n");
+                    System.out.println("Get tasklist failure\n");
                     String message = data.getString("message");
                     System.out.println(message + "\n");
                     responseString = data.getString("message");
