@@ -36,7 +36,7 @@ module.exports = function(req, res) {
       success: false,
       message: "Specify type as 'Rotating', 'Voluntary', or 'Assigned'"
     });
-  } else if ( (!assigned || assigned === "" ) && type === "Assigned" ) {
+  } else if ( (!assigned || assigned === "" ) && type !== "Voluntary" ) {
     res.json({
       success: false,
       message: "Specify who the task is assigned to."

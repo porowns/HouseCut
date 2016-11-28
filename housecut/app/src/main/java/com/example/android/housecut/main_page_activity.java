@@ -31,24 +31,33 @@ public class main_page_activity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.settings_icon:
-                Intent intent = new Intent(main_page_activity.this, settings_activity.class);
+                intent = new Intent(main_page_activity.this, settings_activity.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
 
             case R.id.grocery_list_icon:
-                Intent intent2 = new Intent(main_page_activity.this, grocery_list_activity.class);
-                startActivity(intent2);
+                intent = new Intent(main_page_activity.this, grocery_list_activity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
 
             case R.id.task_list_icon:
-                Intent intent3 = new Intent(main_page_activity.this, task_list_activity.class);
-                startActivity(intent3);
+                intent = new Intent(main_page_activity.this, task_list_activity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
 
             case R.id.home_page_icon:
+                intent = new Intent(main_page_activity.this, main_page_activity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
                 return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);

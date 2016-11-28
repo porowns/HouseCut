@@ -19,6 +19,7 @@
             android:textSize="18sp"
             tools:text="Name"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             />
 
         <TextView

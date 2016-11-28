@@ -62,6 +62,10 @@ public class Household {
         return "";
     }
 
+    public HashMap<String, String> getRoommatesHashMap() {
+        return roommates;
+    }
+
 
     public void setName(String name) { this.name = name; }
     public void setId(String id) { this.id = id; }

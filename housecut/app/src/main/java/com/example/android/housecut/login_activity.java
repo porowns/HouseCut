@@ -111,13 +111,16 @@ public class login_activity extends AppCompatActivity {
                 HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
                 household_member_class user = app.getUser();
 
+                finish();
                 if (user.getHousehold().equals("0")) {
                     Intent intent = new Intent(this.ctx, join_household_activity.class);
                     this.ctx.startActivity(intent);
+                    overridePendingTransition(0, 0);
                 }
                 else {
                     Intent intent = new Intent(this.ctx, main_page_activity.class);
                     this.ctx.startActivity(intent);
+                    overridePendingTransition(0, 0);
                 }
             }
             else {
