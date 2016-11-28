@@ -192,6 +192,45 @@ module.exports.getNumAdmins = function(hh, callback) {
 };
 
 /* Implemented by Chris */
+module.exports.getRoommatesFromHousehold = function(hh, callback) {
+  var roommates = hh.HouseholdMembers;
+  var roommate_objs = [];
+  var count = 0;
+  for (var i = 0; i < roommates.length; i++) {
+    User.findOne({ '_id': roommates[i] }, function(err, u) {
+      if (err) throw err;
+      if (u) {
+        roommate_objs.push({
+          displayName: u.displayName,
+          id: u._id,
+          admin: u.admin
+        });
+      }
+      count++;
+      if (count === roommates.length) {
+        if (callback)
+          callback(roommate_objs);
+      }
+    });
+  }
+};
+
+/* Implemented by Chris */
+module.exports.getRoommateFromHousehold = function(userId, callback) {
+  User.findOne({ '_id': userId }, function(err, u) {
+    if (err) throw err;
+    var roommate = {}
+    if (u) {
+      roommate.displayName = u.displayName;
+      roommate.id = u._id;
+      roommate.admin = u.admin;
+    }
+    if (callback)
+      callback(roommate);
+  });
+};
+
+/* Implemented by Chris */
 module.exports.getToken = function(user) {
   var token = jwt.sign({
                 email: user.email,

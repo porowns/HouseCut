@@ -14,7 +14,7 @@ var utilities = require('./../utilities.js');
 module.exports = function(req, res) {
   var token = req.query.token;
   var decoded = jwtDecode(token);
-  var userId = req.query.userId;
+  var userId = decoded.id;
 
   utilities.getHouseholdFromUserId(userId, function(hh) {
     if (!hh) {
@@ -25,16 +25,12 @@ module.exports = function(req, res) {
       return;
     }
     if (userId) {
-      var users = hh.HouseholdMembers.map(function(v, i, a) {
-        return {
-          displayName: v.displayName,
-          id: v._id,
-          admin: v.admin
-        };
-      });
-      res.json({
-        success: true,
-        roommates: users
+      utilities.getRoommatesFromHousehold(hh, function(roommates) {
+        res.json({
+          success: true,
+          roommates: roommates
+        });
+        return;
       });
     }
     else {
@@ -44,16 +40,15 @@ module.exports = function(req, res) {
           success: false,
           message: "User not found in household."
         });
+        return;
       }
       else {
-        var user = {
-          displayName: hh.HouseholdMembers[userIndex].displayName,
-          id: hh.HouseholdMembers[userIndex]._id,
-          admin: hh.HouseholdMembers[userIndex].admin
-        };
-        res.json({
-          success: true,
-          roommate: user
+        utilities.getRoommateFromHousehold(hh, userId, function(roommate) {
+          res.json({
+            success: true,
+            roommate: roommate
+          });
+          return;
         });
       }
     }

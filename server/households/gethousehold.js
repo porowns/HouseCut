@@ -26,7 +26,7 @@ module.exports = function(req, res) {
     }
     res.json({
       success: true,
-      name: houseHoldName
+      name: hh.houseHoldName
     });
 
   });

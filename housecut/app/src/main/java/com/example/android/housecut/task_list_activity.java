@@ -13,8 +13,10 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by nickjohnson on 11/18/16.
@@ -50,6 +53,7 @@ public class task_list_activity extends AppCompatActivity {
     class AsyncTaskRunner extends AsyncTask<String, Void, String> {
 
         private Context ctx;
+        Task[] tasks;
 
         public AsyncTaskRunner(Context ctx){
             this.ctx = ctx;
@@ -63,6 +67,11 @@ public class task_list_activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String responseString) {
             if (responseString.equals("success")) {
+                ArrayAdapter<Task> adapter = new ArrayAdapter<Task>(task_list_activity.this,
+                        R.layout.tasklist_listview, this.tasks);
+
+                ListView listView = (ListView) findViewById(R.id.list);
+                listView.setAdapter(adapter);
 
             }
             else {
@@ -74,6 +83,7 @@ public class task_list_activity extends AppCompatActivity {
             try {
                 HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
                 household_member_class user = app.getUser();
+                Household household = app.getHousehold();
                 String token = user.getToken();
 
                 URL url = new URL ("http://10.0.2.2:8080/household/tasklist?token=" + token);
@@ -83,10 +93,7 @@ public class task_list_activity extends AppCompatActivity {
                 //Declare connection object
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-//                conn.setDoOutput(true);
                 conn.setRequestMethod("GET");
-              //  conn.setRequestProperty("Content-Type", "application/json");
-               // conn.setRequestProperty("Accept", "application/json");
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(conn.getInputStream()));
@@ -111,19 +118,21 @@ public class task_list_activity extends AppCompatActivity {
                     JSONArray tasklist = data.getJSONArray("tasklist");
                     System.out.println("Tasklist:\n---------");
                     final LinearLayout container = (LinearLayout) findViewById(R.id.container_layout);
+                    tasks = new Task[tasklist.length()];
+                    household.printRoommates();
                     for (int i = 0; i < tasklist.length(); i++) {
-                        JSONObject task = tasklist.getJSONObject(i);
-                        String name = task.getString("name");
-                        boolean recurring = task.getBoolean("recurring");
-                        int recurringIntervalDays = task.getInt("recurringIntervalDays");
-                        String type = task.getString("type");
-                        String currentlyAssigned = task.getString("currentlyAssigned");
+                        JSONObject taskJSON = tasklist.getJSONObject(i);
+                        String name = taskJSON.getString("name");
+                        String type = taskJSON.getString("type");
+                        String currentlyAssignedId = taskJSON.getString("currentlyAssigned");
+                        String currentlyAssignedName = household.getRoommateNameFromId(currentlyAssignedId);
                         System.out.println("Task " + i);
                         System.out.println(name);
                         System.out.println(type);
-                        System.out.println(currentlyAssigned);
+                        System.out.println(currentlyAssignedId);
+                        System.out.println(currentlyAssignedName);
                         System.out.println("----");
-
+                        tasks[i] = new Task(name, type, currentlyAssignedId, currentlyAssignedName);
                     }
                     responseString = "success";
                 }
