@@ -1,5 +1,6 @@
 package com.example.android.housecut;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.android.housecut.HouseCutApp;
 
 /**
  * Created by nick, jose and adam on 10/18/16.
@@ -28,7 +28,8 @@ public class register_activity extends AppCompatActivity {
     private EditText mUsernameView;
     private EditText mEmailView;
     private EditText mPasswordView;
-    private ShowPopUpWindow mRegisterPopup;
+    private TextView mRegisterMessageView;
+
 
 
 
@@ -42,6 +43,7 @@ public class register_activity extends AppCompatActivity {
         mPasswordConfirmView = (EditText) findViewById(R.id.passwordConfirm);
         mEmailView = (EditText) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+        mRegisterMessageView = (TextView)findViewById(R.id.register_message);
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
@@ -64,6 +66,8 @@ public class register_activity extends AppCompatActivity {
             }
         });
 
+        mRegisterMessageView.setVisibility(View.GONE);
+
     }
 
     public void RegisterButton() {
@@ -73,30 +77,36 @@ public class register_activity extends AppCompatActivity {
 
 
 
-        AsyncTaskRunner runner = new AsyncTaskRunner();
-        runner.execute(username, email, password);
+
+        mRegisterMessageView.setVisibility(View.VISIBLE);
+        mRegisterMessageView.setText("Loading...");
+
+        if(CheckEmail(email) && CheckPassword(password)) {
+            register_activity.AsyncTaskRunner runner = new register_activity.AsyncTaskRunner(this, mRegisterMessageView);
+            runner.execute(username, email, password);
+        }
+        else if (!CheckEmail(email)) {
+            mRegisterMessageView.setText("Name fields do not match!");
+        }
+        else if (!CheckPassword(password)) {
+            mRegisterMessageView.setText("Password fields do not match!");
+        }
 
 
     }
 
-    public boolean ValidInput(String email, String password) {
-        if ((!CheckEmail(email)) || (!CheckPassword(password)))
-            return false;
 
-        else
-            return true;
-    }
 
     public boolean CheckEmail(String Email) {
         String emailConfirm = mEmailView.getText().toString();
-        if(emailConfirm == Email)
+        if(emailConfirm.equals(Email))
             return true;
         else
             return false;
     }
     public boolean CheckPassword(String Pass) {
         String passConfirm = mPasswordView.getText().toString();
-        if(passConfirm == Pass)
+        if(passConfirm.equals(Pass))
             return true;
         else
             return false;
@@ -105,9 +115,16 @@ public class register_activity extends AppCompatActivity {
 
     class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
+        private Context ctx;
+        private TextView mMessageView;
+
+        public AsyncTaskRunner(Context ctx, TextView mMessageView){
+            this.ctx = ctx;
+            this.mMessageView = mMessageView;
+        }
+
         @Override
         protected String doInBackground(String... params) {
-            if(ValidInput(params[1], params[2])) {
                 household_member_class user = new household_member_class(params[0], params[1], params[2]);
                 ((HouseCutApp)getApplication()).setUser(user);
                 if (user.errorMessage() != null) {
@@ -118,18 +135,10 @@ public class register_activity extends AppCompatActivity {
                     return "Registration Success";
                 }
             }
-            else
-                return "Invalid Input";
-        }
 
-        /*
-        @Override
-        protected void onPostExecute(String errorMessage){
-            ShowPopUpWindow message = null;
-            setContentView(register_message) = ;
 
-        }
-        */
+
+
     }
     public void backtoLoginPage() {
         Intent intent = new Intent(register_activity.this, login_activity.class);
