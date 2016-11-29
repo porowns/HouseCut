@@ -60,7 +60,6 @@ public class task_list_activity extends AppCompatActivity {
         setContentView(R.layout.activity_task_list);
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
-
         loadingTextView= (TextView) findViewById(R.id.task_list_loading);
         loadingTextView.setVisibility(View.VISIBLE);
 
@@ -94,6 +93,7 @@ public class task_list_activity extends AppCompatActivity {
         final TextView nameLabel = new TextView(this);
         nameLabel.setText("Task name");
         final EditText nameView = new EditText(this);
+
 
         final TextView typeLabel = new TextView(this);
         typeLabel.setText("Task type");
