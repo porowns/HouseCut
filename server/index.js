@@ -22,6 +22,9 @@ var createTask = require('./tasks/createtask.js');
 var deleteTask = require('./tasks/deletetask.js');
 var getHousehold = require('./households/gethousehold.js');
 var completeTask = require('./tasks/completetask.js');
+var createGrocery = require('./grocerylist/creategrocery.js');
+var deleteGrocery = require('./grocerylist/deletegrocery.js');
+var getGroceryList = require('./grocerylist/getgrocerylist.js');
 
 
 /* config */
@@ -65,6 +68,12 @@ app.post('/household/roommates', verifyToken, postRoommates);
 app.post('/household/createtask', verifyToken, createTask);
 
 app.post('/household/deletetask', verifyToken, deleteTask);
+
+app.post('/household/creategrocery', verifyToken, createGrocery);
+
+app.post('/household/deletegrocery', verifyToken, deleteGrocery);
+
+app.get('/household/grocerylist', verifyToken, getGroceryList);
 
 /* start the server */
 app.listen(port);

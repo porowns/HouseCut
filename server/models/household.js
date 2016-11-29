@@ -8,5 +8,6 @@ module.exports = mongoose.model('Household', new Schema({
   id: String,
   temp_str: String,
   HouseholdMembers: Array,
-  taskList: Array
+  taskList: Array,
+  groceryList: Array
 }));

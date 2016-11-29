@@ -73,7 +73,10 @@ public class create_household_activity extends AppCompatActivity {
 
         if(CheckName(name) && CheckPassword(password)) {
             AsyncTaskRunner runner = new AsyncTaskRunner(this, mCreateHouseholdMessageView);
-            runner.execute(name, password);
+
+              //get token
+            String token = user.getToken();
+            runner.execute(token, name, password);
         }
         else if (!CheckName(name)) {
             mCreateHouseholdMessageView.setText("Household name fields do not match!");
@@ -113,10 +116,8 @@ public class create_household_activity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-
-                /* TODO: add create household server call here */
-            return ("success");
+        protected boolean doInBackground(String... params) {
+          return createHousehold(params[0], params[1], params[2]);
         }
         @Override
         protected void onPostExecute(String responseString) {
@@ -144,7 +145,7 @@ public class create_household_activity extends AppCompatActivity {
 
             //This will call /createHousehold via POST request, asks
             //user for token, household name, & household password
-        public boolean createHousehold(String hhName, String hhPass) {
+        public boolean createHousehold(String token, String hhName, String hhPass) {
 
           JSONObject json = new JSONObject();
           boolean success;
@@ -163,7 +164,7 @@ public class create_household_activity extends AppCompatActivity {
               conn.setRequestProperty("Accept", "application/json");
 
               json.put("houseHoldName", hhName);
-              json.put("houseHoldPassword");
+              json.put("houseHoldPassword", hhPass);
               json.put("token", token);
 
               String requestBody = json.toString();
@@ -211,8 +212,8 @@ public class create_household_activity extends AppCompatActivity {
               }
               else {
                   //an error occurred
-                  String errorMessage = data.getString("message");
-                  System.out.print("\n %s", errorMessage);
+                  String error = data.getString("message");
+                  System.out.print("\n %s", error);
               }
 
             return success;
