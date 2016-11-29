@@ -1,22 +1,47 @@
 package com.example.android.housecut;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by nickjohnson on 11/18/16.
  */
 
 public class grocery_list_activity extends AppCompatActivity {
+    private Button createTaskButton;
+    private Button viewingButton;
+    private TextView loadingTextView;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
+
+        loadingTextView= (TextView) findViewById(R.id.task_list_loading);
+        loadingTextView.setVisibility(View.VISIBLE);
+
+        viewingButton = (Button) findViewById(R.id.task_list_viewing);
+        viewingButton.setVisibility(View.GONE);
+
+        createTaskButton = (Button) findViewById(R.id.create_task_button);
+        createTaskButton.setVisibility(View.GONE);
+        createTaskButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

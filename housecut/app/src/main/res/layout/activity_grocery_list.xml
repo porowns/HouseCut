@@ -16,16 +16,82 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/grocery_list_view"
-        android:layout_width="match_parent"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:id="@+id/container_layout"
         android:layout_height="wrap_content"
-        android:layout_below="@id/options_toolbar"
-        android:text="Grocery List"
-        android:textSize="48dp"
-        android:textAllCaps="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:orientation="vertical"
+        android:layout_below="@id/options_toolbar">
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/task_layout_1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/container_layout"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/task_list_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="Loading grocery list..."
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/add_item_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="Add An Item"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/grocery_list_viewing"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="Viewing: Household"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+
+
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+        </ListView>
+
+    </LinearLayout>
+
 </RelativeLayout>
-
-
