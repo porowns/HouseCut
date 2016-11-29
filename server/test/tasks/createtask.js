@@ -48,14 +48,17 @@ describe('taskSuccessTests', function() {
       });
     });
   });
-/*
+
   describe('Create a Task', function() {
-    it('Creates a task as a household admin', function(done) {
+    it('Creates an assigned, non-recurring task', function(done) {
       utilities.createTask({
-        name: 'testTask'
-        assigned: ''
-      });
+        token: token,
+        name: 'testTask',
+        type: 'Assigned',
+        currentlyAssigned: 'exampleUser',
+        recurring: false
+      }, done);
     });
   });
-  */
+
 });
