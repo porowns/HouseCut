@@ -46,6 +46,9 @@ Tasks have the following schema:
 | Delete task | `/household/deletetask` | `POST` | None | { token: [String], taskName: [String] } | { success: true } | { success: false, message: [String] } | |
 | Get Household Name | `/household/name` | `GET` | token=[String] | None | { success: true, name: [String] } | { success: false, message: [String] } | |
 | Complete task | `/household/completetask` | `POST` | None | { token: [String], name: [String] } | { success: true } | { success: false, message: [String] } | Send the name for the task you want to complete. Will check type and everything for you, and either delete or change the assigned userID to the right person. |
+| Create Grocery | `/household/creategrocery` | `POST` | None | { token: [String], name: [String] } | { success: true } | { success: false, message: [String] } | Send the grocery item name, and it'll create that item. |
+| Delete Grocery | `/household/deletegrocery` | `POST` | None | { token: [String], name: [String] } | { success: true } | { success: false, message: [String] } | Send the grocery item name, and it'll delete that item. |
+| Get Grocery List | `/household/getgrocerylist` | `GET` | token=[String] } | None | { { success: true, groceryList: [Array of Groceries] } | Gives list of grocery items. |
 
 # Starting the server
 
