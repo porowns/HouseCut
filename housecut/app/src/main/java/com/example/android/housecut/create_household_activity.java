@@ -115,7 +115,7 @@ public class create_household_activity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected boolean doInBackground(String... params) {
           return createHousehold(params[0], params[1], params[2]);
         }
         @Override
