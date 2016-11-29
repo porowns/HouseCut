@@ -19,7 +19,7 @@ describe('joinHouseholdSuccessTest', function() {
       token = res.res.body.token,
       utilities.createHousehold({
         token: token,
-        houseHoldName: 'houseHoldTest',
+        houseHoldName: 'joinTest',
         houseHoldPassword: 'house123',
       }, function(err, res) {
         utilities.makeCleanAccountAndLogin({
@@ -54,7 +54,7 @@ describe('joinHouseholdSuccessTest', function() {
     it('should join the existing household', function(done) {
       utilities.joinHousehold({
         token: token2,
-        houseHoldName: 'houseHoldTest',
+        houseHoldName: 'joinTest',
         houseHoldPassword: 'house123'
       }, function( err, res ) {
         res.should.have.status(200);

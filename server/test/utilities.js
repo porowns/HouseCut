@@ -196,3 +196,36 @@ module.exports.deleteHousehold = function(data,callback) {
         callback(err,res);
     });
 }
+
+// Implemented by Kaleb
+module.exports.createTask = function(data,callback) {
+  chai.request(config.hostname)
+  .post('/household/createtask')
+  .send(data)
+  .end(function(err,res) {
+    if (callback)
+      callback(err,res);
+  });
+}
+
+// Implemented by Kaleb
+module.exports.deleteTask = function(data,callback) {
+  chai.request(config.hostname)
+  .post('/household/deletetask')
+  .send(data)
+  .end(function(err,res) {
+    if (callback)
+      callback(err,res);
+  });
+}
+
+// Implemented by Kaleb
+module.exports.completeTask = function(data,callback) {
+  chai.request(config.hostname)
+  .post('/household/completetask')
+  .send(data)
+  .end(function(err,res) {
+    if (callback)
+      callback(err,res);
+  });
+}
