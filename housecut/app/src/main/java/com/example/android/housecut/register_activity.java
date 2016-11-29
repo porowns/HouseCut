@@ -116,11 +116,11 @@ public class register_activity extends AppCompatActivity {
 
     class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
-        private Context ctx;
+        private Context contextx;
         private TextView mMessageView;
 
         public AsyncTaskRunner(Context ctx, TextView mMessageView){
-            this.ctx = ctx;
+            this.contextx = ctx;
             this.mMessageView = mMessageView;
         }
 
@@ -132,14 +132,25 @@ public class register_activity extends AppCompatActivity {
                     return user.errorMessage();
                 }
                 else {
-                    return "Registration Success";
+                    return "success";
                 }
+        }
+
+        @Override
+        protected void onPostExecute(String responseString) {
+            if(responseString.equals("success")) {
+                backtoLoginPage();
             }
+            else {
+                mMessageView.setText("Register Failed!");
+            }
+        }
 
 
 
 
-    }
+
+        }
     public void backtoLoginPage() {
         Intent intent = new Intent(register_activity.this, login_activity.class);
         startActivity(intent);
