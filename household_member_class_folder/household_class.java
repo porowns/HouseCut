@@ -25,15 +25,17 @@ public class household_class {
 	// adds a new roommate to the household
 	public void addMember (household_member_class member)
 	{
-		bool added = false;
+		boolean added = false;
 		for(int i = 0; i < household_vector.size(); i++)
 		{
-			if(household_vector[i].name == member.name)
+			if(household_vector[i].name.equals( member.name ) ){
 				added = true;
+			}
 		}
-		if (added)
-			household_vector.add(member);
 		
+		if ( !added ) {
+			household_vector.add(member);
+		}
 		return;
 	}
 	
@@ -42,8 +44,9 @@ public class household_class {
 	{
 		for(int i = 0; i < household_vector.size(); i++)
 		{
-			if(household_vector[i].name == member.name)
+			if(household_vector[i].name.equals( member.name ) ){
 				household_vector.remove(member);
+			}
 		}
 		
 		return;
@@ -70,7 +73,7 @@ public class household_class {
 	// change the admin role to another person
 	public void changeAdmin(string newAdmin)
 	{
-		bool valid = false;
+		boolean valid = false;
 		for(int i = 0; i < household_vector.size(); i++)
 			if(newAdmin == household_vector[i])
 				valid = true;
@@ -83,7 +86,7 @@ public class household_class {
 	public void renameHousehold(string newName)
 	{
 		// make sure the new name uses valid characters: letters and numbers and it is not too long
-		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+={[}]:;"'<,>.?/]*" && (newName.length() <= 30))
+		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+={[}]:;\"'<,>.?/]*" && (newName.length() <= 30))
 			householdName = newName;
 		   
 		return;
