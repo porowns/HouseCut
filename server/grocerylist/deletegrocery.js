@@ -9,14 +9,14 @@ module.exports = function(req,res) {
   var currentUserId = decoded.id;
 
   var itemName = req.body.itemName;
-/*
-  if (!name || name === "") {
+
+  if (!itemName || itemName === "") {
     res.json({
       success: false,
-      message: "No name provided."
+      message: "Please enter a grocery item."
     });
   }
-  else {
+
     utilities.getHouseholdFromUserId(currentUserId, function(hh) {
       if (!hh) {
         res.json({
@@ -25,21 +25,27 @@ module.exports = function(req,res) {
         });
       }
 
-      var groceryItem = new grocery({
-        name: itemName
-      });
-
-      Household.update( { '_id' : hh._id}, { $push: {'groceryList': groceryItem} }, function(err) {
+      Household.update({ '_id': hh._id },
+                       { $pull: { groceryList: { name: itemName } } },
+                       { safe: true },
+      function(err, data) {
         if (err) {
           throw err;
         }
-        res.json ({
+        console.log("num: " + data);
+        console.log(JSON.parse(JSON.stringify(data)));
+        if (data.nModified === 0) {
+          res.json({
+           success: false,
+           message: "No grocery with that name found."
+          });
+          return;
+        }
+        res.json({
           success: true,
-          message: "Item added."
+          message: "Grocery successfully deleted."
         });
       });
 
     });
-  }
-  */
 };

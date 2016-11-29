@@ -26,6 +26,18 @@ module.exports = function(req,res) {
         });
       }
 
+      var sameNameIndex = hh.groceryList.find(function(e) {
+        return (e.name === itemName);
+      });
+
+      if (sameNameIndex !== undefined) {
+        res.json({
+          success: false,
+          message: 'Grocery item already exists.'
+        });
+        return;
+      }
+
       var groceryItem = new grocery({
         name: itemName
       });
