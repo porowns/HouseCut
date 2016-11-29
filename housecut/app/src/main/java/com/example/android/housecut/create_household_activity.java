@@ -141,10 +141,92 @@ public class create_household_activity extends AppCompatActivity {
             }
         }
 
+            //This will call /createHousehold via POST request, asks
+            //user for token, household name, & household password
+        public boolean createHousehold(String hhName, String hhPass) {
+
+          JSONObject json = new JSONObject();
+          boolean success;
+
+          try {
+              //Open a connection (to the server) for POST
+
+              URL url = new URL("http://10.0.2.2:8080/createhousehold");
+
+              //Declare connection object
+              HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+              conn.setDoOutput(true);
+              conn.setRequestMethod("POST");
+              conn.setRequestProperty("Content-Type", "application/json");
+              conn.setRequestProperty("Accept", "application/json");
+
+              json.put("houseHoldName", hhName);
+              json.put("houseHoldPassword");
+              json.put("token", token);
+
+              String requestBody = json.toString();
+
+              //Opens up an outputstreamwriter for writing to server
+              //retrieve output stream that matches with Server input stream..
+              OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+
+              //Write data to Server..
+              out.write(requestBody);
+              out.close();
+
+            /* If Response code isn't 200, throw exception. */
+
+              if (conn.getResponseCode() != 200) {
+                  throw new IOException(conn.getResponseMessage());
+              }
+
+              //To test what the server outputs AND finish sending request
+              BufferedReader in = new BufferedReader(
+                                  new InputStreamReader(
+                                  conn.getInputStream()));
+
+              //StringBuffer will hold JSON string
+              StringBuffer result = new StringBuffer();
+              String line = "";
+              System.out.println("Output from Server .... \n");
+              while ((line = in.readLine()) != null) {
+                  System.out.println(result);
+                  result.append(line);
+              }
+
+              //JSON string returned by server
+              JSONObject data = new JSONObject(result.toString());
+
+              //Closes everything
+              in.close();
+              conn.disconnect();
+
+              //error checking
+              success = data.getBoolean("success");
+
+              if (success == true) {
+                  System.out.println("\nHousehold has been created.");
+              }
+              else {
+                  //an error occurred
+                  String errorMessage = data.getString("message");
+                  System.out.print("\n %s", errorMessage);
+              }
+
+            return success;
+
+          } catch (MalformedURLException e) {
+              e.printStackTrace();
+          } catch (IOException e) {
+              e.printStackTrace();
+          } catch (JSONException e) {
+              e.printStackTrace();
+          }
+          //Return JSON from server
+          //return data;
+        }
 
     }
 
-
-
 }
-
