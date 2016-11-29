@@ -84,6 +84,7 @@ public class register_activity extends AppCompatActivity {
         if(CheckEmail(email) && CheckPassword(password)) {
             register_activity.AsyncTaskRunner runner = new register_activity.AsyncTaskRunner(this, mRegisterMessageView);
             runner.execute(username, email, password);
+
         }
         else if (!CheckEmail(email)) {
             mRegisterMessageView.setText("Name fields do not match!");
@@ -131,7 +132,6 @@ public class register_activity extends AppCompatActivity {
                     return user.errorMessage();
                 }
                 else {
-                    backtoLoginPage();
                     return "Registration Success";
                 }
             }
@@ -142,7 +142,6 @@ public class register_activity extends AppCompatActivity {
     }
     public void backtoLoginPage() {
         Intent intent = new Intent(register_activity.this, login_activity.class);
-        System.out.println(register_activity.this.CheckEmail("test"));
         startActivity(intent);
     }
 
