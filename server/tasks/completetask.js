@@ -36,17 +36,17 @@ module.exports = function(req, res) {
       });
       return;
     }
-    var sameNameIndex = hh.taskList.find(function(e) {
+    var sameNameTask = hh.taskList.find(function(e) {
       return (e.name === name);
     });
-    if (sameNameIndex === undefined) {
+    if (sameNameTask === undefined) {
       res.json({
         success: false,
         message: 'Task not found.'
       });
       return;
     }
-    var checkType = hh.tasklist[sameNameIndex].type;
+    var checkType = sameNameTask.type;
     switch (checkType) {
       case 'Voluntary':
         utilities.deleteTask(hh._id, name, function(){
@@ -59,11 +59,11 @@ module.exports = function(req, res) {
         break;
       case 'Rotating':
         var whosturn = hh.HouseholdMembers.find(function(e) {
-          return (e === hh.taskList[sameNameIndex].currentlyAssigned );
+          return (e === sameNameTask.currentlyAssigned );
         });
-        if ( hh.taskList[sameNameIndex].currentlyAssigned === currentUserId ) {
+        if ( sameNameTask.currentlyAssigned === currentUserId ) {
           whosturn++;
-          hh.taskList[sameNameIndex].currentlyAssigned = hh.HouseholdMembers[whosturn];
+          sameNameTask.currentlyAssigned = hh.HouseholdMembers[whosturn];
           res.json({
             success: true,
             message: 'Thanks! Assigning next user in line...'
@@ -78,7 +78,7 @@ module.exports = function(req, res) {
         }
         break;
       case 'Assigned':
-        if( hh.tasklist[sameNameIndex].currentlyAssigned === currentUserId ) {
+        if( sameNameTask.currentlyAssigned === currentUserId ) {
           utilities.deleteTask(hh._id, name, function(){
             res.json({
               success: true,
