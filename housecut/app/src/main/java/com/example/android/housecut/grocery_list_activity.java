@@ -343,7 +343,7 @@ public class grocery_list_activity extends AppCompatActivity {
 
                     JSONObject json = new JSONObject();
                     json.put("token", token);
-                    json.put("name", itemName);
+                    json.put("itemName", itemName);
                     System.out.println("The name is(2): " + itemName);
 
 
