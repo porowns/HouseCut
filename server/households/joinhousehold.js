@@ -28,9 +28,10 @@ User.findOne({ '_id' : currentUserId}, function(err, user) {
     // If user does not have household...
     Household.findOne({ 'houseHoldName' : houseHoldName}, function (err, household) {
       if (household) {
-        if (user.householdId === household._id) {
+        if (user.householdId == household._id) {
           res.json({
             success: true,
+            householdId: household._id,
             message: "User was already in that household"
           });
           return;
