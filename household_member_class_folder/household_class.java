@@ -21,8 +21,9 @@ import org.json.JSONException;
 
 public class household_class {
 	Vector< household_member_class > household_vector;
-	String householdName;
-	String currentAdmin;
+	protected String request = "http://10.0.2.2:8080/";
+	protected String householdName;
+	protected String currentAdmin;
 
 	// write to server
 	private JSONObject writeToServer (JSONObject json, String url) 
