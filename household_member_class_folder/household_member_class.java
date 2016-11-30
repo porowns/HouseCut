@@ -168,9 +168,33 @@ public class household_member_class {
     //calls household_member_class & just passes in the new password, as well as original data
     public void changePassword(String new_pass) {
 
-        /*THIS NEEDS EDITING*/
-
         password = new_pass;
+	    
+	String url = request + "/changepassword";
+	try {
+        //Creates JSON string to write to server via POST
+        JSONObject json = new JSONObject();
+        json.put("password", newpass);
+
+        //Make call/write to server and take in returned JSON
+        JSONObject serverJSON = writeToServer(json, url);
+        success = serverJSON.getBoolean("success");
+
+        //error checking
+        if (success == true) {
+            System.out.println("\nPassword has been changed.");
+        }
+        else {
+            //Set protected member string "errorMessage" to the server error message
+            String message = serverJSON.getString("message");
+            this.setErrorMessage(message);
+        }
+
+      } catch (JSONException e) {
+          e.printStackTrace();
+      }
+	    
+      return success;
     }
 
     /* Uses endpoint /deleteaccount & token */
