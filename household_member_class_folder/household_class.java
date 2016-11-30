@@ -115,6 +115,11 @@ public class household_class {
 				System.out.print(", ")
 		}
 	}
+	public void printAdmin()
+	{
+		System.out.print(currentAdmin);
+	}
+
 				    
 	
 }
