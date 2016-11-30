@@ -82,7 +82,7 @@ public class register_activity extends AppCompatActivity {
         mRegisterMessageView.setText("Loading...");
 
         if(CheckEmail(email) && CheckPassword(password)) {
-            register_activity.AsyncTaskRunner runner = new register_activity.AsyncTaskRunner(this, mRegisterMessageView);
+            register_activity.RegisterRunner runner = new register_activity.RegisterRunner(this, mRegisterMessageView);
             runner.execute(username, email, password);
 
         }
@@ -114,12 +114,12 @@ public class register_activity extends AppCompatActivity {
     }
 
 
-    class AsyncTaskRunner extends AsyncTask<String, String, String> {
+    class RegisterRunner extends AsyncTask<String, String, String> {
 
         private Context contextx;
         private TextView mMessageView;
 
-        public AsyncTaskRunner(Context ctx, TextView mMessageView){
+        public RegisterRunner(Context ctx, TextView mMessageView){
             this.contextx = ctx;
             this.mMessageView = mMessageView;
         }

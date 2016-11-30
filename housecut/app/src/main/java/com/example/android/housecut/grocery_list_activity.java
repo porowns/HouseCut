@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 /**
  * Created by nickjohnson on 11/18/16.
+ * edited by jose and chris
  */
 
 public class grocery_list_activity extends AppCompatActivity {
@@ -294,13 +295,13 @@ public class grocery_list_activity extends AppCompatActivity {
 
 
         //TODO: Still works on the Task list URL, needs to be switched over 
-        class CreateTaskRunner extends AsyncTask<String, Void, String> {
+        class GroceryListRunner extends AsyncTask<String, Void, String> {
 
             private Context ctx;
             final private AlertDialog d;
             private String itemName;
 
-            public CreateTaskRunner(Context ctx, AlertDialog d, String name){
+            public GroceryListRunner(Context ctx, AlertDialog d, String name){
                 this.ctx = ctx;
                 this.d = d;
                 this.itemName = name;
