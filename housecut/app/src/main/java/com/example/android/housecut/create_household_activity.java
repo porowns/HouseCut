@@ -136,6 +136,7 @@ public class create_household_activity extends AppCompatActivity {
         protected String doInBackground(String... params) {
           return createHousehold(params[0], params[1], params[2]);
         }
+
         @Override
         protected void onPostExecute(String responseString) {
             if (responseString.equals("success")) {
@@ -166,7 +167,7 @@ public class create_household_activity extends AppCompatActivity {
 
           JSONObject json = new JSONObject();
           boolean success;
-            String responseString = "";
+          String responseString = "";
 
           try {
               //Open a connection (to the server) for POST
@@ -225,7 +226,7 @@ public class create_household_activity extends AppCompatActivity {
               //error checking
               success = data.getBoolean("success");
 
-              if (success == true) {
+              if (success) {
                   responseString = "success";
                   System.out.println("\nHousehold has been created.");
               }
@@ -236,7 +237,6 @@ public class create_household_activity extends AppCompatActivity {
               }
 
 
-
           } catch (MalformedURLException e) {
               e.printStackTrace();
           } catch (IOException e) {
@@ -244,8 +244,8 @@ public class create_household_activity extends AppCompatActivity {
           } catch (JSONException e) {
               e.printStackTrace();
           }
-          //Return JSON from server
-          //return data;
+
+          //Return string from server
             return responseString;
         }
 
