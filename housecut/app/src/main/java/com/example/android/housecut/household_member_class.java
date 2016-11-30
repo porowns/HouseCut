@@ -27,7 +27,7 @@ public class household_member_class {
     protected String current_household;
     protected String user_name;
     protected String name;
-    protected String request = "http://10.0.2.2:8080/";
+    protected String request = "http://10.0.2.2:8080";
     protected String id;
     protected String token;
     protected String password;
@@ -108,6 +108,9 @@ public class household_member_class {
 
             //JSON string returned by server
             data = new JSONObject(result.toString());
+
+            //Print String
+            System.out.printf("%s" , result.toString());
 
             //Closes everything
             in.close();
