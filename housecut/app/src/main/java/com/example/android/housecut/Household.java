@@ -12,6 +12,7 @@ import java.util.Set;
 public class Household {
     private String name;
     private String id;
+    private String current_admin;
     private HashMap<String, String> roommates;
 
     public Household() {
@@ -78,5 +79,12 @@ public class Household {
     public void removeRoommateByName(String name) {
         roommates.values().remove(name);
     }
+    public void clearHousehold() {
+        roommates.clear();
+    }
+    public void changeAdmin(String name) {
+        current_admin = name;   
+    }
+    
 }
 
