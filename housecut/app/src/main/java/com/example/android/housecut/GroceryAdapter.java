@@ -50,9 +50,9 @@ public class GroceryAdapter extends BaseAdapter {
         TextView titleTextView =
                 (TextView) rowView.findViewById(R.id.grocery_list_name);
 
-        Task task = (Task) getItem(position);
+        Grocery grocery = (Grocery) getItem(position);
 
-        titleTextView.setText(task.name);
+        titleTextView.setText(grocery.name);
 
         return rowView;
     }

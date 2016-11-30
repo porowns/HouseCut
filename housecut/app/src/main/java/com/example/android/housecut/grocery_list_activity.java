@@ -232,7 +232,7 @@ public class grocery_list_activity extends AppCompatActivity {
                     Household household = app.getHousehold();
                     String token = user.getToken();
 
-                    URL url = new URL ("http://10.0.2.2:8080/household/getgrocerylist?token=" + token);
+                    URL url = new URL ("http://10.0.2.2:8080/household/grocerylist?token=" + token);
 
                     //Declare connection object
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -259,7 +259,7 @@ public class grocery_list_activity extends AppCompatActivity {
 
                     if (success) {
                         System.out.println("Get grocerylist success\n");
-                        JSONArray grocerylist = data.getJSONArray("grocerylist");
+                        JSONArray grocerylist = data.getJSONArray("groceryList");
                         groceries = new ArrayList<>(grocerylist.length());
                         for (int i = 0; i < grocerylist.length(); i++) {
                             JSONObject groceryJSON = grocerylist.getJSONObject(i);
