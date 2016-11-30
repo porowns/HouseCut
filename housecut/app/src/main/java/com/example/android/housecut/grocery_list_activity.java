@@ -179,10 +179,10 @@ public class grocery_list_activity extends AppCompatActivity {
 
                 /* Make POST request */
 
-                    CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
-                            name, type, selectedRoommateId);
+                    //CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
+                    //        name, type, selectedRoommateId);
 
-                    createTaskRunner.execute();
+                    //createTaskRunner.execute();
                 }
             });
 
