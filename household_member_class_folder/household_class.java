@@ -119,6 +119,10 @@ public class household_class {
 	{
 		System.out.print(currentAdmin);
 	}
+	public void printHouseholdName()
+	{
+		System.out.print(householdName);
+	}   
 
 				    
 	
