@@ -42,6 +42,13 @@ public class main_page_activity extends AppCompatActivity{
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
 
+        HouseCutApp app = ((HouseCutApp)this.getApplicationContext());
+
+        TextView titleView = (TextView) findViewById(R.id.main_page_title);
+
+        titleView.setText( app.getHousehold().getName() );
+
+
         GetRoommateRunner getRoomies = new GetRoommateRunner(this);
 
         getRoomies.execute();
@@ -119,10 +126,6 @@ public class main_page_activity extends AppCompatActivity{
 
                 if (success) {
                     System.out.println("Get roommates success\n");
-
-                    TextView titleView = (TextView) findViewById(R.id.main_page_title);
-
-                    titleView.setText( household.getName() );
 
                     JSONArray roommatelist = data.getJSONArray("roommates");
 
