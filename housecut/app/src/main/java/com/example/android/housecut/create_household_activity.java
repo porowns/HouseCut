@@ -10,6 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * Created by Jose on 11/21/2016.
  *
@@ -72,7 +83,13 @@ public class create_household_activity extends AppCompatActivity {
         mCreateHouseholdMessageView.setText("Loading...");
 
         if(CheckName(name) && CheckPassword(password)) {
-            AsyncTaskRunner runner = new AsyncTaskRunner(this, mCreateHouseholdMessageView);
+            CreateHouseholdRunner runner = new CreateHouseholdRunner(this, mCreateHouseholdMessageView);
+            HouseCutApp app = ((HouseCutApp)this.getApplicationContext());
+            household_member_class user = app.getUser();
+            Household house = new Household();
+            house.setName(name);
+            house.setId(user.getID());
+            app.setHousehold(house);
 
               //get token
             String token = user.getToken();
@@ -105,18 +122,18 @@ public class create_household_activity extends AppCompatActivity {
     }
 
 
-    class AsyncTaskRunner extends AsyncTask<String, String, String> {
+    class CreateHouseholdRunner extends AsyncTask<String, String, String> {
 
         private Context ctx;
         private TextView mMessageView;
 
-        public AsyncTaskRunner(Context ctx, TextView mCreateHouseholdMessageView){
+        public CreateHouseholdRunner(Context ctx, TextView mCreateHouseholdMessageView){
             this.ctx = ctx;
             this.mMessageView = mCreateHouseholdMessageView;
         }
 
         @Override
-        protected boolean doInBackground(String... params) {
+        protected String doInBackground(String... params) {
           return createHousehold(params[0], params[1], params[2]);
         }
         @Override
@@ -145,10 +162,11 @@ public class create_household_activity extends AppCompatActivity {
 
             //This will call /createHousehold via POST request, asks
             //user for token, household name, & household password
-        public boolean createHousehold(String token, String hhName, String hhPass) {
+        public String createHousehold(String token, String hhName, String hhPass) {
 
           JSONObject json = new JSONObject();
           boolean success;
+            String responseString = "";
 
           try {
               //Open a connection (to the server) for POST
@@ -208,15 +226,16 @@ public class create_household_activity extends AppCompatActivity {
               success = data.getBoolean("success");
 
               if (success == true) {
+                  responseString = "success";
                   System.out.println("\nHousehold has been created.");
               }
               else {
                   //an error occurred
-                  String error = data.getString("message");
-                  System.out.print("\n %s", error);
+                  responseString = data.getString("message");
+                  System.out.printf("\n %s", responseString);
               }
 
-            return success;
+
 
           } catch (MalformedURLException e) {
               e.printStackTrace();
@@ -227,6 +246,7 @@ public class create_household_activity extends AppCompatActivity {
           }
           //Return JSON from server
           //return data;
+            return responseString;
         }
 
     }
