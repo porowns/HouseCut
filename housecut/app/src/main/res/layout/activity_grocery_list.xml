@@ -28,14 +28,14 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:id="@+id/task_layout_1"
+        android:id="@+id/grocery_layout_1"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/container_layout"
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:id="@+id/task_list_loading"
+            android:id="@+id/grocery_list_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

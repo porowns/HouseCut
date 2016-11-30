@@ -1,5 +1,6 @@
 package com.example.android.housecut;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
  */
 
 public class grocery_list_activity extends AppCompatActivity {
-    private Button createTaskButton;
+    private Button addItemButton;
     private Button viewingButton;
     private TextView loadingTextView;
 
@@ -49,26 +50,30 @@ public class grocery_list_activity extends AppCompatActivity {
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
 
-        loadingTextView= (TextView) findViewById(R.id.task_list_loading);
+        loadingTextView= (TextView) findViewById(R.id.grocery_list_loading);
         loadingTextView.setVisibility(View.VISIBLE);
 
-        viewingButton = (Button) findViewById(R.id.task_list_viewing);
+        viewingButton = (Button) findViewById(R.id.grocery_list_viewing);
         viewingButton.setVisibility(View.GONE);
 
-        createTaskButton = (Button) findViewById(R.id.create_task_button);
-        createTaskButton.setVisibility(View.GONE);
-        createTaskButton.setOnClickListener(new View.OnClickListener() {
+        addItemButton = (Button) findViewById(R.id.add_item_button);
+        addItemButton.setVisibility(View.GONE);
+        addItemButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onClick(View view) {
-
+                addItemDialog();
             }
         });
+
+        GetGroceryListRunner getGroceryListRunner = new GetGroceryListRunner(this);
+
+        getGroceryListRunner.execute();
     }
 
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-        public void createTaskDialog() {
+        public void addItemDialog() {
 
             final LinearLayout addItemView = new LinearLayout(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -192,7 +197,7 @@ public class grocery_list_activity extends AppCompatActivity {
         class GetGroceryListRunner extends AsyncTask<String, Void, String> {
 
             private Context ctx;
-            ArrayList<Task> tasks;
+            ArrayList<Grocery> groceries;
 
             public GetGroceryListRunner(Context ctx){
                 this.ctx = ctx;
@@ -200,18 +205,18 @@ public class grocery_list_activity extends AppCompatActivity {
 
             @Override
             protected String doInBackground(String... params) {
-                return getTasklist();
+                return getGroceryList();
             }
 
             @Override
             protected void onPostExecute(String responseString) {
                 loadingTextView.setVisibility(View.GONE);
-                createTaskButton.setVisibility(View.VISIBLE);
+                addItemButton.setVisibility(View.VISIBLE);
                 viewingButton.setVisibility(View.VISIBLE);
 
                 if (responseString.equals("success")) {
 
-                    TaskAdapter adapter = new TaskAdapter(com.example.android.housecut.grocery_list_activity.this, this.tasks);
+                    GroceryAdapter adapter = new GroceryAdapter(com.example.android.housecut.grocery_list_activity.this, this.groceries);
                     ListView listView = (ListView) findViewById(R.id.list);
                     listView.setAdapter(adapter);
 
@@ -221,14 +226,14 @@ public class grocery_list_activity extends AppCompatActivity {
                 }
             }
 
-            public String getTasklist(){
+            public String getGroceryList(){
                 try {
                     HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
                     household_member_class user = app.getUser();
                     Household household = app.getHousehold();
                     String token = user.getToken();
 
-                    URL url = new URL ("http://10.0.2.2:8080/household/tasklist?token=" + token);
+                    URL url = new URL ("http://10.0.2.2:8080/household/getgrocerylist?token=" + token);
 
                     //Declare connection object
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -254,21 +259,18 @@ public class grocery_list_activity extends AppCompatActivity {
                     String responseString;
 
                     if (success) {
-                        System.out.println("Get tasklist success\n");
-                        JSONArray tasklist = data.getJSONArray("tasklist");
-                        tasks = new ArrayList<Task>(tasklist.length());
-                        for (int i = 0; i < tasklist.length(); i++) {
-                            JSONObject taskJSON = tasklist.getJSONObject(i);
-                            String name = taskJSON.getString("name");
-                            String type = taskJSON.getString("type");
-                            String currentlyAssignedId = taskJSON.getString("currentlyAssigned");
-                            String currentlyAssignedName = household.getRoommateNameFromId(currentlyAssignedId);
-                            tasks.add(new Task(name, type, currentlyAssignedId, currentlyAssignedName));
+                        System.out.println("Get grocerylist success\n");
+                        JSONArray grocerylist = data.getJSONArray("grocerylist");
+                        groceries = new ArrayList<>(grocerylist.length());
+                        for (int i = 0; i < grocerylist.length(); i++) {
+                            JSONObject groceryJSON = grocerylist.getJSONObject(i);
+                            String name = groceryJSON.getString("name");
+                            groceries.add(new Grocery(name));
                         }
                         responseString = "success";
                     }
                     else {
-                        System.out.println("Get tasklist failure\n");
+                        System.out.println("Get grocerylist failure\n");
                         String message = data.getString("message");
                         System.out.println(message + "\n");
                         responseString = data.getString("message");
@@ -310,9 +312,10 @@ public class grocery_list_activity extends AppCompatActivity {
 
             @Override
             protected String doInBackground(String... params) {
-                return createTask();
+                return createGroceryItem();
             }
 
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             protected void onPostExecute(String responseString) {
                 if (responseString.equals("success")) {
@@ -321,13 +324,13 @@ public class grocery_list_activity extends AppCompatActivity {
                 }
             }
 
-            public String createTask(){
+            public String createGroceryItem(){
                 try {
                     HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
                     household_member_class user = app.getUser();
                     String token = user.getToken();
 
-                    URL url = new URL ("http://10.0.2.2:8080/household/createtask");
+                    URL url = new URL ("http://10.0.2.2:8080/household/creategrocery");
 
                     //Declare connection object
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -365,11 +368,11 @@ public class grocery_list_activity extends AppCompatActivity {
                     String responseString;
 
                     if (success) {
-                        System.out.println("Create task success\n");
+                        System.out.println("Create grocery item success\n");
                         responseString = "success";
                     }
                     else {
-                        System.out.println("Create task failure\n");
+                        System.out.println("Create grocery failure\n");
                         String message = data.getString("message");
                         System.out.println(message + "\n");
                         responseString = data.getString("message");
