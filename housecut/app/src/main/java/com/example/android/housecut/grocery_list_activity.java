@@ -179,7 +179,7 @@ public class grocery_list_activity extends AppCompatActivity {
 
                 /* Make POST request */
 
-                    CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
+                    GetGroceryListRunner createTaskRunner = new GetGroceryListRunner(getApplicationContext(), d,
                             name, type, selectedRoommateId);
 
                     createTaskRunner.execute();
@@ -188,12 +188,12 @@ public class grocery_list_activity extends AppCompatActivity {
 
         }
 
-        class GetTasklistRunner extends AsyncTask<String, Void, String> {
+        class GetGroceryListRunner extends AsyncTask<String, Void, String> {
 
             private Context ctx;
             ArrayList<Task> tasks;
 
-            public GetTasklistRunner(Context ctx){
+            public GetGroceryListRunner(Context ctx){
                 this.ctx = ctx;
             }
 
