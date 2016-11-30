@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by nickjohnson on 11/18/16.
@@ -17,6 +21,32 @@ public class settings_activity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar optionsToolbar = (Toolbar) findViewById(R.id.options_toolbar);
         setSupportActionBar(optionsToolbar);
+
+
+        Button mLeaveHouseholdButton = (Button) findViewById(R.id.leave_household_button);
+        Button mRenameHouseholdButton = (Button) findViewById(R.id.rename_household_button);
+        Button mChangeUsernameButton = (Button) findViewById(R.id.change_username_button);
+
+        mChangeUsernameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChangeUsername();
+            }
+        });
+
+        mLeaveHouseholdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LeaveHousehold();
+            }
+        });
+
+        mRenameHouseholdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RenameHousehold();
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,5 +88,17 @@ public class settings_activity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+    public void ChangeUsername(){
+        Intent intent = new Intent(settings_activity.this, change_username_activity.class);
+        startActivity(intent);
+    }
+    public void RenameHousehold(){
+        Intent intent = new Intent(settings_activity.this, rename_household_activity.class);
+        startActivity(intent);
+    }
+    public void LeaveHousehold(){
+        Intent intent = new Intent(settings_activity.this, leave_household_activity.class);
+        startActivity(intent);
     }
 }
