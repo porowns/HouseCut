@@ -83,7 +83,7 @@ public class Household {
         roommates.clear();
     }
     public void changeAdmin(String name) {
-        current_admin = name;   
+        this.current_admin = name;   
     }
     
 }
