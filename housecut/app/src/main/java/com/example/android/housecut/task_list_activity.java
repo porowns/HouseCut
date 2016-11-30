@@ -111,12 +111,14 @@ public class task_list_activity extends AppCompatActivity {
         Household household = app.getHousehold();
         HashMap<String, String> roommates = household.getRoommatesHashMap();
         final HashMap<Integer, String> roommateIds = new HashMap<>();
+        System.out.println(roommateIds.size());
         int roommateNum = 0;
 
         Set set = roommates.entrySet();
         Iterator i = set.iterator();
         while (i.hasNext()) {
             Map.Entry rm = (Map.Entry) i.next();
+            System.out.println("roommate: " + rm.getValue().toString());
             assignedRb[roommateNum] = new RadioButton(this);
             assignedRb[roommateNum].setText(rm.getValue().toString());
             assignedGroup.addView(assignedRb[roommateNum]);
