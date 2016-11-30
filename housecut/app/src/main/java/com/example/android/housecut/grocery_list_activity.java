@@ -185,10 +185,9 @@ public class grocery_list_activity extends AppCompatActivity {
                 /* Make POST request */
 
 
-                    //CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
-                    //        name, type, selectedRoommateId);
+                    GroceryListRunner addItemRunner = new GroceryListRunner(getApplicationContext(), d, name);
 
-                    //createTaskRunner.execute();
+                    addItemRunner.execute();
                 }
             });
 
@@ -265,6 +264,7 @@ public class grocery_list_activity extends AppCompatActivity {
                         for (int i = 0; i < grocerylist.length(); i++) {
                             JSONObject groceryJSON = grocerylist.getJSONObject(i);
                             String name = groceryJSON.getString("name");
+
                             groceries.add(new Grocery(name));
                         }
                         responseString = "success";
@@ -308,6 +308,7 @@ public class grocery_list_activity extends AppCompatActivity {
                 this.ctx = ctx;
                 this.d = d;
                 this.itemName = name;
+
             }
 
             @Override
@@ -342,7 +343,9 @@ public class grocery_list_activity extends AppCompatActivity {
 
                     JSONObject json = new JSONObject();
                     json.put("token", token);
-                    json.put("name", this.itemName);
+                    json.put("name", itemName);
+                    System.out.println("The name is(2): " + itemName);
+
 
                     OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
                     out.write(json.toString());
