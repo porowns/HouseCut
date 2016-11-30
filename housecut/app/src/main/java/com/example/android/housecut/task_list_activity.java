@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -72,6 +73,8 @@ public class task_list_activity extends AppCompatActivity {
         GetTasklistRunner getTasklistRunner = new GetTasklistRunner(this);
 
         getTasklistRunner.execute();
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -239,6 +242,54 @@ public class task_list_activity extends AppCompatActivity {
 
                 ListView listView = (ListView) findViewById(R.id.list);
                 listView.setAdapter(adapter);
+                final Context finalCtx = this.ctx;
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        final Task selectedTask = tasks.get(position);
+                        System.out.println("Selected: " + selectedTask.toString());
+                        final String completeTaskString = "Complete task";
+                        final String deleteTaskString = "Delete task";
+                        CharSequence options[];
+                        HouseCutApp app = ((HouseCutApp)finalCtx.getApplicationContext());
+                        household_member_class user = app.getUser();
+                        if (selectedTask.type.equals("Voluntary") ||
+                                selectedTask.currentlyAssignedId.equals(user.getID())) {
+                            options = new String[2];
+                            options[0] = completeTaskString;
+                            options[1] = deleteTaskString;
+                        }
+                        else {
+                            options = new String[1];
+                            options[0] = deleteTaskString;
+                        }
+                        final CharSequence finalOptions[] = options;
+                        AlertDialog.Builder builder = new AlertDialog.Builder(finalCtx);
+                        builder.setTitle("Task: " + selectedTask.name);
+                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                System.out.println("clicked: " + finalOptions[which]);
+                                if (finalOptions[which].equals(completeTaskString)) {
+                                    CompleteTaskRunner completeTaskRunner =
+                                            new CompleteTaskRunner(getApplicationContext(),
+                                                    selectedTask.name);
+
+                                    completeTaskRunner.execute();
+                                }
+                                else if (finalOptions[which].equals(deleteTaskString)){
+                                    DeleteTaskRunner deleteTaskRunner =
+                                            new DeleteTaskRunner(getApplicationContext(),
+                                                    selectedTask.name);
+
+                                    deleteTaskRunner.execute();
+                                }
+                            }
+                        });
+                        builder.show();
+                    }
+
+                });
 
             }
             else {
@@ -401,6 +452,199 @@ public class task_list_activity extends AppCompatActivity {
                 }
                 else {
                     System.out.println("Create task failure\n");
+                    String message = data.getString("message");
+                    System.out.println(message + "\n");
+                    responseString = data.getString("message");
+                }
+
+                in.close();
+                conn.disconnect();
+
+                return responseString;
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return "Failure";
+        }
+    }
+
+    class DeleteTaskRunner extends AsyncTask<String, Void, String> {
+
+        private Context ctx;
+        private String taskName;
+
+        public DeleteTaskRunner(Context ctx, String name){
+            this.ctx = ctx;
+            this.taskName = name;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return deleteTask();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onPostExecute(String responseString) {
+            if (responseString.equals("success")) {
+                task_list_activity.this.recreate();
+            }
+        }
+
+        public String deleteTask(){
+            try {
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
+                String token = user.getToken();
+
+                URL url = new URL ("http://10.0.2.2:8080/household/deletetask");
+
+                //Declare connection object
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+
+                JSONObject json = new JSONObject();
+                json.put("token", token);
+                json.put("taskName", this.taskName);
+
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                out.write(json.toString());
+                out.close();
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer result = new StringBuffer();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(result);
+                    result.append(line);
+                }
+
+                JSONObject data = new JSONObject(String.valueOf(result));
+
+                System.out.println(data);
+
+                Boolean success = data.getBoolean("success");
+
+                String responseString;
+
+                if (success) {
+                    System.out.println("Delete task success\n");
+                    responseString = "success";
+                }
+                else {
+                    System.out.println("Delete task failure\n");
+                    String message = data.getString("message");
+                    System.out.println(message + "\n");
+                    responseString = data.getString("message");
+                }
+
+                in.close();
+                conn.disconnect();
+
+                return responseString;
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return "Failure";
+        }
+    }
+
+    class CompleteTaskRunner extends AsyncTask<String, Void, String> {
+
+        private Context ctx;
+        private String taskName;
+
+        public CompleteTaskRunner(Context ctx, String name){
+            this.ctx = ctx;
+            this.taskName = name;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return completeTask();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onPostExecute(String responseString) {
+            if (responseString.equals("success")) {
+                task_list_activity.this.recreate();
+            }
+        }
+
+        public String completeTask(){
+            System.out.println("Complete task running..");
+            try {
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
+                String token = user.getToken();
+
+                URL url = new URL ("http://10.0.2.2:8080/household/completetask");
+
+                //Declare connection object
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+
+                JSONObject json = new JSONObject();
+                json.put("token", token);
+                json.put("name", this.taskName);
+
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                out.write(json.toString());
+                out.close();
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer result = new StringBuffer();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(result);
+                    result.append(line);
+                }
+
+                JSONObject data = new JSONObject(String.valueOf(result));
+
+                System.out.println(data);
+
+                Boolean success = data.getBoolean("success");
+
+                String responseString;
+
+                if (success) {
+                    System.out.println("Complete task success\n");
+                    responseString = "success";
+                }
+                else {
+                    System.out.println("Complete task failure\n");
                     String message = data.getString("message");
                     System.out.println(message + "\n");
                     responseString = data.getString("message");
