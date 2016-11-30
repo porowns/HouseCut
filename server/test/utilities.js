@@ -229,3 +229,25 @@ module.exports.completeTask = function(data,callback) {
       callback(err,res);
   });
 }
+
+// Implemented by Kaleb
+module.exports.createGrocery = function(data,callback) {
+  chai.request(config.hostname)
+  .post('/household/creategrocery')
+  .send(data)
+  .end(function(err,res) {
+    if (callback)
+      callback(err,res);
+  });
+}
+
+// Implemented by Kaleb
+module.exports.deleteGrocery = function(data,callback) {
+  chai.request(config.hostname)
+  .post('/household/deletegrocery')
+  .send(data)
+  .end(function(err,res) {
+    if (callback)
+      callback(err,res);
+  });
+}
