@@ -179,22 +179,27 @@ public class grocery_list_activity extends AppCompatActivity {
 
                 /* Make POST request */
 
+<<<<<<< HEAD
 
                     //CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
                     //        name, type, selectedRoommateId);
+=======
+                    CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
+                            name, type, selectedRoommateId);
+>>>>>>> be1de80c982014af5fead38077b387862a421170
 
-                    //createTaskRunner.execute();
+                    createTaskRunner.execute();
                 }
             });
 
         }
 
-        class GetGroceryListRunner extends AsyncTask<String, Void, String> {
+        class GetTasklistRunner extends AsyncTask<String, Void, String> {
 
             private Context ctx;
             ArrayList<Task> tasks;
 
-            public GetGroceryListRunner(Context ctx){
+            public GetTasklistRunner(Context ctx){
                 this.ctx = ctx;
             }
 

@@ -211,107 +211,101 @@ public class login_activity extends AppCompatActivity {
 
                     System.out.println("Getting roommates");
                     /* get roommates */
+                    try {
+                        url = new URL("http://10.0.2.2:8080/household/roommates?token=" + token);
 
-                    if( !user.getHousehold().equals("0") ){
-                        try {
-                            url = new URL("http://10.0.2.2:8080/household/roommates?token=" + token);
+                        //Declare connection object
+                        conn = (HttpURLConnection) url.openConnection();
 
-                            //Declare connection object
-                            conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("GET");
 
-                            conn.setRequestMethod("GET");
+                        in = new BufferedReader(
+                                new InputStreamReader(conn.getInputStream()));
 
-                            in = new BufferedReader(
-                                    new InputStreamReader(conn.getInputStream()));
+                        result = new StringBuffer();
+                        while ((line = in.readLine()) != null) {
+                            System.out.println(result);
+                            result.append(line);
+                        }
 
-                            result = new StringBuffer();
-                            while ((line = in.readLine()) != null) {
-                                System.out.println(result);
-                                result.append(line);
+                        data = new JSONObject(String.valueOf(result));
+
+                        System.out.println(data);
+
+                        success = data.getBoolean("success");
+
+                        Household household = new Household();
+
+                        if (success) {
+                            JSONArray roommates = data.getJSONArray("roommates");
+                            for (int i = 0; i < roommates.length(); i++) {
+                                JSONObject roommateJSON = roommates.getJSONObject(i);
+                                String roommateName = roommateJSON.getString("displayName");
+                                String roommateId = roommateJSON.getString("id");
+                                household.addRoommate(roommateName, roommateId);
                             }
 
-                            data = new JSONObject(String.valueOf(result));
-
-                            System.out.println(data);
-
-                            success = data.getBoolean("success");
-
-                            Household household = new Household();
-
-                            if (success) {
-                                JSONArray roommates = data.getJSONArray("roommates");
-                                for (int i = 0; i < roommates.length(); i++) {
-                                    JSONObject roommateJSON = roommates.getJSONObject(i);
-                                    String roommateName = roommateJSON.getString("displayName");
-                                    String roommateId = roommateJSON.getString("id");
-                                    household.addRoommate(roommateName, roommateId);
-                                }
-
-                                in.close();
-                                conn.disconnect();
+                            in.close();
+                            conn.disconnect();
 
                            /* get household name */
-                                try {
-                                    url = new URL("http://10.0.2.2:8080/household/name?token=" + token);
+                            try {
+                                url = new URL("http://10.0.2.2:8080/household/name?token=" + token);
 
-                                    //Declare connection object
-                                    conn = (HttpURLConnection) url.openConnection();
+                                //Declare connection object
+                                conn = (HttpURLConnection) url.openConnection();
 
-                                    conn.setRequestMethod("GET");
+                                conn.setRequestMethod("GET");
 
-                                    in = new BufferedReader(
-                                            new InputStreamReader(conn.getInputStream()));
+                                in = new BufferedReader(
+                                        new InputStreamReader(conn.getInputStream()));
 
-                                    result = new StringBuffer();
-                                    while ((line = in.readLine()) != null) {
-                                        System.out.println(result);
-                                        result.append(line);
-                                    }
-
-                                    data = new JSONObject(String.valueOf(result));
-
-                                    System.out.println(data);
-
-                                    success = data.getBoolean("success");
-
-                                    if (success) {
-                                        String householdName = data.getString("name");
-                                        household.setName(householdName);
-
-                                        ((HouseCutApp) this.ctx.getApplicationContext()).setHousehold(household);
-                                        responseString = "success";
-                                    } else {
-                                        String message = data.getString("message");
-                                        System.out.println(message + "\n");
-                                        responseString = data.getString("message");
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-
-                                } catch (IOException e) {
-
-                                    e.printStackTrace();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                result = new StringBuffer();
+                                while ((line = in.readLine()) != null) {
+                                    System.out.println(result);
+                                    result.append(line);
                                 }
-                            } else {
-                                String message = data.getString("message");
-                                System.out.println(message + "\n");
-                                responseString = data.getString("message");
+
+                                data = new JSONObject(String.valueOf(result));
+
+                                System.out.println(data);
+
+                                success = data.getBoolean("success");
+
+                                if (success) {
+                                    String householdName = data.getString("name");
+                                    household.setName(householdName);
+
+                                    ((HouseCutApp) this.ctx.getApplicationContext()).setHousehold(household);
+                                    responseString = "success";
+                                } else {
+                                    String message = data.getString("message");
+                                    System.out.println(message + "\n");
+                                    responseString = data.getString("message");
+                                }
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+
+                            } catch (IOException e) {
+
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-
-                        } catch (IOException e) {
-
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            String message = data.getString("message");
+                            System.out.println(message + "\n");
+                            responseString = data.getString("message");
                         }
-                    } else if ( user.getHousehold().equals("0") ){
-                        responseString = "success";
-                    }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
 
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }
                 else {
