@@ -15,6 +15,7 @@ var setAdmin = require('./accounts/setadmin.js');
 var createhousehold = require('./households/createhousehold.js');
 var joinhousehold = require('./households/joinhousehold.js');
 var deletehousehold = require('./households/deletehousehold.js');
+var renameHousehold = require('./households/renamehousehold.js');
 var getTaskList = require('./tasks/gettasklist.js');
 var getRoommates = require('./roommates/getroommates.js');
 var postRoommates = require('./roommates/postroommates.js');
@@ -74,6 +75,8 @@ app.post('/household/creategrocery', verifyToken, createGrocery);
 app.post('/household/deletegrocery', verifyToken, deleteGrocery);
 
 app.get('/household/grocerylist', verifyToken, getGroceryList);
+
+app.post('/household/rename', verifyToken, renameHousehold);
 
 /* start the server */
 app.listen(port);
