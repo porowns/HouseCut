@@ -153,7 +153,7 @@ public class household_class {
 	// Mutators
 	
 	// change the admin role to another person
-	public void changeAdmin(string newAdmin)
+	public void changeAdmin(String newAdmin)
 	{
 		boolean valid = false;
 		for(int i = 0; i < household_vector.size(); i++)
@@ -165,7 +165,7 @@ public class household_class {
 	}	   
 	
 	// rename the household
-	public void renameHousehold(string newName)
+	public void renameHousehold(String newName)
 	{
 		// make sure the new name uses valid characters: letters and numbers and it is not too long
 		if( newName.matches("[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+={[}]:;\"'<,>.?/]*" && (newName.length() <= 30))
@@ -183,7 +183,7 @@ public class household_class {
 	}
 		 
 	// returns the admin of the household
-	public string admin()
+	public String admin()
 	{
 		return currentAdmin;
 	}
