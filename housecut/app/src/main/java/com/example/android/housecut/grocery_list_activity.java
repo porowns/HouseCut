@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -213,7 +214,34 @@ public class grocery_list_activity extends AppCompatActivity {
                     GroceryAdapter adapter = new GroceryAdapter(com.example.android.housecut.grocery_list_activity.this, this.groceries);
                     ListView listView = (ListView) findViewById(R.id.list);
                     listView.setAdapter(adapter);
+                    final Context finalCtx = this.ctx;
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            final Grocery selectedGrocery= groceries.get(position);
+                            final String deleteGroceryString = "Delete item";
+                            HouseCutApp app = ((HouseCutApp)finalCtx.getApplicationContext());
+                            household_member_class user = app.getUser();
+                            final CharSequence options[] = new String[1];
+                            options[0] = deleteGroceryString;
+                            AlertDialog.Builder builder = new AlertDialog.Builder(finalCtx);
+                            builder.setTitle("Grocery item: " + selectedGrocery.name);
+                            builder.setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (options[which].equals(deleteGroceryString)){
+                                        DeleteGroceryRunner deleteGroceryRunner =
+                                                new DeleteGroceryRunner(getApplicationContext(),
+                                                        selectedGrocery.name);
 
+                                        deleteGroceryRunner.execute();
+                                    }
+                                }
+                            });
+                            builder.show();
+                        }
+
+                    });
                 }
                 else {
 
@@ -292,7 +320,6 @@ public class grocery_list_activity extends AppCompatActivity {
         }
 
 
-        //TODO: Still works on the Task list URL, needs to be switched over 
         class GroceryListRunner extends AsyncTask<String, Void, String> {
 
             private Context ctx;
@@ -395,6 +422,102 @@ public class grocery_list_activity extends AppCompatActivity {
                 return "Failure";
             }
         }
+
+    class DeleteGroceryRunner extends AsyncTask<String, Void, String> {
+
+        private Context ctx;
+        private String itemName;
+
+        public DeleteGroceryRunner(Context ctx, String name){
+            this.ctx = ctx;
+            this.itemName = name;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return deleteGrocery();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onPostExecute(String responseString) {
+            if (responseString.equals("success")) {
+                grocery_list_activity.this.recreate();
+            }
+        }
+
+        public String deleteGrocery(){
+            try {
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
+                String token = user.getToken();
+
+                URL url = new URL ("http://10.0.2.2:8080/household/deletegrocery");
+
+                //Declare connection object
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+
+                JSONObject json = new JSONObject();
+                json.put("token", token);
+                json.put("itemName", this.itemName);
+
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                out.write(json.toString());
+                out.close();
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer result = new StringBuffer();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(result);
+                    result.append(line);
+                }
+
+                JSONObject data = new JSONObject(String.valueOf(result));
+
+                System.out.println(data);
+
+                Boolean success = data.getBoolean("success");
+
+                String responseString;
+
+                if (success) {
+                    System.out.println("Delete grocery success\n");
+                    responseString = "success";
+                }
+                else {
+                    System.out.println("Delete grocery failure\n");
+                    String message = data.getString("message");
+                    System.out.println(message + "\n");
+                    responseString = data.getString("message");
+                }
+
+                in.close();
+                conn.disconnect();
+
+                return responseString;
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return "Failure";
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
