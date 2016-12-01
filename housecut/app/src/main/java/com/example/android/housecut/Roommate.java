@@ -6,6 +6,7 @@ package com.example.android.housecut;
 
 public class Roommate {
     public String name;
+    public Boolean isAdmin;
 
     Roommate(String name ) {
         this.name = name;
@@ -14,5 +15,17 @@ public class Roommate {
     @Override
     public String toString() {
         return this.name;
+    }
+    
+    public void setAdmin() {
+        this.isAdmin = true;   
+    }
+    
+    public void removeAdmin() {
+        this.isAdmin = false;
+    }
+    
+    public Boolean isAdmin() {
+        return isAdmin;   
     }
 }
