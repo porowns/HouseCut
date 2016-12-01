@@ -114,10 +114,18 @@ public class task_list_activity extends AppCompatActivity {
         });
 
         String id = getIntent().getStringExtra("id");
-        if (id == null) {
+        String name = "Household";
+        System.out.println("Id: " + id);
+        if (id == null || id.isEmpty()) {
             id = "";
         }
-        System.out.println("id for this tasklist view: " + id );
+        else {
+            HouseCutApp app = ((HouseCutApp) this.getApplicationContext());
+            Household household = app.getHousehold();
+            name = household.getRoommateNameFromId(id);
+        }
+        viewingButton.setText("Viewing: " + name);
+
         GetTasklistRunner getTasklistRunner = new GetTasklistRunner(this, id);
 
         getTasklistRunner.execute();
@@ -162,7 +170,7 @@ public class task_list_activity extends AppCompatActivity {
         Household household = app.getHousehold();
         HashMap<String, String> roommates = household.getRoommatesHashMap();
         final HashMap<Integer, String> roommateIds = new HashMap<>();
-        System.out.println(roommateIds.size());
+
         int roommateNum = 0;
 
         Set set = roommates.entrySet();
@@ -297,7 +305,6 @@ public class task_list_activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         final Task selectedTask = tasks.get(position);
-                        System.out.println("Selected: " + selectedTask.toString());
                         final String completeTaskString = "Complete task";
                         final String deleteTaskString = "Delete task";
                         CharSequence options[];
@@ -319,7 +326,6 @@ public class task_list_activity extends AppCompatActivity {
                         builder.setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                System.out.println("clicked: " + finalOptions[which]);
                                 if (finalOptions[which].equals(completeTaskString)) {
                                     CompleteTaskRunner completeTaskRunner =
                                             new CompleteTaskRunner(getApplicationContext(),
