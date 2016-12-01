@@ -26,6 +26,7 @@ var completeTask = require('./tasks/completetask.js');
 var createGrocery = require('./grocerylist/creategrocery.js');
 var deleteGrocery = require('./grocerylist/deletegrocery.js');
 var getGroceryList = require('./grocerylist/getgrocerylist.js');
+var changeDisplayName = require('./accounts/displayname.js');
 
 
 /* config */
@@ -77,6 +78,8 @@ app.post('/household/deletegrocery', verifyToken, deleteGrocery);
 app.get('/household/grocerylist', verifyToken, getGroceryList);
 
 app.post('/household/rename', verifyToken, renameHousehold);
+
+app.post('/displayname', verifyToken, changeDisplayName);
 
 /* start the server */
 app.listen(port);

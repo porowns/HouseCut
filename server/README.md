@@ -1,7 +1,5 @@
 This server exposes a REST API for the HouseCut backend.
 
-URL: http://housecut-145314.appspot.com/
-
 # API Documentation
 
 ## Schemas
@@ -49,6 +47,8 @@ Tasks have the following schema:
 | Create Grocery | `/household/creategrocery` | `POST` | None | { token: [String], itemName: [String] } | { success: true } | { success: false, message: [String] } | Send the grocery item name, and it'll create that item. |
 | Delete Grocery | `/household/deletegrocery` | `POST` | None | { token: [String], itemName: [String] } | { success: true } | { success: false, message: [String] } | Send the grocery item name, and it'll delete that item. |
 | Get Grocery List | `/household/grocerylist` | `GET` | token=[String] } | None | { { success: true, groceryList: [Array of Groceries] } | Gives list of grocery items. |
+| Rename Household | `/household/rename` | `POST` | None | { token: [String], name: [String] } | { success: true } | { success: false, message: [String] } | Renames a Household. Admin only. |
+| Change display name  | `/displayname` | `POST` | None | { token: [String], name: [String] } | { success: true } | { success: false, message: [String] } | |
 
 # Starting the server
 
