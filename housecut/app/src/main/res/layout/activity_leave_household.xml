@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.NoActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/options_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/title_view_leave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/options_toolbar"
+        android:layout_marginBottom="16dp"
+        android:text="Leave Household"
+        android:textSize="36dp"
+        android:textAllCaps="false"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/description_view_leave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_view_leave"
+        android:layout_marginBottom="16dp"
+        android:text="Are you sure you want to leave this household?"
+        android:textSize="12dp"
+        android:textAllCaps="false"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/loading_leave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description_view_leave"
+        android:layout_marginBottom="16dp"
+        android:text="Loading..."
+        android:textSize="20dp"
+        android:textAllCaps="false"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/leave_no_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loading_leave"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="No"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/leave_yes_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/leave_no_button"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Yes"
+        android:textStyle="bold"/>
 
 </RelativeLayout>

@@ -145,7 +145,7 @@ public class create_household_activity extends AppCompatActivity {
 
                 finish();
                 if (user.getHousehold().equals("0")) {
-                    Intent intent = new Intent(this.ctx, join_household_activity.class);
+                    Intent intent = new Intent(this.ctx, main_page_activity.class);
                     this.ctx.startActivity(intent);
                     overridePendingTransition(0, 0);
                 }

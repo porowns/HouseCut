@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.NoActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/options_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/settings_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/options_toolbar"
+        android:layout_marginBottom="16dp"
+        android:text="Settings"
+        android:textSize="36dp"
+        android:textAllCaps="false"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
+        android:id="@+id/leave_household_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_view"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Leave Household"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/rename_household_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/leave_household_button"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Rename Household"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/change_username_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rename_household_button"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Change Username"
+        android:textStyle="bold"/>
 </RelativeLayout>
