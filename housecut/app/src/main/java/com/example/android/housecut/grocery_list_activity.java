@@ -41,7 +41,6 @@ import java.util.ArrayList;
 
 public class grocery_list_activity extends AppCompatActivity {
     private Button addItemButton;
-    private Button viewingButton;
     private TextView loadingTextView;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,6 @@ public class grocery_list_activity extends AppCompatActivity {
 
         loadingTextView= (TextView) findViewById(R.id.grocery_list_loading);
         loadingTextView.setVisibility(View.VISIBLE);
-
-        viewingButton = (Button) findViewById(R.id.grocery_list_viewing);
-        viewingButton.setVisibility(View.GONE);
 
         addItemButton = (Button) findViewById(R.id.add_item_button);
         addItemButton.setVisibility(View.GONE);
@@ -211,7 +207,6 @@ public class grocery_list_activity extends AppCompatActivity {
             protected void onPostExecute(String responseString) {
                 loadingTextView.setVisibility(View.GONE);
                 addItemButton.setVisibility(View.VISIBLE);
-                viewingButton.setVisibility(View.VISIBLE);
 
                 if (responseString.equals("success")) {
 

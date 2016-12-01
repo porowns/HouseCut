@@ -59,6 +59,49 @@ public class task_list_activity extends AppCompatActivity {
 
         viewingButton = (Button) findViewById(R.id.task_list_viewing);
         viewingButton.setVisibility(View.GONE);
+        final Context finalCtx = this;
+        viewingButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+            @Override
+            public void onClick(View view) {
+
+
+                HouseCutApp app = ((HouseCutApp)finalCtx.getApplicationContext());
+                household_member_class user = app.getUser();
+                final Household household = app.getHousehold();
+                HashMap<String, String> roommates = household.getRoommatesHashMap();
+                ArrayList<String> roommateNames = new ArrayList<>(100);
+                roommateNames.add("Household");
+                Set set = roommates.entrySet();
+                Iterator i = set.iterator();
+                while (i.hasNext()) {
+                    Map.Entry rm = (Map.Entry) i.next();
+                    roommateNames.add(rm.getValue().toString());
+                }
+                final CharSequence options[] =
+                        roommateNames.toArray(new CharSequence[roommateNames.size()]);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(finalCtx);
+                builder.setTitle("View tasks assigned to...");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("clicked: " + options[which]);
+                        String id;
+                        if (which == 0) {
+                            id = "";
+                        }
+                        else {
+                            id = household.getRoommateIdFromName(options[which].toString());
+                        }
+                        Intent intent = new Intent(finalCtx, task_list_activity.class);
+                        intent.putExtra("id", id);
+                        startActivity(intent);
+                    }
+                });
+                builder.show();
+            }
+        });
 
         createTaskButton = (Button) findViewById(R.id.create_task_button);
         createTaskButton.setVisibility(View.GONE);
@@ -70,7 +113,12 @@ public class task_list_activity extends AppCompatActivity {
             }
         });
 
-        GetTasklistRunner getTasklistRunner = new GetTasklistRunner(this);
+        String id = getIntent().getStringExtra("id");
+        if (id == null) {
+            id = "";
+        }
+        System.out.println("id for this tasklist view: " + id );
+        GetTasklistRunner getTasklistRunner = new GetTasklistRunner(this, id);
 
         getTasklistRunner.execute();
 
@@ -183,7 +231,7 @@ public class task_list_activity extends AppCompatActivity {
             public void onClick(View v) {
                 String name;
                 name = nameView.getText().toString();
-                if (name.isEmpty()) {
+                if (name == null || name.isEmpty()) {
                     return;
                 }
                 String type = "";
@@ -220,10 +268,12 @@ public class task_list_activity extends AppCompatActivity {
     class GetTasklistRunner extends AsyncTask<String, Void, String> {
 
         private Context ctx;
-        ArrayList<Task> tasks;
+        private ArrayList<Task> tasks;
+        private String id;
 
-        public GetTasklistRunner(Context ctx){
+        public GetTasklistRunner(Context ctx, String id){
             this.ctx = ctx;
+            this.id = id;
         }
 
         @Override
@@ -304,7 +354,11 @@ public class task_list_activity extends AppCompatActivity {
                 Household household = app.getHousehold();
                 String token = user.getToken();
 
-                URL url = new URL ("http://10.0.2.2:8080/household/tasklist?token=" + token);
+                String urlString = "http://10.0.2.2:8080/household/tasklist?token=" + token;
+                if (!this.id.isEmpty()) {
+                    urlString += "&userId=" + this.id;
+                }
+                URL url = new URL (urlString);
 
                 //Declare connection object
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
