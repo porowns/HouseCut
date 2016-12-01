@@ -129,7 +129,7 @@ public class leave_household_activity extends AppCompatActivity{
         @Override
         protected void onPostExecute(String responseString) {
             if (responseString.equals("success")) {
-                Intent intent = new Intent(this.ctx, login_activity.class);
+                Intent intent = new Intent(this.ctx, join_household_activity.class);
                 this.ctx.startActivity(intent);
             } else {
                 this.mMessageView.setVisibility(View.VISIBLE);

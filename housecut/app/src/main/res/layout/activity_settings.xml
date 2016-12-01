@@ -72,4 +72,19 @@
         android:paddingRight="4dp"
         android:text="Change Username"
         android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/logout_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/change_username_button"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="Logout"
+        android:textStyle="bold"/>
 </RelativeLayout>

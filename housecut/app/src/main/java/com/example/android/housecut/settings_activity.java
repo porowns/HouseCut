@@ -26,6 +26,7 @@ public class settings_activity extends AppCompatActivity {
         Button mLeaveHouseholdButton = (Button) findViewById(R.id.leave_household_button);
         Button mRenameHouseholdButton = (Button) findViewById(R.id.rename_household_button);
         Button mChangeUsernameButton = (Button) findViewById(R.id.change_username_button);
+        Button mLogoutButton = (Button) findViewById(R.id.logout_button);
 
         mChangeUsernameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +48,14 @@ public class settings_activity extends AppCompatActivity {
                 RenameHousehold();
             }
         });
+
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Logout();
+            }
+        });
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,6 +108,13 @@ public class settings_activity extends AppCompatActivity {
     }
     public void LeaveHousehold(){
         Intent intent = new Intent(settings_activity.this, leave_household_activity.class);
+        startActivity(intent);
+    }
+    public void Logout(){
+        HouseCutApp app = ((HouseCutApp)this.getApplicationContext());
+        app.setUser(null);
+        app.setHousehold(null);
+        Intent intent = new Intent(settings_activity.this, login_activity.class);
         startActivity(intent);
     }
 }
