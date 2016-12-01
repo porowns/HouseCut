@@ -144,8 +144,10 @@ public class grocery_list_activity extends AppCompatActivity {
                 }
             });
                 */
+            final TextView errorView = new TextView(this);
             addItemView.addView(nameLabel);
             addItemView.addView(nameView);
+            addItemView.addView(errorView);
 
             /*
             addItemView.addView(typeLabel);
@@ -176,13 +178,15 @@ public class grocery_list_activity extends AppCompatActivity {
                     String name;
                     name = nameView.getText().toString();
                     if (name.isEmpty()) {
+                        errorView.setText("Enter a name for the item.");
                         return;
                     }
 
                 /* Make POST request */
 
 
-                    GroceryListRunner addItemRunner = new GroceryListRunner(getApplicationContext(), d, name);
+                    GroceryListRunner addItemRunner =
+                            new GroceryListRunner(getApplicationContext(), d, name, errorView);
 
                     addItemRunner.execute();
                 }
@@ -325,12 +329,13 @@ public class grocery_list_activity extends AppCompatActivity {
             private Context ctx;
             final private AlertDialog d;
             private String itemName;
+            private TextView errorView;
 
-            public GroceryListRunner(Context ctx, AlertDialog d, String name){
+            public GroceryListRunner(Context ctx, AlertDialog d, String name, TextView errorView){
                 this.ctx = ctx;
                 this.d = d;
                 this.itemName = name;
-
+                this.errorView = errorView;
             }
 
             @Override
@@ -401,6 +406,13 @@ public class grocery_list_activity extends AppCompatActivity {
                         String message = data.getString("message");
                         System.out.println(message + "\n");
                         responseString = data.getString("message");
+                        final String err = responseString;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                errorView.setText(err);
+                            }
+                        });
                     }
 
                     in.close();

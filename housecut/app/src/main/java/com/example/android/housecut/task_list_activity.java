@@ -210,12 +210,15 @@ public class task_list_activity extends AppCompatActivity {
             }
         });
 
+        final TextView errorView = new TextView(this);
+
         createTaskView.addView(nameLabel);
         createTaskView.addView(nameView);
         createTaskView.addView(typeLabel);
         createTaskView.addView(typeGroup);
         createTaskView.addView(assignedLabel);
         createTaskView.addView(assignedGroup);
+        createTaskView.addView(errorView);
 
         assignedLabel.setVisibility(View.GONE);
         assignedGroup.setVisibility(View.GONE);
@@ -240,10 +243,10 @@ public class task_list_activity extends AppCompatActivity {
                 String name;
                 name = nameView.getText().toString();
                 if (name == null || name.isEmpty()) {
+                    errorView.setText("Enter a task name.");
                     return;
                 }
-                String type = "";
-                String currentlyAssigned = "0";
+                String type;
                 if (typeRb[0].isChecked()) {
                     type = "Rotating";
                 } else if (typeRb[1].isChecked()) {
@@ -251,6 +254,7 @@ public class task_list_activity extends AppCompatActivity {
                 } else if (typeRb[2].isChecked()) {
                     type = "Voluntary";
                 } else {
+                    errorView.setText("Select a task type.");
                     return;
                 }
 
@@ -258,6 +262,7 @@ public class task_list_activity extends AppCompatActivity {
                 String selectedRoommateId = roommateIds.get(assignedRbId);
                 if (selectedRoommateId == null) {
                     if (type.equals("Rotating") || type.equals("Assigned")) {
+                        errorView.setText("Assign this task to a user.");
                         return;
                     }
                 }
@@ -265,7 +270,7 @@ public class task_list_activity extends AppCompatActivity {
                 /* Make POST request */
 
                 CreateTaskRunner createTaskRunner = new CreateTaskRunner(getApplicationContext(), d,
-                        name, type, selectedRoommateId);
+                        name, type, selectedRoommateId, errorView);
 
                 createTaskRunner.execute();
             }
@@ -437,14 +442,16 @@ public class task_list_activity extends AppCompatActivity {
         private String taskName;
         private String taskType;
         private String currentlyAssigned;
+        private TextView errorView;
 
         public CreateTaskRunner(Context ctx, AlertDialog d, String name,
-                                String type, String assigned){
+                                String type, String assigned, TextView errorView){
             this.ctx = ctx;
             this.d = d;
             this.taskName = name;
             this.taskType = type;
             this.currentlyAssigned = assigned;
+            this.errorView = errorView;
         }
 
         @Override
@@ -515,6 +522,13 @@ public class task_list_activity extends AppCompatActivity {
                     String message = data.getString("message");
                     System.out.println(message + "\n");
                     responseString = data.getString("message");
+                    final String err = responseString;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorView.setText(err);
+                        }
+                    });
                 }
 
                 in.close();
