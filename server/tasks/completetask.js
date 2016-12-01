@@ -58,17 +58,34 @@ module.exports = function(req, res) {
         })
         break;
       case 'Rotating':
-        var whosturn = hh.HouseholdMembers.find(function(e) {
-          return (e === sameNameTask.currentlyAssigned );
-        });
+      console.log("rotating task..");
+      console.log("task curr ass: " + sameNameTask.currentlyAssigned);
+      console.log("curr user id : " + currentUserId);
+
         if ( sameNameTask.currentlyAssigned === currentUserId ) {
-          whosturn++;
-          sameNameTask.currentlyAssigned = hh.HouseholdMembers[whosturn];
-          res.json({
-            success: true,
-            message: 'Thanks! Assigning next user in line...'
-          })
-          return;
+          var i = hh.HouseholdMembers.indexOf(sameNameTask.currentlyAssigned);
+          console.log("index in hhmembers: " + i);
+          i++;
+          if (i == hh.HouseholdMembers.length) {
+            i = 0;
+          }
+          var taskNum = hh.taskList.indexOf(sameNameTask);
+          console.log("task index: "+ taskNum);
+          console.log("next up id: "+  hh.HouseholdMembers[i]);
+          var p =
+          Household.update({ '_id': hh._id, 'taskList.name': sameNameTask.name }, { $set:
+            { 'taskList.$.currentlyAssigned':  hh.HouseholdMembers[i]
+          } }, undefined,
+          function(err) {
+            if (err) {
+              throw err;
+            }
+            res.json({
+              success: true,
+              message: 'Thanks! Assigning next user in line...'
+            })
+            return;
+          });
         } else {
           res.json({
             success: false,
