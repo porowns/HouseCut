@@ -134,8 +134,168 @@ public class settings_activity extends AppCompatActivity {
     }
 
     public void ChangeUsername() {
-        Intent intent = new Intent(settings_activity.this, change_username_activity.class);
-        startActivity(intent);
+        final LinearLayout changeUserNameView = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        changeUserNameView.setLayoutParams(lp);
+        changeUserNameView.setOrientation(LinearLayout.VERTICAL);
+
+        final TextView nameLabel = new TextView(this);
+        nameLabel.setText("Display name:");
+        final EditText nameView = new EditText(this);
+        HouseCutApp app = ((HouseCutApp)this.getApplicationContext());
+        household_member_class user = app.getUser();
+        nameView.setHint(user.getName());
+
+        final TextView errorView = new TextView(this);
+
+        changeUserNameView.addView(nameLabel);
+        changeUserNameView.addView(nameView);
+        changeUserNameView.addView(errorView);
+
+        final AlertDialog d = new AlertDialog.Builder(this)
+                .setTitle("Change your display name")
+                .setView(changeUserNameView)
+                .setPositiveButton("Change your display name", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .create();
+
+        d.show();
+
+        d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name;
+                name = nameView.getText().toString();
+                if (name == null || name.isEmpty()) {
+                    errorView.setText("Enter a display name.");
+                    return;
+                }
+
+
+                ChangeDisplayNameRunner changeDisplayNameRunner =
+                        new ChangeDisplayNameRunner(getApplicationContext(), d,
+                                name, errorView);
+
+                changeDisplayNameRunner.execute();
+            }
+        });
+    }
+
+    class ChangeDisplayNameRunner extends AsyncTask<String, Void, String> {
+
+        private Context ctx;
+        final private AlertDialog d;
+        private String name;
+        private TextView errorView;
+
+        public ChangeDisplayNameRunner(Context ctx, AlertDialog d, String name, TextView errorView){
+            this.ctx = ctx;
+            this.d = d;
+            this.name = name;
+            this.errorView = errorView;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            return changeDisplayName();
+        }
+
+        @Override
+        protected void onPostExecute(String responseString) {
+            if (responseString.equals("success")) {
+                d.dismiss();
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
+                user.setName(name);
+                Household household = app.getHousehold();
+                household.addRoommate(this.name, user.getID());
+            }
+        }
+
+        public String changeDisplayName(){
+            try {
+                HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
+                household_member_class user = app.getUser();
+                String token = user.getToken();
+
+                URL url = new URL ("http://10.0.2.2:8080/displayname");
+
+                //Declare connection object
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+
+                JSONObject json = new JSONObject();
+                json.put("token", token);
+                json.put("name", this.name);
+
+                OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+                out.write(json.toString());
+                out.close();
+
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+
+                StringBuffer result = new StringBuffer();
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println(result);
+                    result.append(line);
+                }
+
+                JSONObject data = new JSONObject(String.valueOf(result));
+
+                System.out.println(data);
+
+                Boolean success = data.getBoolean("success");
+
+                String responseString;
+
+                if (success) {
+                    System.out.println("Change display name success\n");
+                    responseString = "success";
+                }
+                else {
+                    System.out.println("Change display name failure\n");
+                    String message = data.getString("message");
+                    System.out.println(message + "\n");
+                    responseString = data.getString("message");
+                    final String err = responseString;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorView.setText(err);
+                        }
+                    });
+
+                }
+
+                in.close();
+                conn.disconnect();
+
+                return responseString;
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return "Failure";
+        }
     }
 
     public void RenameHousehold() {
@@ -215,10 +375,8 @@ public class settings_activity extends AppCompatActivity {
                 d.dismiss();
                 HouseCutApp app = ((HouseCutApp)this.ctx.getApplicationContext());
                 Household household = app.getHousehold();
+                household_member_class user = app.getUser();
                 household.setName(this.name);
-            }
-            else {
-
             }
         }
 

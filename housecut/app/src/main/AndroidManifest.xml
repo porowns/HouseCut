@@ -58,10 +58,6 @@
             android:label="Create Household Activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".change_username_activity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:label="Change Username Activity" />
-        <activity
             android:name=".leave_household_activity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:label="Leave Household Activity" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
