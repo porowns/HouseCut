@@ -25,7 +25,7 @@ import java.net.URL;
  * Created by Jose on 11/21/2016.
  *
  * Edited by Chris on 11/22/2016.
- * Edited by Nick on 11/29/2016
+ * Edited by Nick & Adam on 11/29/2016
  */
 
 public class create_household_activity extends AppCompatActivity {
